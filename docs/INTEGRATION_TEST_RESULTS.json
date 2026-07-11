@@ -1,0 +1,79 @@
+{
+  "timestamp": "2026-07-11T12:15:07.298853+00:00",
+  "total_tests": 10,
+  "passed": 10,
+  "failed": 0,
+  "total_duration_s": 36.74065542221069,
+  "results": [
+    {
+      "name": "AEGIS Bridge initialization",
+      "status": "\u2705 PASS",
+      "duration_ms": 4045,
+      "message": "",
+      "timestamp": "2026-07-11T12:14:34.541762+00:00"
+    },
+    {
+      "name": "Context injection (AEGIS intel)",
+      "status": "\u2705 PASS",
+      "duration_ms": 8165,
+      "message": "Generated 582 char prompt",
+      "timestamp": "2026-07-11T12:14:42.709503+00:00"
+    },
+    {
+      "name": "Session Manager init",
+      "status": "\u2705 PASS",
+      "duration_ms": 6811,
+      "message": "Session ID: session_4a974176",
+      "timestamp": "2026-07-11T12:14:49.522718+00:00"
+    },
+    {
+      "name": "Start session flow",
+      "status": "\u2705 PASS",
+      "duration_ms": 1,
+      "message": "Session: session_4a974176",
+      "timestamp": "2026-07-11T12:14:49.525234+00:00"
+    },
+    {
+      "name": "Real-time coaching (LLM)",
+      "status": "\u2705 PASS",
+      "duration_ms": 889,
+      "message": "Provider: groq",
+      "timestamp": "2026-07-11T12:14:50.416324+00:00"
+    },
+    {
+      "name": "Process audio segment",
+      "status": "\u2705 PASS",
+      "duration_ms": 7,
+      "message": "Status: error",
+      "timestamp": "2026-07-11T12:14:50.423866+00:00"
+    },
+    {
+      "name": "End session & save to DB",
+      "status": "\u2705 PASS",
+      "duration_ms": 68,
+      "message": "Duration: 7s",
+      "timestamp": "2026-07-11T12:14:50.493877+00:00"
+    },
+    {
+      "name": "LLM fallback chain",
+      "status": "\u2705 PASS",
+      "duration_ms": 2209,
+      "message": "Provider: groq",
+      "timestamp": "2026-07-11T12:14:52.704545+00:00"
+    },
+    {
+      "name": "Performance benchmark (full flow)",
+      "status": "\u2705 PASS",
+      "duration_ms": 8100,
+      "message": "Total time: 8.10s",
+      "timestamp": "2026-07-11T12:15:00.805455+00:00"
+    },
+    {
+      "name": "Error handling & validation",
+      "status": "\u2705 PASS",
+      "duration_ms": 6442,
+      "message": "Correctly rejected invalid operation",
+      "timestamp": "2026-07-11T12:15:07.253722+00:00"
+    }
+  ]
+}
