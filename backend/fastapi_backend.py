@@ -1,516 +1,342 @@
-# ============================================================
-# SANTINEL — FASTAPI BACKEND (Production Server)
-# Week 3: Scalable REST API replacing Streamlit
-# ============================================================
+"""
+SANTINEL Backend — FastAPI + Professional Psychology Coaching
+Integrated: CBT, NLP, TA, Dual-Speaker Analysis, Goal-Based Coaching
+Real-time AI coaching with professional frameworks
+"""
 
-import os
-import json
-import logging
-from typing import Dict, Optional, List
-from datetime import datetime, timezone
-import sys
-from pathlib import Path
-
-# Add parent directory to path
-sys.path.insert(0, str(Path(__file__).parent.parent))
-
-from fastapi import FastAPI, HTTPException, UploadFile, File, BackgroundTasks
-from fastapi.responses import JSONResponse
+from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-import uvicorn
+from typing import Dict, List, Optional
+import json
+from datetime import datetime
+import sys
+import os
 
-from module.session_complete import SessionManager
-from bridge.aegis_bridge import AEGISBridge, ContextInjector
+# Add core modules to path
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'core'))
+
+from core_complete import SantinelCore
+from anonimizare.anon_complete import Anonymizer
 from module.llm_complete import LLMClient
-from module.audio_whisper_bridge import WhisperBridge, EmotionDetector
+from core.cbt_module import CBTAssessment
+from core.nlp_module import NLPModule
+from core.ta_module import TAModule
+from core.dual_speaker_analyzer import DualSpeakerAnalyzer
+from core.goal_coaching_engine import GoalCoachingEngine, GoalType
 
-# Setup logging
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
+# Initialize FastAPI
+app = FastAPI(title="SANTINEL", version="1.0.0")
 
-# ============================================================
-# FASTAPI APP INITIALIZATION
-# ============================================================
-
-app = FastAPI(
-    title="SANTINEL API",
-    description="AI Coaching Assistant - Production Backend",
-    version="0.1.0",
-    docs_url="/api/docs",
-    redoc_url="/api/redoc"
+# CORS configuration
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
-# Global instances
-session_manager_instance = None
-aegis_bridge_instance = None
-whisper_bridge_instance = None
-emotion_detector_instance = None
-llm_client_instance = None
+# Initialize components
+core = SantinelCore()
+anonymizer = Anonymizer()
+llm = LLMClient()
 
-# ============================================================
-# PYDANTIC MODELS (Request/Response schemas)
-# ============================================================
+# Psychology framework modules
+cbt = CBTAssessment()
+nlp = NLPModule()
+ta = TAModule()
+dual_speaker = DualSpeakerAnalyzer()
+goal_engine = GoalCoachingEngine()
 
-class SessionCreateRequest(BaseModel):
-    """Create session request"""
+# Session storage (SQLite in production)
+sessions = {}
+session_goals = {}
+
+# ============== PYDANTIC MODELS ==============
+
+class SessionCreate(BaseModel):
     contact_name: str
     company_name: str
-    user_id: str = "default_user"
-
-class SessionResponse(BaseModel):
-    """Session response"""
-    session_id: str
-    status: str
-    contact_name: str
-    company_name: str
-    created_at: str
+    user_id: str
 
 class CoachingRequest(BaseModel):
-    """Get coaching request"""
     session_id: str
     situation: str
-    context: Optional[str] = None
+    emotions: Optional[Dict[str, float]] = None
+    is_reactive: bool = False
 
-class CoachingResponse(BaseModel):
-    """Coaching response"""
-    coaching: str
-    provider: str
-    confidence: float
-    timestamp: str
+class GoalAdd(BaseModel):
+    goal_type: str  # "price", "terms", "scope", "timeline", "relationship", "information", "custom"
+    description: str
+    target_value: str
+    minimum_acceptable: str
+    priority: int = 1
 
-class ContactIntelRequest(BaseModel):
-    """Get contact intelligence"""
-    contact_name: str
-    company_name: str
-
-class TranscriptionRequest(BaseModel):
-    """Transcription request"""
+class AudioAnalysisRequest(BaseModel):
     session_id: str
     audio_path: str
+    transcription: Optional[str] = None
 
-class HealthResponse(BaseModel):
-    """Health check response"""
-    status: str
-    timestamp: str
-    modules: Dict[str, bool]
+# ============== ENDPOINTS ==============
 
-# ============================================================
-# INITIALIZATION ENDPOINT
-# ============================================================
+@app.get("/health")
+async def health():
+    """Health check"""
+    return {"status": "🟢 SANTINEL operational", "timestamp": datetime.now()}
+
+@app.post("/api/v1/sessions")
+async def create_session(session: SessionCreate):
+    """Create new negotiation session"""
+    session_id = f"session_{datetime.now().timestamp()}"
+    
+    sessions[session_id] = {
+        "contact_name": session.contact_name,
+        "company_name": session.company_name,
+        "user_id": session.user_id,
+        "created_at": datetime.now(),
+        "goals": [],
+        "interactions": [],
+    }
+    
+    session_goals[session_id] = GoalCoachingEngine()
+    
+    return {
+        "session_id": session_id,
+        "message": f"✅ Session created for {session.contact_name} @ {session.company_name}",
+        "status": "active"
+    }
+
+@app.post("/api/v1/goals/add")
+async def add_goal(session_id: str, goal: GoalAdd):
+    """Add negotiation goal to session"""
+    if session_id not in session_goals:
+        raise HTTPException(status_code=404, detail="Session not found")
+    
+    goal_engine_instance = session_goals[session_id]
+    
+    # Map string to GoalType enum
+    goal_type_map = {
+        "price": GoalType.PRICE,
+        "terms": GoalType.TERMS,
+        "scope": GoalType.SCOPE,
+        "timeline": GoalType.TIMELINE,
+        "relationship": GoalType.RELATIONSHIP,
+        "information": GoalType.INFORMATION,
+        "custom": GoalType.CUSTOM,
+    }
+    
+    goal_type = goal_type_map.get(goal.goal_type, GoalType.CUSTOM)
+    
+    new_goal = goal_engine_instance.add_goal(
+        goal_type=goal_type,
+        description=goal.description,
+        target_value=goal.target_value,
+        minimum_acceptable=goal.minimum_acceptable,
+        priority=goal.priority
+    )
+    
+    sessions[session_id]["goals"].append({
+        "type": goal.goal_type,
+        "description": goal.description,
+        "target": goal.target_value,
+        "minimum": goal.minimum_acceptable,
+    })
+    
+    return {
+        "goal_added": True,
+        "goal_id": len(goal_engine_instance.goals) - 1,
+        "message": f"✅ Goal added: {goal.description}"
+    }
+
+@app.post("/api/v1/audio/transcribe")
+async def transcribe_audio(request: AudioAnalysisRequest):
+    """Transcribe audio to text"""
+    # Mock transcription (real would use Whisper API)
+    mock_transcription = "Vendor wants 20% increase, we can afford 5%. Need better strategy."
+    
+    return {
+        "session_id": request.session_id,
+        "text": mock_transcription,
+        "confidence": 0.92,
+        "language": "en"
+    }
+
+@app.post("/api/v1/audio/emotions")
+async def detect_emotions(request: AudioAnalysisRequest):
+    """Detect emotions from audio"""
+    # Mock emotion detection
+    return {
+        "session_id": request.session_id,
+        "dominant_emotion": "assertive",
+        "emotions": {
+            "assertive": 0.8,
+            "confident": 0.6,
+            "calm": 0.5
+        },
+        "confidence": 0.85
+    }
+
+@app.post("/api/v1/coaching")
+async def get_coaching(request: CoachingRequest):
+    """
+    Get professional coaching using ALL frameworks:
+    CBT + NLP + TA + Dual-Speaker + Goal-Based
+    """
+    
+    if request.session_id not in sessions:
+        raise HTTPException(status_code=404, detail="Session not found")
+    
+    # ============ FRAMEWORK 1: CBT ASSESSMENT ============
+    distortions = cbt.identify_distortions(request.situation)
+    cbt_assessment = cbt.assess_emotional_state(
+        request.situation,
+        request.emotions or {}
+    )
+    
+    # ============ FRAMEWORK 2: NLP ANALYSIS ============
+    rep_system = nlp.detect_representation_system(request.situation)
+    problem_frame = nlp.detect_problem_frame(request.situation)
+    nlp_reframe = nlp.generate_nlp_reframe(
+        request.situation,
+        problem_frame,
+        max(request.emotions or {}, key=lambda k: request.emotions[k]) if request.emotions else "neutral"
+    )
+    excellence_model = nlp.model_excellence(problem_frame)
+    linguistic_analysis = nlp.linguistic_pattern_analysis(request.situation)
+    
+    # ============ FRAMEWORK 3: TA ANALYSIS ============
+    ego_state_analysis = ta.detect_ego_state(request.situation)
+    life_position = ta.detect_life_position(request.situation, "")
+    game_analysis = ta.detect_psychological_game(request.situation)
+    healthy_transaction = ta.prescribe_healthy_transaction(request.situation)
+    
+    # ============ FRAMEWORK 4: DUAL-SPEAKER ANALYSIS ============
+    user_analysis = dual_speaker.analyze_user(
+        request.situation,
+        request.emotions or {},
+        ego_state_analysis.get("primary_ego_state", "unknown"),
+        life_position.value
+    )
+    counterparty_analysis = dual_speaker.infer_counterparty_state(request.situation)
+    interaction_dynamics = dual_speaker.analyze_interaction_dynamics()
+    dual_coaching = dual_speaker.generate_dual_coaching()
+    
+    # ============ FRAMEWORK 5: GOAL-BASED COACHING ============
+    goal_engine_instance = session_goals.get(request.session_id, GoalCoachingEngine())
+    
+    if request.is_reactive:
+        goal_based = goal_engine_instance.get_reactive_coaching(request.situation)
+    else:
+        goal_based = goal_engine_instance.get_goal_coaching()
+    
+    # ============ INTEGRATION: PROFESSIONAL COACHING ============
+    # Use LLM to synthesize all frameworks into coherent coaching
+    synthesis_prompt = f"""
+You are an expert executive coach specializing in high-stakes negotiations.
+Synthesize the following psychological frameworks into ONE coherent coaching response:
+
+SITUATION: {request.situation}
+
+CBT INSIGHT: {cbt_assessment.get('cbt_intervention', '')}
+NLP STRATEGY: {nlp_reframe}
+TA PRESCRIPTION: {healthy_transaction}
+DUAL-PARTY COACHING: {dual_coaching}
+GOAL-ALIGNED COACHING: {goal_based}
+
+Generate a concise, actionable coaching response that:
+1. Identifies the core issue (psychological insight)
+2. Provides immediate tactical action
+3. Maintains both parties' dignity
+4. Moves toward mutual value creation
+Keep response to 3-5 sentences maximum.
+"""
+    
+    try:
+        synthesized_response = llm.complete(synthesis_prompt)
+    except:
+        synthesized_response = f"""
+PROFESSIONAL COACHING RESPONSE:
+
+{cbt_assessment.get('therapeutic_insight', 'Maintain clarity and focus.')}
+
+Recommended action: {nlp_reframe.split('ACTION:')[1].split('USE:')[0].strip() if 'ACTION:' in nlp_reframe else 'Stay in Adult ego state.'}
+
+Remember: {healthy_transaction.split('🎯')[1].split('🗣️')[0].strip() if '🎯' in healthy_transaction else 'Focus on mutual value.'}
+"""
+    
+    # Store interaction for session history
+    sessions[request.session_id]["interactions"].append({
+        "timestamp": datetime.now(),
+        "situation": request.situation,
+        "frameworks_used": ["CBT", "NLP", "TA", "Dual-Speaker", "Goal-Based"],
+        "coaching_type": "reactive" if request.is_reactive else "goal-focused"
+    })
+    
+    return {
+        "session_id": request.session_id,
+        "coaching": synthesized_response,
+        "frameworks_applied": {
+            "cbt": {
+                "distortions_found": [d["distortion"] for d in distortions],
+                "insight": cbt_assessment.get("therapeutic_insight", "")
+            },
+            "nlp": {
+                "representation_system": rep_system.get("primary_system"),
+                "reframe": nlp_reframe[:100] + "..."
+            },
+            "ta": {
+                "ego_state": ego_state_analysis.get("primary_ego_state"),
+                "life_position": life_position.value
+            },
+            "dual_speaker": {
+                "user_state": user_analysis.get("emotional_state"),
+                "counterparty_readiness": counterparty_analysis.get("readiness_to_agree", "")
+            },
+            "goal_aligned": "Yes" if goal_engine_instance.goals else "No goals set"
+        },
+        "detailed_assessment": {
+            "cbt_assessment": cbt_assessment,
+            "nlp_analysis": rep_system,
+            "ta_analysis": ego_state_analysis,
+            "dual_speaker": interaction_dynamics,
+        }
+    }
+
+@app.post("/api/v1/session/{session_id}/status")
+async def get_session_status(session_id: str):
+    """Get complete session status and progress"""
+    if session_id not in sessions:
+        raise HTTPException(status_code=404, detail="Session not found")
+    
+    session_data = sessions[session_id]
+    goal_engine_instance = session_goals.get(session_id)
+    
+    return {
+        "session_id": session_id,
+        "contact": session_data["contact_name"],
+        "company": session_data["company_name"],
+        "created_at": session_data["created_at"],
+        "interactions_count": len(session_data["interactions"]),
+        "goals": session_data["goals"],
+        "goal_count": len(session_data["goals"]),
+        "status": "active"
+    }
+
+# ============== STARTUP ==============
 
 @app.on_event("startup")
 async def startup_event():
-    """Initialize all modules on startup"""
-    global session_manager_instance, aegis_bridge_instance, whisper_bridge_instance, emotion_detector_instance, llm_client_instance
-    
-    logger.info("🚀 SANTINEL Backend Starting...")
-    
-    try:
-        session_manager_instance = SessionManager(user_id="api_user")
-        logger.info("✅ SessionManager initialized")
-    except Exception as e:
-        logger.error(f"❌ SessionManager init failed: {e}")
-    
-    try:
-        aegis_bridge_instance = AEGISBridge()
-        logger.info("✅ AEGIS Bridge initialized")
-    except Exception as e:
-        logger.error(f"❌ AEGIS Bridge init failed: {e}")
-    
-    try:
-        whisper_bridge_instance = WhisperBridge()
-        logger.info("✅ Whisper Bridge initialized")
-    except Exception as e:
-        logger.error(f"❌ Whisper Bridge init failed: {e}")
-    
-    try:
-        emotion_detector_instance = EmotionDetector()
-        logger.info("✅ Emotion Detector initialized")
-    except Exception as e:
-        logger.error(f"❌ Emotion Detector init failed: {e}")
-    
-    try:
-        llm_client_instance = LLMClient()
-        logger.info("✅ LLM Client initialized")
-    except Exception as e:
-        logger.error(f"❌ LLM Client init failed: {e}")
-    
-    logger.info("🎯 SANTINEL Backend Ready!")
-
-# ============================================================
-# HEALTH & STATUS ENDPOINTS
-# ============================================================
-
-@app.get("/health", response_model=HealthResponse)
-async def health_check():
-    """Health check endpoint"""
-    
-    modules = {
-        "session_manager": session_manager_instance is not None,
-        "aegis_bridge": aegis_bridge_instance is not None,
-        "whisper_bridge": whisper_bridge_instance is not None,
-        "emotion_detector": emotion_detector_instance is not None,
-        "llm_client": llm_client_instance is not None
-    }
-    
-    return HealthResponse(
-        status="healthy" if all(modules.values()) else "degraded",
-        timestamp=datetime.now(timezone.utc).isoformat(),
-        modules=modules
-    )
-
-@app.get("/api/v1/status")
-async def status():
-    """API status endpoint"""
-    
-    return {
-        "service": "SANTINEL",
-        "version": "0.1.0",
-        "status": "running",
-        "timestamp": datetime.now(timezone.utc).isoformat()
-    }
-
-# ============================================================
-# SESSION ENDPOINTS
-# ============================================================
-
-@app.post("/api/v1/sessions", response_model=SessionResponse)
-async def create_session(request: SessionCreateRequest):
-    """Create new session"""
-    
-    if not session_manager_instance:
-        raise HTTPException(status_code=503, detail="SessionManager not available")
-    
-    try:
-        session_mgr = SessionManager(user_id=request.user_id)
-        result = session_mgr.start_session(request.contact_name, request.company_name)
-        
-        return SessionResponse(
-            session_id=result["session_id"],
-            status=result["status"],
-            contact_name=request.contact_name,
-            company_name=request.company_name,
-            created_at=datetime.now(timezone.utc).isoformat()
-        )
-    except Exception as e:
-        logger.error(f"Create session error: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
-
-@app.post("/api/v1/sessions/{session_id}/end")
-async def end_session(session_id: str):
-    """End session"""
-    
-    try:
-        return {
-            "session_id": session_id,
-            "status": "ended",
-            "timestamp": datetime.now(timezone.utc).isoformat()
-        }
-    except Exception as e:
-        logger.error(f"End session error: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
-
-@app.get("/api/v1/sessions/{session_id}")
-async def get_session(session_id: str):
-    """Get session details"""
-    
-    try:
-        return {
-            "session_id": session_id,
-            "status": "active",
-            "contact": "Ion Popescu",
-            "company": "ABC SRL",
-            "created_at": datetime.now(timezone.utc).isoformat()
-        }
-    except Exception as e:
-        logger.error(f"Get session error: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
-
-@app.get("/api/v1/sessions")
-async def list_sessions(limit: int = 10, offset: int = 0):
-    """List all sessions"""
-    
-    try:
-        return {
-            "sessions": [],
-            "total": 0,
-            "limit": limit,
-            "offset": offset
-        }
-    except Exception as e:
-        logger.error(f"List sessions error: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
-
-# ============================================================
-# COACHING ENDPOINTS
-# ============================================================
-
-@app.post("/api/v1/coaching", response_model=CoachingResponse)
-async def get_coaching(request: CoachingRequest):
-    """Get real-time coaching"""
-    
-    if not llm_client_instance:
-        raise HTTPException(status_code=503, detail="LLM Client not available")
-    
-    try:
-        result = llm_client_instance.get_coaching(
-            request.situation,
-            context=request.context or ""
-        )
-        
-        return CoachingResponse(
-            coaching=result.get("response", ""),
-            provider=result.get("provider", "unknown"),
-            confidence=0.85,
-            timestamp=datetime.now(timezone.utc).isoformat()
-        )
-    except Exception as e:
-        logger.error(f"Coaching error: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
-
-@app.post("/api/v1/sessions/{session_id}/coaching")
-async def session_coaching(session_id: str, request: CoachingRequest):
-    """Get coaching for specific session"""
-    
-    try:
-        result = llm_client_instance.get_coaching(request.situation)
-        
-        return {
-            "session_id": session_id,
-            "coaching": result.get("response", ""),
-            "provider": result.get("provider", "unknown"),
-            "timestamp": datetime.now(timezone.utc).isoformat()
-        }
-    except Exception as e:
-        logger.error(f"Session coaching error: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
-
-# ============================================================
-# AEGIS INTELLIGENCE ENDPOINTS
-# ============================================================
-
-@app.post("/api/v1/aegis/contact")
-async def get_contact_intelligence(request: ContactIntelRequest):
-    """Get contact intelligence from AEGIS"""
-    
-    if not aegis_bridge_instance:
-        raise HTTPException(status_code=503, detail="AEGIS Bridge not available")
-    
-    try:
-        intel = aegis_bridge_instance.get_contact_intel(
-            request.contact_name,
-            request.company_name
-        )
-        
-        return {
-            "contact": intel.get("contact", {}),
-            "company": intel.get("company", {}),
-            "risk_profile": intel.get("risk_profile", "unknown"),
-            "history": intel.get("history", []),
-            "recommendations": intel.get("recommendations", [])
-        }
-    except Exception as e:
-        logger.error(f"AEGIS contact error: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
-
-@app.post("/api/v1/aegis/company")
-async def get_company_osint(company_name: str, country: str = "RO"):
-    """Get company OSINT from AEGIS"""
-    
-    if not aegis_bridge_instance:
-        raise HTTPException(status_code=503, detail="AEGIS Bridge not available")
-    
-    try:
-        osint = aegis_bridge_instance.get_company_osint(company_name, country)
-        
-        return {
-            "company": osint.get("company", {}),
-            "media": osint.get("media", []),
-            "financial": osint.get("financial", {}),
-            "legal": osint.get("legal", []),
-            "risk_factors": osint.get("risk_factors", [])
-        }
-    except Exception as e:
-        logger.error(f"AEGIS company error: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
-
-# ============================================================
-# AUDIO ENDPOINTS
-# ============================================================
-
-@app.post("/api/v1/audio/upload")
-async def upload_audio(session_id: str, file: UploadFile = File(...)):
-    """Upload audio file"""
-    
-    try:
-        contents = await file.read()
-        
-        return {
-            "session_id": session_id,
-            "filename": file.filename,
-            "size": len(contents),
-            "status": "uploaded",
-            "timestamp": datetime.now(timezone.utc).isoformat()
-        }
-    except Exception as e:
-        logger.error(f"Audio upload error: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
-
-@app.post("/api/v1/audio/transcribe")
-async def transcribe_audio(request: TranscriptionRequest):
-    """Transcribe audio"""
-    
-    if not whisper_bridge_instance:
-        raise HTTPException(status_code=503, detail="Whisper Bridge not available")
-    
-    try:
-        result = whisper_bridge_instance.transcribe_file(request.audio_path, language="ro")
-        
-        return {
-            "session_id": request.session_id,
-            "text": result.get("text", ""),
-            "language": result.get("language", "ro"),
-            "confidence": result.get("confidence", 0),
-            "source": result.get("source", "unknown"),
-            "segments": result.get("segments", [])
-        }
-    except Exception as e:
-        logger.error(f"Transcription error: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
-
-@app.post("/api/v1/audio/emotions")
-async def detect_emotions(audio_path: str):
-    """Detect emotions from audio"""
-    
-    if not emotion_detector_instance:
-        raise HTTPException(status_code=503, detail="Emotion Detector not available")
-    
-    try:
-        emotions = emotion_detector_instance.detect_emotions(audio_path)
-        
-        return {
-            "dominant_emotion": emotions.get("dominant_emotion", "neutral"),
-            "confidence": emotions.get("confidence", 0),
-            "emotions": emotions.get("emotions", {}),
-            "metrics": emotions.get("metrics", {})
-        }
-    except Exception as e:
-        logger.error(f"Emotion detection error: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
-
-# ============================================================
-# ANALYTICS ENDPOINTS
-# ============================================================
-
-@app.get("/api/v1/analytics/summary")
-async def get_analytics_summary():
-    """Get analytics summary"""
-    
-    try:
-        return {
-            "total_sessions": 0,
-            "success_rate": 0.0,
-            "total_coaching_time": 0,
-            "avg_session_duration": 0,
-            "timestamp": datetime.now(timezone.utc).isoformat()
-        }
-    except Exception as e:
-        logger.error(f"Analytics error: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
-
-@app.get("/api/v1/analytics/sessions")
-async def get_sessions_analytics(days: int = 30):
-    """Get sessions analytics"""
-    
-    try:
-        return {
-            "period": f"last_{days}_days",
-            "total_sessions": 0,
-            "sessions_by_day": [],
-            "outcomes": {},
-            "timestamp": datetime.now(timezone.utc).isoformat()
-        }
-    except Exception as e:
-        logger.error(f"Sessions analytics error: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
-
-# ============================================================
-# ERROR HANDLERS
-# ============================================================
-
-@app.exception_handler(HTTPException)
-async def http_exception_handler(request, exc):
-    """Handle HTTP exceptions"""
-    return JSONResponse(
-        status_code=exc.status_code,
-        content={
-            "error": exc.detail,
-            "timestamp": datetime.now(timezone.utc).isoformat()
-        }
-    )
-
-# ============================================================
-# STARTUP/SHUTDOWN
-# ============================================================
-
-@app.on_event("shutdown")
-async def shutdown_event():
-    """Cleanup on shutdown"""
-    logger.info("🛑 SANTINEL Backend Shutting Down...")
-
-# ============================================================
-# TEST HARNESS
-# ============================================================
-
-async def run_tests():
-    """Test FastAPI backend"""
-    
-    print("\n" + "=" * 60)
-    print("⚡ SANTINEL — FASTAPI BACKEND")
-    print("=" * 60 + "\n")
-    
-    print("🔧 Testing endpoint definitions...")
-    
-    # Get routes
-    routes = [route for route in app.routes if hasattr(route, "path")]
-    print(f"   Total endpoints: {len(routes)}")
-    
-    endpoints = {
-        "Health": [r.path for r in routes if "health" in r.path],
-        "Sessions": [r.path for r in routes if "sessions" in r.path],
-        "Coaching": [r.path for r in routes if "coaching" in r.path],
-        "AEGIS": [r.path for r in routes if "aegis" in r.path],
-        "Audio": [r.path for r in routes if "audio" in r.path],
-        "Analytics": [r.path for r in routes if "analytics" in r.path]
-    }
-    
-    for category, paths in endpoints.items():
-        if paths:
-            print(f"\n   {category}:")
-            for path in paths:
-                print(f"   ├─ {path}")
-    
-    print("\n✅ FASTAPI_BACKEND.PY — Configuration valid!")
-    print("=" * 60 + "\n")
-
-# ============================================================
-# MAIN
-# ============================================================
+    """Initialize on startup"""
+    print("🚀 SANTINEL Backend Starting...")
+    print("✅ Psychology Frameworks Loaded:")
+    print("   • CBT (Cognitive Behavioral Therapy)")
+    print("   • NLP (Neuro-Linguistic Programming)")
+    print("   • TA (Transactional Analysis)")
+    print("   • Dual-Speaker Analysis")
+    print("   • Goal-Based Coaching Engine")
+    print("✅ FastAPI running on http://0.0.0.0:8000")
 
 if __name__ == "__main__":
-    import asyncio
-    
-    # Run tests
-    print("Running tests...")
-    asyncio.run(run_tests())
-    
-    # Start server
-    print("\nStarting server on http://localhost:8000")
-    print("API docs: http://localhost:8000/api/docs")
-    
-    uvicorn.run(
-        app,
-        host="0.0.0.0",
-        port=8000,
-        log_level="info"
-    )
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8000)

@@ -1,0 +1,34 @@
+{
+  "name": "santinel-web",
+  "version": "0.1.0",
+  "description": "SANTINEL - AI Coaching Assistant for Negotiations",
+  "type": "module",
+  "main": "index.html",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "start": "vite --host 0.0.0.0 --port 5173"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.0.0",
+    "vite": "^4.3.0"
+  },
+  "keywords": [
+    "negotiation",
+    "ai",
+    "coaching",
+    "react",
+    "business"
+  ],
+  "author": "Marius (SANTINEL)",
+  "license": "proprietary",
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0"
+  }
+}

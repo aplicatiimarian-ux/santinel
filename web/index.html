@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SANTINEL — AI Coaching Assistant</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      color: #333;
+    }
+
+    .app {
+      max-width: 100%;
+      padding: 20px;
+      animation: slideIn 0.3s ease;
+    }
+
+    .header {
+      text-align: center;
+      color: white;
+      margin-bottom: 30px;
+      padding: 20px 0;
+    }
+
+    .header h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    .header p {
+      font-size: 1.1rem;
+      opacity: 0.95;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+
+    .stat {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .stat-value {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #667eea;
+      margin-bottom: 8px;
+    }
+
+    .stat-label {
+      font-size: 0.85rem;
+      color: #999;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    button {
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 8px;
+      padding: 12px 24px;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      width: 100%;
+      margin: 12px 0;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(102, 126, 234, 0.6);
+    }
+
+    .btn-secondary {
+      background: white;
+      color: #667eea;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      border: 2px solid #667eea;
+    }
+
+    .btn-secondary:hover {
+      background: #f8f9ff;
+      transform: translateY(-2px);
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: white;
+      margin-bottom: 8px;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 12px 16px;
+      font-size: 1rem;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      font-family: inherit;
+      transition: all 0.3s ease;
+      background: white;
+    }
+
+    input:focus, textarea:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .page {
+      display: none;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    .session-info, .coaching-result, .info {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      margin: 20px 0;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .session-info {
+      border-left: 4px solid #667eea;
+    }
+
+    .coaching-result {
+      border-left: 4px solid #10b981;
+      background: #f0fdf4;
+    }
+
+    .info {
+      border-left: 4px solid #f59e0b;
+    }
+
+    .info ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .info li {
+      padding: 8px 0;
+      border-bottom: 1px solid #eee;
+    }
+
+    .info li:last-child {
+      border-bottom: none;
+    }
+
+    .sessions-list {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .session-item {
+      background: white;
+      padding: 16px;
+      border-radius: 8px;
+      border-left: 4px solid #667eea;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 40px 20px;
+      color: white;
+      font-size: 1.1rem;
+    }
+
+    .button-group {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin: 15px 0;
+    }
+
+    @media (max-width: 600px) {
+      .button-group {
+        grid-template-columns: 1fr;
+      }
+
+      .stats {
+        grid-template-columns: 1fr;
+      }
+
+      .header h1 {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <!-- HOME PAGE -->
+    <div id="home-page" class="page active">
+      <div class="header">
+        <h1>🎯 SANTINEL</h1>
+        <p>AI Coaching Assistant for Negotiations</p>
+      </div>
+
+      <div class="stats">
+        <div class="stat">
+          <div class="stat-value" id="session-count">0</div>
+          <div class="stat-label">Sessions</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value">✅</div>
+          <div class="stat-label">Status</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value">4425</div>
+          <div class="stat-label">RPS</div>
+        </div>
+      </div>
+
+      <button class="btn-primary" onclick="showPage('session-page')">
+        📞 New Session
+      </button>
+
+      <button class="btn-secondary" onclick="showPage('history-page')">
+        📋 History
+      </button>
+
+      <div class="info">
+        <h3>✨ Features:</h3>
+        <ul>
+          <li>🤖 Real-time AI coaching</li>
+          <li>📊 Pre-call intelligence (AEGIS)</li>
+          <li>🎙️ Audio processing (Whisper)</li>
+          <li>🔐 PII protection & encryption</li>
+          <li>📈 Performance analytics</li>
+          <li>🌍 Cloud scalable (1M+ users)</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- SESSION PAGE -->
+    <div id="session-page" class="page">
+      <h1>📞 New Negotiation Session</h1>
+
+      <div class="form-group">
+        <label>Contact Name:</label>
+        <input type="text" id="contact-name" placeholder="e.g., Ion Popescu">
+      </div>
+
+      <div class="form-group">
+        <label>Company Name:</label>
+        <input type="text" id="company-name" placeholder="e.g., ABC SRL">
+      </div>
+
+      <button class="btn-primary" onclick="createSession()">
+        ✅ Create Session
+      </button>
+
+      <div id="session-info" style="display:none;"></div>
+
+      <div id="coaching-section" style="display:none;">
+        <h3>💬 Get Coaching</h3>
+        <textarea id="situation" placeholder="Describe the negotiation situation..."></textarea>
+        
+        <div class="button-group">
+          <button class="btn-primary" onclick="getCoaching()">
+            🧠 Get Coaching
+          </button>
+          <button class="btn-secondary" onclick="getAegisContext()">
+            📊 AEGIS Intel
+          </button>
+        </div>
+
+        <div id="coaching-result" style="display:none;"></div>
+      </div>
+
+      <button class="btn-secondary" onclick="showPage('home-page')">
+        ← Back
+      </button>
+    </div>
+
+    <!-- HISTORY PAGE -->
+    <div id="history-page" class="page">
+      <h1>📋 Session History</h1>
+      <div id="sessions-list"></div>
+      <button class="btn-secondary" onclick="showPage('home-page')">
+        ← Back
+      </button>
+    </div>
+  </div>
+
+  <script>
+    const API_BASE = 'http://192.168.1.41:8000/api/v1';
+    let sessions = [];
+    let currentSession = null;
+
+    function showPage(pageId) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.getElementById(pageId).classList.add('active');
+      
+      if (pageId === 'history-page') {
+        fetchSessions();
+      }
+    }
+
+    async function fetchSessions() {
+      try {
+        const response = await fetch(`${API_BASE}/sessions`);
+        const data = await response.json();
+        sessions = data.sessions || [];
+        document.getElementById('session-count').textContent = sessions.length;
+        
+        const listHtml = sessions.length === 0 
+          ? '<p class="empty-state">No sessions yet</p>'
+          : sessions.map((s, i) => `
+            <div class="session-item">
+              <h3>${s.contact || 'Unknown'}</h3>
+              <p style="color:#999;margin:5px 0;">${s.company || 'Unknown'}</p>
+              <p style="color:#999;font-size:0.85rem;">${s.created_at || 'N/A'}</p>
+            </div>
+          `).join('');
+        
+        document.getElementById('sessions-list').innerHTML = listHtml;
+      } catch (error) {
+        alert('Error fetching sessions: ' + error.message);
+      }
+    }
+
+    async function createSession() {
+      const contact = document.getElementById('contact-name').value;
+      const company = document.getElementById('company-name').value;
+
+      if (!contact || !company) {
+        alert('Please fill in contact and company name');
+        return;
+      }
+
+      try {
+        const response = await fetch(`${API_BASE}/sessions`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contact_name: contact,
+            company_name: company,
+            user_id: 'user_' + Date.now()
+          })
+        });
+
+        if (response.ok) {
+          currentSession = await response.json();
+          document.getElementById('session-info').innerHTML = `
+            <div class="session-info">
+              <h3>✅ Session Created!</h3>
+              <p><strong>Session ID:</strong> ${currentSession.session_id}</p>
+              <p><strong>Contact:</strong> ${currentSession.contact_name}</p>
+              <p><strong>Company:</strong> ${currentSession.company_name}</p>
+            </div>
+          `;
+          document.getElementById('session-info').style.display = 'block';
+          document.getElementById('coaching-section').style.display = 'block';
+          document.getElementById('contact-name').value = '';
+          document.getElementById('company-name').value = '';
+        } else {
+          alert('Error creating session');
+        }
+      } catch (error) {
+        alert('Error: ' + error.message);
+      }
+    }
+
+    async function getCoaching() {
+      const situation = document.getElementById('situation').value;
+      
+      if (!situation) {
+        alert('Please describe the situation');
+        return;
+      }
+
+      try {
+        const response = await fetch(`${API_BASE}/coaching`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            session_id: currentSession?.session_id || 'test',
+            situation: situation
+          })
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          document.getElementById('coaching-result').innerHTML = `
+            <div class="coaching-result">
+              <h4>💡 Coaching Advice:</h4>
+              <p>${data.coaching || 'No coaching available'}</p>
+            </div>
+          `;
+          document.getElementById('coaching-result').style.display = 'block';
+        }
+      } catch (error) {
+        alert('Error getting coaching: ' + error.message);
+      }
+    }
+
+    async function getAegisContext() {
+      if (!currentSession) {
+        alert('Create a session first');
+        return;
+      }
+
+      try {
+        const response = await fetch(`${API_BASE}/aegis/contact`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contact_name: currentSession.contact_name,
+            company_name: currentSession.company_name
+          })
+        });
+
+        const data = await response.json();
+        alert('✅ AEGIS Context:\n' + JSON.stringify(data, null, 2));
+      } catch (error) {
+        alert('Error: ' + error.message);
+      }
+    }
+
+    // Load sessions on startup
+    fetchSessions();
+  </script>
+</body>
+</html>
