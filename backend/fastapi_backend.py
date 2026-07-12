@@ -1,8 +1,8 @@
 """
-SANTINEL Backend — FastAPI + Professional Psychology Coaching
+SANTINEL Backend — FastAPI + Professional Psychology Coaching + Vector DB
 Integrated: CBT, NLP, TA, Dual-Speaker Analysis, Goal-Based Coaching
-Real-time AI coaching with professional frameworks + Feedback System
-FIXED: Dynamic coaching based on psychology frameworks
+Real-time AI coaching with professional frameworks + Feedback System + Self-Improving LLM
+PHASE 2: Vector DB for high-quality pattern storage + LLM fine-tuning
 """
 
 from fastapi import FastAPI, HTTPException
@@ -28,8 +28,16 @@ except ImportError as e:
     print(f"Warning: Psychology modules not found: {e}")
     print("Continuing with mock implementations...")
 
+# Import Vector DB Manager
+try:
+    from vector_db_integration import get_vector_db_manager
+    vector_db = get_vector_db_manager(use_mock=True)  # Use mock for MVP
+except ImportError:
+    print("Warning: Vector DB integration not found, using mock")
+    vector_db = None
+
 # Initialize FastAPI
-app = FastAPI(title="SANTINEL", version="1.0.0")
+app = FastAPI(title="SANTINEL", version="2.0.0")
 
 # CORS configuration
 app.add_middleware(
@@ -122,6 +130,22 @@ class FeedbackDatabase:
             )
         ''')
         
+        # Vector DB patterns table (cache)
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS vector_patterns (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                pattern_id TEXT NOT NULL,
+                coaching_text TEXT,
+                situation_type TEXT,
+                frameworks_used TEXT,
+                rating INTEGER,
+                quality_score REAL,
+                session_id TEXT,
+                success_outcome INTEGER,
+                timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+            )
+        ''')
+        
         conn.commit()
         conn.close()
     
@@ -187,9 +211,9 @@ class FeedbackDatabase:
             conn.close()
             
             return {
-                'avg_rating': avg_rating or 0,
-                'total_feedback': count or 0,
-                'avg_quality_score': avg_quality or 0
+                'average_rating': avg_rating or 0,
+                'total_ratings': count or 0,
+                'average_quality_score': avg_quality or 0
             }
         except Exception as e:
             print(f"Error getting feedback stats: {e}")
@@ -219,7 +243,7 @@ class FeedbackDatabase:
                 'total_negotiations': total or 0,
                 'successful_negotiations': successes or 0,
                 'success_rate': (successes / total * 100) if total else 0,
-                'avg_achievement_rate': avg_success_rate or 0,
+                'average_achievement_rate': avg_success_rate or 0,
                 'by_type': by_type
             }
         except Exception as e:
@@ -299,7 +323,7 @@ class FeedbackDatabase:
 # Initialize feedback database
 feedback_db = FeedbackDatabase('santinel_feedback.db')
 
-# Session storage (SQLite in production)
+# Session storage
 sessions = {}
 session_goals = {}
 
@@ -353,7 +377,12 @@ class OutcomeRequest(BaseModel):
 @app.get("/health")
 async def health():
     """Health check"""
-    return {"status": "🟢 SANTINEL operational", "timestamp": datetime.now()}
+    return {
+        "status": "🟢 SANTINEL operational",
+        "version": "2.0.0",
+        "vector_db": "✅ Ready" if vector_db else "⚠️ Disabled",
+        "timestamp": datetime.now()
+    }
 
 @app.post("/api/v1/sessions")
 async def create_session(session: SessionCreate):
@@ -452,13 +481,28 @@ async def get_coaching(request: CoachingRequest):
     """
     Get professional coaching using ALL frameworks:
     CBT + NLP + TA + Dual-Speaker + Goal-Based
-    DYNAMIC: Coaching text generated from framework analysis
+    PHASE 2: Enhanced with Vector DB similar patterns
     """
     
     if request.session_id not in sessions:
         raise HTTPException(status_code=404, detail="Sesiune nu găsită")
     
     coaching_parts = []
+    frameworks_applied = []
+    
+    # PHASE 2: Retrieve similar patterns from Vector DB
+    similar_patterns = []
+    situation_type = "general"
+    
+    if vector_db:
+        similar_patterns = vector_db.find_similar_patterns(
+            situation_text=request.situation,
+            situation_type=situation_type,
+            limit=3
+        )
+        if similar_patterns:
+            coaching_parts.append(f"📚 Similar successes: {len(similar_patterns)} patterns found in knowledge base")
+            frameworks_applied.append("VectorDB-Retrieval")
     
     # CBT Analysis
     cbt_insight = ""
@@ -475,6 +519,8 @@ async def get_coaching(request: CoachingRequest):
                 coaching_parts.append(f"🧠 CBT: Ai identificat distorsiuni: {', '.join([d['distortion'] for d in distortions[:2]])}. {cbt_insight}")
             else:
                 coaching_parts.append(f"🧠 CBT: {cbt_insight or 'Gândire clară detectată - continuă cu această claritate.'}")
+            
+            frameworks_applied.append("CBT")
     except Exception as e:
         print(f"CBT error: {e}")
         coaching_parts.append("🧠 CBT: Gândire strategică recomandată")
@@ -485,6 +531,7 @@ async def get_coaching(request: CoachingRequest):
             rep_system = nlp.detect_representation_system(request.situation)
             system = rep_system.get("primary_system", "balansat")
             coaching_parts.append(f"🎯 NLP: Stil reprezentare {system} detectat. Reframe: Vezi această situație ca oportunitate de negociere.")
+            frameworks_applied.append("NLP")
     except Exception as e:
         print(f"NLP error: {e}")
         coaching_parts.append("🎯 NLP: Reframe problema ca oportunitate")
@@ -501,6 +548,8 @@ async def get_coaching(request: CoachingRequest):
                 coaching_parts.append("⚖️ TA: Detectez ton critic. Mergi în Adult: fapte, date, logică - nu judecată.")
             else:
                 coaching_parts.append(f"⚖️ TA: Ego state: {ego}. Tranziția către Adult pentru negociere efectivă.")
+            
+            frameworks_applied.append("TA")
     except Exception as e:
         print(f"TA error: {e}")
         coaching_parts.append("⚖️ TA: Păstrează Adult ego state - rațional și respectuos")
@@ -511,40 +560,47 @@ async def get_coaching(request: CoachingRequest):
     
     if "%" in situation_lower or "creștere" in situation_lower or "crescape" in situation_lower:
         specific_advice = "💰 SPECIFIC: Pentru cererile salariale/preț: Conversa pe valoare, nu pe procentaj. Ce valoare aduci TU? Ce costuri evitează pentru ei?"
+        situation_type = "price"
     elif "termen" in situation_lower or "deadline" in situation_lower or "urgent" in situation_lower:
         specific_advice = "⏰ SPECIFIC: Urgența creează presiune. Rămâi calm. Propune timeline realist care beneficiază ambii."
+        situation_type = "timeline"
     elif "conflict" in situation_lower or "dezacord" in situation_lower:
         specific_advice = "🤝 SPECIFIC: Conflict = Oportunitate. Găsește interesul comun sub poziții opuse."
+        situation_type = "conflict"
     else:
         specific_advice = "📍 SPECIFIC: Focalizează pe valoare mutuală. Care sunt nevoile reale ale celuilalt?"
     
     coaching_parts.append(specific_advice)
+    frameworks_applied.append("SituationAnalysis")
     
     # Combine all insights
     final_coaching = "\n".join(coaching_parts)
     
-    # Default response
-    response = {
-        "session_id": request.session_id,
-        "coaching": final_coaching,
-        "frameworks_applied": {
-            "cbt": {"distortions_found": [], "insight": cbt_insight or "Gândire clară"},
-            "nlp": {"representation_system": "balansat", "reframe": "Oportunitate, nu problemă"},
-            "ta": {"ego_state": "Adult", "life_position": "Eu sunt OK/Tu ești OK"},
-            "dual_speaker": {"user_state": "asertiv", "counterparty_readiness": "Deschis"},
-            "goal_aligned": "Da"
-        }
-    }
-    
     # Store interaction
+    coaching_id = f"coaching_{datetime.now().timestamp()}"
     sessions[request.session_id]["interactions"].append({
+        "coaching_id": coaching_id,
         "timestamp": datetime.now(),
         "situation": request.situation,
-        "frameworks_used": ["CBT", "NLP", "TA", "Dual-Speaker", "Goal-Based"],
+        "frameworks_used": frameworks_applied,
         "coaching_type": "reactiv" if request.is_reactive else "bazat pe obiective"
     })
     
-    return response
+    return {
+        "session_id": request.session_id,
+        "coaching_id": coaching_id,
+        "coaching": final_coaching,
+        "similar_patterns_found": len(similar_patterns),
+        "situation_type": situation_type,
+        "frameworks_applied": {
+            "cbt": {"insight": cbt_insight or "Gândire clară"},
+            "nlp": {"reframe": "Oportunitate, nu problemă"},
+            "ta": {"ego_state": "Adult", "life_position": "Eu sunt OK/Tu ești OK"},
+            "dual_speaker": {"user_state": "asertiv", "counterparty_readiness": "Deschis"},
+            "goal_aligned": "Da",
+            "vector_db": {"similar_patterns": len(similar_patterns)}
+        }
+    }
 
 @app.get("/api/v1/session/{session_id}/status")
 async def get_session_status(session_id: str):
@@ -567,7 +623,10 @@ async def get_session_status(session_id: str):
 
 @app.post("/api/v1/feedback")
 async def submit_feedback(feedback: FeedbackRequest):
-    """Submit coaching feedback and rating"""
+    """
+    Submit coaching feedback and rating
+    PHASE 2: Store high-rated patterns (4-5 stars) in Vector DB
+    """
     success = feedback_db.store_feedback(
         session_id=feedback.session_id,
         coaching_id=feedback.coaching_id,
@@ -577,11 +636,34 @@ async def submit_feedback(feedback: FeedbackRequest):
         comments=feedback.comments
     )
     
+    # PHASE 2: Store high-quality patterns in Vector DB
+    if success and feedback.rating >= 4 and vector_db:
+        try:
+            # Get coaching text from session
+            session_data = sessions.get(feedback.session_id, {})
+            last_interaction = session_data.get("interactions", [])[-1] if session_data.get("interactions") else None
+            
+            if last_interaction:
+                vector_db.store_coaching_pattern(
+                    coaching_text=f"Rating {feedback.rating}: {', '.join(feedback.useful_aspects)}",
+                    situation_type="general",
+                    frameworks_used=last_interaction.get("frameworks_used", []),
+                    rating=feedback.rating,
+                    quality_score=feedback.quality_score,
+                    session_id=feedback.session_id,
+                    success_outcome=True,
+                    metadata={"useful_aspects": feedback.useful_aspects}
+                )
+                print(f"✅ High-quality pattern stored in Vector DB (rating: {feedback.rating})")
+        except Exception as e:
+            print(f"⚠️ Vector DB storage error: {e}")
+    
     if success:
         return {
             "status": "✅ Feedback salvat",
             "rating": feedback.rating,
-            "message": "Mulțumim pentru feedback!"
+            "message": "Mulțumim pentru feedback!",
+            "vector_db_stored": feedback.rating >= 4
         }
     else:
         raise HTTPException(status_code=500, detail="Eroare la salvarea feedback")
@@ -617,9 +699,9 @@ async def get_feedback_metrics():
     """Get feedback statistics"""
     stats = feedback_db.get_feedback_stats()
     return {
-        "average_rating": stats.get('avg_rating', 0),
-        "total_ratings": stats.get('total_feedback', 0),
-        "average_quality_score": stats.get('avg_quality_score', 0)
+        "average_rating": stats.get('average_rating', 0),
+        "total_ratings": stats.get('total_ratings', 0),
+        "average_quality_score": stats.get('average_quality_score', 0)
     }
 
 @app.get("/api/v1/metrics/outcomes")
@@ -630,7 +712,7 @@ async def get_outcome_metrics():
         "total_negotiations": stats.get('total_negotiations', 0),
         "successful_negotiations": stats.get('successful_negotiations', 0),
         "success_rate_percent": stats.get('success_rate', 0),
-        "average_achievement_rate": stats.get('avg_achievement_rate', 0),
+        "average_achievement_rate": stats.get('average_achievement_rate', 0),
         "by_negotiation_type": stats.get('by_type', [])
     }
 
@@ -645,21 +727,54 @@ async def get_top_coaching_patterns():
 
 @app.get("/api/v1/finetuning/export")
 async def export_finetuning_data():
-    """Export high-quality data for LLM fine-tuning"""
-    data = feedback_db.export_for_finetuning()
+    """
+    Export high-quality data for LLM fine-tuning
+    PHASE 2: Uses both SQLite + Vector DB
+    """
+    sqlite_data = feedback_db.export_for_finetuning()
+    
+    vector_db_data = {}
+    if vector_db:
+        vector_db_data = vector_db.export_for_finetuning(min_rating=4, limit=100)
+    
     return {
         "status": "✅ Export gata",
-        "high_quality_coaching_sessions": len(data.get('high_quality_coaching', [])),
-        "successful_negotiations": len(data.get('successful_negotiations', [])),
-        "data": data
+        "source": "SQLite + Vector DB",
+        "sqlite_coaching_sessions": len(sqlite_data.get('high_quality_coaching', [])),
+        "sqlite_successful_negotiations": len(sqlite_data.get('successful_negotiations', [])),
+        "vector_db_patterns": vector_db_data.get("metadata", {}).get("total_patterns", 0),
+        "data": {
+            "sqlite": sqlite_data,
+            "vector_db": vector_db_data
+        }
     }
+
+@app.get("/api/v1/vectordb/stats")
+async def get_vectordb_stats():
+    """Get Vector DB statistics"""
+    if vector_db:
+        return vector_db.get_stats()
+    else:
+        return {"status": "⚠️ Vector DB not initialized"}
+
+@app.get("/api/v1/vectordb/framework-performance/{situation_type}")
+async def get_framework_performance(situation_type: str):
+    """Get framework effectiveness for situation type"""
+    if vector_db:
+        performance = vector_db.get_framework_performance(situation_type)
+        return {
+            "situation_type": situation_type,
+            "frameworks": performance
+        }
+    else:
+        return {"status": "⚠️ Vector DB not initialized"}
 
 # ============== STARTUP ==============
 
 @app.on_event("startup")
 async def startup_event():
     """Initialize on startup"""
-    print("🚀 SANTINEL Backend Se Pornește...")
+    print("🚀 SANTINEL Backend v2.0 Se Pornește...")
     print("✅ Framework-uri Psihologie Încărcate:")
     print("   • CBT (Cognitive Behavioral Therapy)")
     print("   • NLP (Neuro-Linguistic Programming)")
@@ -668,6 +783,11 @@ async def startup_event():
     print("   • Motor Coaching Bazat pe Obiective")
     print("✅ Sistem Feedback și Outcome")
     print("✅ Coaching DINAMIC - personalizat pe bază de situație")
+    print("🔄 PHASE 2 — Vector DB pentru Self-Improving LLM:")
+    if vector_db:
+        print(f"   {vector_db.get_stats()}")
+    else:
+        print("   ⚠️ Vector DB disabled (mock mode)")
     print("✅ FastAPI rulează pe http://0.0.0.0:8000")
 
 if __name__ == "__main__":
