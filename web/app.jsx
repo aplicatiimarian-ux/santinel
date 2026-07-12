@@ -1,6 +1,7 @@
 // ============================================================
-// SANTINEL — WEB VERSION (React)
-// Production-ready web app for testing on mobile browser
+// SANTINEL — VERSIUNEA WEB (React)
+// Aplicație web gata pentru producție
+// VERSIUNE DEBUG CU ALERTE
 // ============================================================
 
 import React, { useState, useEffect } from 'react';
@@ -9,130 +10,146 @@ import './app.css';
 const API_BASE = 'http://localhost:8000/api/v1';
 
 export default function SantinelApp() {
-  const [currentPage, setCurrentPage] = useState('home');
-  const [sessions, setSessions] = useState([]);
-  const [currentSession, setCurrentSession] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [paginaCurenta, setPaginaCurenta] = useState('acasa');
+  const [sesiuni, setSesiuni] = useState([]);
+  const [sesiuneCurenta, setSesiuneCurenta] = useState(null);
+  const [incarca, setIncarca] = useState(false);
   const [coaching, setCoaching] = useState(null);
-  const [contactName, setContactName] = useState('');
-  const [companyName, setCompanyName] = useState('');
+  const [numeContact, setNumeContact] = useState('');
+  const [numeFirma, setNumeFirma] = useState('');
 
-  // Fetch sessions on mount
+  // Preia sesiunile la incarcare
   useEffect(() => {
-    fetchSessions();
+    preiaSesiuni();
   }, []);
 
-  const fetchSessions = async () => {
-    setLoading(true);
+  const preiaSesiuni = async () => {
+    setIncarca(true);
     try {
       const response = await fetch(`${API_BASE}/sessions`);
       const data = await response.json();
-      setSessions(data.sessions || []);
+      setSesiuni(data.sessions || []);
     } catch (error) {
-      console.error('Error fetching sessions:', error);
+      console.error('Eroare la preluarea sesiunilor:', error);
     }
-    setLoading(false);
+    setIncarca(false);
   };
 
-  const createSession = async () => {
-    if (!contactName || !companyName) {
-      alert('Please fill in contact and company name');
+  const creazaSesiune = async () => {
+    if (!numeContact || !numeFirma) {
+      alert('Te rog completează numele contactului și firmei');
       return;
     }
 
-    setLoading(true);
+    setIncarca(true);
     try {
       const response = await fetch(`${API_BASE}/sessions`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          contact_name: contactName,
-          company_name: companyName,
+          contact_name: numeContact,
+          company_name: numeFirma,
           user_id: 'user_' + Date.now()
         })
       });
       const data = await response.json();
       
       if (response.ok) {
-        setCurrentSession(data);
+        setSesiuneCurenta(data);
         setCoaching(null);
-        setContactName('');
-        setCompanyName('');
-        alert('✅ Session created: ' + data.session_id);
+        setNumeContact('');
+        setNumeFirma('');
+        alert('✅ Sesiune creată: ' + data.session_id);
       } else {
-        alert('❌ Error creating session');
+        alert('❌ Eroare la crearea sesiunii');
       }
     } catch (error) {
-      alert('Error: ' + error.message);
+      alert('Eroare: ' + error.message);
     }
-    setLoading(false);
+    setIncarca(false);
   };
 
-  const getCoaching = async (situation) => {
-    if (!situation) {
-      alert('Please describe the situation');
+  const obtineCoaching = async (situatie) => {
+    if (!situatie) {
+      alert('Te rog descrie situația de negociere');
       return;
     }
 
-    setLoading(true);
+    alert('🔄 DEPANARE 1: Trimit cererea de coaching...');
+    setIncarca(true);
+    
     try {
+      alert('🔄 DEPANARE 2: API_BASE = ' + API_BASE);
+      alert('🔄 DEPANARE 3: ID Sesiune = ' + (sesiuneCurenta?.session_id || 'test_session'));
+      alert('🔄 DEPANARE 4: Situație = ' + situatie.substring(0, 50) + '...');
+      
       const response = await fetch(`${API_BASE}/coaching`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          session_id: currentSession?.session_id || 'test_session',
-          situation: situation
+          session_id: sesiuneCurenta?.session_id || 'test_session',
+          situation: situatie
         })
       });
+      
+      alert('🔄 DEPANARE 5: Status răspuns = ' + response.status);
+      
       const data = await response.json();
       
+      alert('🔄 DEPANARE 6: Chei răspuns = ' + Object.keys(data).join(', '));
+      alert('🔄 DEPANARE 7: Răspuns complet = ' + JSON.stringify(data).substring(0, 300));
+      
       if (response.ok) {
-        setCoaching(data.coaching);
+        const textCoaching = data.coaching || data.message || JSON.stringify(data);
+        setCoaching(textCoaching);
+        alert('✅ SUCCES: Coaching afișat!');
       } else {
-        alert('❌ Error getting coaching');
+        alert('❌ Eroare răspuns: ' + response.status);
       }
     } catch (error) {
-      alert('Error: ' + error.message);
+      alert('❌ EROARE: ' + error.message);
+      alert('❌ Tip eroare: ' + error.name);
     }
-    setLoading(false);
+    
+    setIncarca(false);
   };
 
-  const getAegisContext = async () => {
-    setLoading(true);
+  const obtineAegis = async () => {
+    setIncarca(true);
     try {
       const response = await fetch(`${API_BASE}/aegis/contact`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          contact_name: currentSession?.contact_name || contactName,
-          company_name: currentSession?.company_name || companyName
+          contact_name: sesiuneCurenta?.contact_name || numeContact,
+          company_name: sesiuneCurenta?.company_name || numeFirma
         })
       });
       const data = await response.json();
       
       if (response.ok) {
-        alert('✅ AEGIS Context Retrieved:\n' + JSON.stringify(data, null, 2));
+        alert('✅ Context AEGIS: ' + JSON.stringify(data, null, 2));
       } else {
-        alert('⚠️ AEGIS not available (mock mode)');
+        alert('⚠️ AEGIS indisponibil (mod simulare)');
       }
     } catch (error) {
-      alert('Error: ' + error.message);
+      alert('Eroare: ' + error.message);
     }
-    setLoading(false);
+    setIncarca(false);
   };
 
-  // PAGE: HOME
-  const HomePage = () => (
+  // PAGINA: ACASĂ
+  const PaginaAcasa = () => (
     <div className="page">
       <div className="header">
         <h1>🎯 SANTINEL</h1>
-        <p>AI Coaching Assistant for Negotiations</p>
+        <p>Asistent AI pentru Negocieri</p>
       </div>
 
       <div className="stats">
         <div className="stat">
-          <div className="stat-value">{sessions.length}</div>
-          <div className="stat-label">Sessions</div>
+          <div className="stat-value">{sesiuni.length}</div>
+          <div className="stat-label">Sesiuni</div>
         </div>
         <div className="stat">
           <div className="stat-value">✅</div>
@@ -146,125 +163,125 @@ export default function SantinelApp() {
 
       <button 
         className="btn-primary"
-        onClick={() => setCurrentPage('session')}
+        onClick={() => setPaginaCurenta('sesiune')}
       >
-        📞 New Session
+        📞 Sesiune Nouă
       </button>
 
       <button 
         className="btn-secondary"
-        onClick={() => setCurrentPage('history')}
+        onClick={() => setPaginaCurenta('istoric')}
       >
-        📋 History
+        📋 Istoric
       </button>
 
       <div className="info">
-        <h3>✨ Features:</h3>
+        <h3>✨ Funcții:</h3>
         <ul>
-          <li>🤖 Real-time AI coaching</li>
-          <li>📊 Pre-call intelligence (AEGIS)</li>
-          <li>🎙️ Audio processing (Whisper)</li>
-          <li>🔐 PII protection & encryption</li>
-          <li>📈 Performance analytics</li>
-          <li>🌍 Cloud scalable (1M+ users)</li>
+          <li>🤖 Coaching IA în timp real</li>
+          <li>📊 Informații pre-apel (AEGIS)</li>
+          <li>🎙️ Procesare audio (Whisper)</li>
+          <li>🔐 Protecție date & criptare</li>
+          <li>📈 Analiză performanță</li>
+          <li>🌍 Scalabil cloud (1M+ utilizatori)</li>
         </ul>
       </div>
     </div>
   );
 
-  // PAGE: NEW SESSION
-  const SessionPage = () => (
+  // PAGINA: SESIUNE NOUĂ
+  const PaginaSesiune = () => (
     <div className="page">
-      <h1>📞 New Negotiation Session</h1>
+      <h1>📞 Sesiune Nouă de Negociere</h1>
 
       <div className="form-group">
-        <label>Contact Name:</label>
+        <label>Nume Contact:</label>
         <input
           type="text"
-          value={contactName}
-          onChange={(e) => setContactName(e.target.value)}
-          placeholder="e.g., Ion Popescu"
+          value={numeContact}
+          onChange={(e) => setNumeContact(e.target.value)}
+          placeholder="Ex: Ion Popescu"
         />
       </div>
 
       <div className="form-group">
-        <label>Company Name:</label>
+        <label>Nume Firmă:</label>
         <input
           type="text"
-          value={companyName}
-          onChange={(e) => setCompanyName(e.target.value)}
-          placeholder="e.g., ABC SRL"
+          value={numeFirma}
+          onChange={(e) => setNumeFirma(e.target.value)}
+          placeholder="Ex: ABC SRL"
         />
       </div>
 
       <button 
         className="btn-primary"
-        onClick={createSession}
-        disabled={loading}
+        onClick={creazaSesiune}
+        disabled={incarca}
       >
-        {loading ? '⏳ Creating...' : '✅ Create Session'}
+        {incarca ? '⏳ Se creează...' : '✅ Crează Sesiune'}
       </button>
 
-      {currentSession && (
+      {sesiuneCurenta && (
         <div className="session-info">
-          <h3>✅ Session Created!</h3>
-          <p><strong>Session ID:</strong> {currentSession.session_id}</p>
-          <p><strong>Contact:</strong> {currentSession.contact_name}</p>
-          <p><strong>Company:</strong> {currentSession.company_name}</p>
-          <p><strong>Created:</strong> {currentSession.created_at}</p>
+          <h3>✅ Sesiune Creată!</h3>
+          <p><strong>ID Sesiune:</strong> {sesiuneCurenta.session_id}</p>
+          <p><strong>Contact:</strong> {sesiuneCurenta.contact_name}</p>
+          <p><strong>Firmă:</strong> {sesiuneCurenta.company_name}</p>
+          <p><strong>Creat:</strong> {sesiuneCurenta.created_at}</p>
         </div>
       )}
 
-      {currentSession && (
+      {sesiuneCurenta && (
         <div className="coaching-section">
-          <h3>💬 Get Coaching</h3>
-          <CoachingInterface session={currentSession} />
+          <h3>💬 Obține Coaching</h3>
+          <InterfataCoaching sesiune={sesiuneCurenta} onObtineCoaching={obtineCoaching} incarca={incarca} />
         </div>
       )}
 
       <button 
         className="btn-secondary"
-        onClick={() => setCurrentPage('home')}
+        onClick={() => setPaginaCurenta('acasa')}
       >
-        ← Back
+        ← Înapoi
       </button>
     </div>
   );
 
-  // PAGE: COACHING INTERFACE
-  const CoachingInterface = ({ session }) => {
-    const [situation, setSituation] = useState('');
+  // PAGINA: INTERFAȚĂ COACHING
+  const InterfataCoaching = ({ sesiune, onObtineCoaching, incarca }) => {
+    const [situatie, setSituatie] = useState('');
 
     return (
       <div>
         <textarea
-          value={situation}
-          onChange={(e) => setSituation(e.target.value)}
-          placeholder="Describe the negotiation situation..."
+          value={situatie}
+          onChange={(e) => setSituatie(e.target.value)}
+          placeholder="Descrie situația de negociere..."
           rows="4"
         />
 
         <div className="button-group">
           <button 
             className="btn-primary"
-            onClick={() => getCoaching(situation)}
-            disabled={loading}
+            onClick={() => onObtineCoaching(situatie)}
+            disabled={incarca}
           >
-            {loading ? '⏳ Coaching...' : '🧠 Get Coaching'}
+            {incarca ? '⏳ Se încarcă...' : '🧠 OBȚINE COACHING'}
           </button>
 
           <button 
             className="btn-secondary"
-            onClick={getAegisContext}
-            disabled={loading}
+            onClick={obtineAegis}
+            disabled={incarca}
           >
-            {loading ? '⏳ Loading...' : '📊 AEGIS Intel'}
+            {incarca ? '⏳ Se încarcă...' : '📊 Intel AEGIS'}
           </button>
         </div>
 
         {coaching && (
           <div className="coaching-result">
-            <h4>💡 Coaching Advice:</h4>
+            <h4>💡 Sfat Coaching:</h4>
             <p>{coaching}</p>
           </div>
         )}
@@ -272,23 +289,23 @@ export default function SantinelApp() {
     );
   };
 
-  // PAGE: HISTORY
-  const HistoryPage = () => (
+  // PAGINA: ISTORIC
+  const PaginaIstoric = () => (
     <div className="page">
-      <h1>📋 Session History</h1>
+      <h1>📋 Istoric Sesiuni</h1>
 
-      {sessions.length === 0 ? (
-        <p className="empty-state">No sessions yet. Create one to get started!</p>
+      {sesiuni.length === 0 ? (
+        <p className="empty-state">Nicio sesiune încă. Creează una pentru a începe!</p>
       ) : (
         <div className="sessions-list">
-          {sessions.map((session, index) => (
+          {sesiuni.map((sesiune, index) => (
             <div key={index} className="session-item">
               <div className="session-item-header">
-                <h3>{session.contact || 'Unknown'}</h3>
-                <span className="company">{session.company || 'Unknown'}</span>
+                <h3>{sesiune.contact || 'Necunoscut'}</h3>
+                <span className="company">{sesiune.company || 'Necunoscut'}</span>
               </div>
-              <p className="session-id">ID: {session.id || 'N/A'}</p>
-              <p className="session-date">{session.created_at || 'N/A'}</p>
+              <p className="session-id">ID: {sesiune.id || 'N/A'}</p>
+              <p className="session-date">{sesiune.created_at || 'N/A'}</p>
             </div>
           ))}
         </div>
@@ -296,21 +313,21 @@ export default function SantinelApp() {
 
       <button 
         className="btn-secondary"
-        onClick={() => setCurrentPage('home')}
+        onClick={() => setPaginaCurenta('acasa')}
       >
-        ← Back
+        ← Înapoi
       </button>
     </div>
   );
 
-  // RENDER CURRENT PAGE
+  // RANDARE PAGINA CURENTĂ
   return (
     <div className="app">
-      {currentPage === 'home' && <HomePage />}
-      {currentPage === 'session' && <SessionPage />}
-      {currentPage === 'history' && <HistoryPage />}
+      {paginaCurenta === 'acasa' && <PaginaAcasa />}
+      {paginaCurenta === 'sesiune' && <PaginaSesiune />}
+      {paginaCurenta === 'istoric' && <PaginaIstoric />}
 
-      {loading && (
+      {incarca && (
         <div className="loading-overlay">
           <div className="spinner">⏳</div>
         </div>
