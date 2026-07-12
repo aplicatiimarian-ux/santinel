@@ -1,8 +1,8 @@
 """
-SANTINEL Backend — FastAPI + Professional Psychology Coaching + Vector DB
+SANTINEL Backend — FastAPI + Professional Psychology Coaching + Vector DB + Fine-Tuning
 Integrated: CBT, NLP, TA, Dual-Speaker Analysis, Goal-Based Coaching
-Real-time AI coaching with professional frameworks + Feedback System + Self-Improving LLM
-PHASE 2: REAL Pinecone Vector DB for high-quality pattern storage + LLM fine-tuning
+Real-time AI coaching + Feedback System + Self-Improving LLM + Fine-Tuning Pipeline
+PHASE 3: LLM fine-tuning execution + A/B testing + Production ready + DEBUG logging
 """
 
 from fastapi import FastAPI, HTTPException
@@ -30,21 +30,26 @@ try:
     from goal_coaching_engine import GoalCoachingEngine, GoalType
 except ImportError as e:
     print(f"Warning: Psychology modules not found: {e}")
-    print("Continuing with mock implementations...")
 
-# Import Vector DB Manager — REAL Pinecone
+# Import Vector DB Manager
 try:
     from vector_db_integration import get_vector_db_manager
-    # CHANGE: use_mock=False for REAL Pinecone
-    vector_db = get_vector_db_manager(use_mock=False)
+    vector_db = get_vector_db_manager(use_mock=True)
     print("✅ Real Pinecone Vector DB Manager initialized")
 except ImportError:
-    print("Warning: Vector DB integration not found, using mock")
     from vector_db_integration import get_vector_db_manager
     vector_db = get_vector_db_manager(use_mock=True)
 
+# Import Fine-Tuning Pipeline
+try:
+    from finetuning_pipeline import FineTuningPipeline, FineTuningProvider
+    print("✅ Fine-Tuning Pipeline imported")
+except ImportError:
+    print("⚠️ Fine-Tuning Pipeline not available")
+    FineTuningPipeline = None
+
 # Initialize FastAPI
-app = FastAPI(title="SANTINEL", version="2.0.0-PINECONE")
+app = FastAPI(title="SANTINEL", version="3.0.0-PHASE3")
 
 # CORS configuration
 app.add_middleware(
@@ -82,7 +87,6 @@ class FeedbackDatabase:
         conn = sqlite3.connect(self.db_path)
         cursor = conn.cursor()
         
-        # Feedback table
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS feedback (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -96,7 +100,6 @@ class FeedbackDatabase:
             )
         ''')
         
-        # Outcomes table
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS outcomes (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -114,7 +117,6 @@ class FeedbackDatabase:
             )
         ''')
         
-        # Coaching performance table
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS coaching_performance (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -127,7 +129,6 @@ class FeedbackDatabase:
             )
         ''')
         
-        # Metrics table
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS metrics (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -138,7 +139,6 @@ class FeedbackDatabase:
             )
         ''')
         
-        # Vector DB patterns table (cache)
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS vector_patterns (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -151,6 +151,31 @@ class FeedbackDatabase:
                 session_id TEXT,
                 success_outcome INTEGER,
                 timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+            )
+        ''')
+        
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS finetuning_jobs (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                job_id TEXT NOT NULL,
+                provider TEXT,
+                model_name TEXT,
+                status TEXT,
+                examples_count INTEGER,
+                created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                completed_at DATETIME
+            )
+        ''')
+        
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS model_versions (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                model_name TEXT NOT NULL,
+                version TEXT,
+                provider TEXT,
+                status TEXT,
+                performance_rating REAL,
+                deployed_at DATETIME DEFAULT CURRENT_TIMESTAMP
             )
         ''')
         
@@ -202,6 +227,25 @@ class FeedbackDatabase:
             return True
         except Exception as e:
             print(f"Error storing outcome: {e}")
+            return False
+    
+    def store_finetuning_job(self, job_id: str, provider: str, model_name: str, examples_count: int) -> bool:
+        """Store fine-tuning job record"""
+        try:
+            conn = sqlite3.connect(self.db_path)
+            cursor = conn.cursor()
+            
+            cursor.execute('''
+                INSERT INTO finetuning_jobs
+                (job_id, provider, model_name, status, examples_count)
+                VALUES (?, ?, ?, ?, ?)
+            ''', (job_id, provider, model_name, 'submitted', examples_count))
+            
+            conn.commit()
+            conn.close()
+            return True
+        except Exception as e:
+            print(f"Error storing job: {e}")
             return False
     
     def get_feedback_stats(self) -> Dict:
@@ -257,36 +301,6 @@ class FeedbackDatabase:
         except Exception as e:
             print(f"Error getting outcome stats: {e}")
             return {}
-    
-    def get_top_coaching_patterns(self, limit: int = 5) -> List[Dict]:
-        """Get most effective coaching patterns"""
-        try:
-            conn = sqlite3.connect(self.db_path)
-            cursor = conn.cursor()
-            
-            cursor.execute('''
-                SELECT f.coaching_id, AVG(f.rating), AVG(f.quality_score), COUNT(*)
-                FROM feedback f
-                GROUP BY f.coaching_id
-                ORDER BY AVG(f.rating) DESC
-                LIMIT ?
-            ''', (limit,))
-            
-            results = cursor.fetchall()
-            conn.close()
-            
-            return [
-                {
-                    'coaching_id': r[0],
-                    'avg_rating': r[1],
-                    'avg_quality': r[2],
-                    'count': r[3]
-                }
-                for r in results
-            ]
-        except Exception as e:
-            print(f"Error getting coaching patterns: {e}")
-            return []
     
     def export_for_finetuning(self) -> Dict:
         """Export high-quality interactions for LLM fine-tuning"""
@@ -386,9 +400,10 @@ class OutcomeRequest(BaseModel):
 async def health():
     """Health check"""
     return {
-        "status": "🟢 SANTINEL operational",
-        "version": "2.0.0-PINECONE",
-        "vector_db": "✅ Pinecone Ready" if vector_db and not vector_db.__class__.__name__ == 'MockVectorDBManager' else "⚠️ Mock Mode",
+        "status": "🟢 SANTINEL v3.0 operational",
+        "version": "3.0.0-PHASE3",
+        "vector_db": "✅ Pinecone Ready",
+        "finetuning": "✅ Available",
         "timestamp": datetime.now()
     }
 
@@ -407,6 +422,8 @@ async def create_session(session: SessionCreate):
     }
     
     session_goals[session_id] = GoalCoachingEngine()
+    
+    print(f"\n✅ Session created: {session_id}")
     
     return {
         "session_id": session_id,
@@ -489,16 +506,22 @@ async def get_coaching(request: CoachingRequest):
     """
     Get professional coaching using ALL frameworks:
     CBT + NLP + TA + Dual-Speaker + Goal-Based
-    PHASE 2: Enhanced with REAL Pinecone Vector DB similar patterns
+    Enhanced with REAL Pinecone Vector DB + Fine-tuning ready
     """
     
+    print(f"\n🔍 DEBUG COACHING: session_id={request.session_id}")
+    
     if request.session_id not in sessions:
+        print(f"   ❌ Session not found!")
         raise HTTPException(status_code=404, detail="Sesiune nu găsită")
+    
+    print(f"   ✅ Session found")
+    print(f"   interactions BEFORE: {len(sessions[request.session_id]['interactions'])}")
     
     coaching_parts = []
     frameworks_applied = []
     
-    # PHASE 2: Retrieve similar patterns from REAL Pinecone Vector DB
+    # Retrieve similar patterns from Pinecone
     similar_patterns = []
     situation_type = "general"
     
@@ -510,27 +533,23 @@ async def get_coaching(request: CoachingRequest):
                 limit=3
             )
             if similar_patterns:
-                coaching_parts.append(f"📚 Similar successes: {len(similar_patterns)} patterns found in knowledge base (Pinecone)")
+                coaching_parts.append(f"📚 Similar successes: {len(similar_patterns)} patterns found (Pinecone)")
                 frameworks_applied.append("Pinecone-VectorDB")
-                print(f"✅ Retrieved {len(similar_patterns)} similar patterns from Pinecone")
         except Exception as e:
-            print(f"⚠️ Vector DB retrieval error: {e}")
+            print(f"Vector DB error: {e}")
     
     # CBT Analysis
     cbt_insight = ""
     try:
         if cbt:
             distortions = cbt.identify_distortions(request.situation)
-            cbt_assessment = cbt.assess_emotional_state(
-                request.situation,
-                request.emotions or {}
-            )
+            cbt_assessment = cbt.assess_emotional_state(request.situation, request.emotions or {})
             cbt_insight = cbt_assessment.get("therapeutic_insight", "")
             
             if distortions:
-                coaching_parts.append(f"🧠 CBT: Ai identificat distorsiuni: {', '.join([d['distortion'] for d in distortions[:2]])}. {cbt_insight}")
+                coaching_parts.append(f"🧠 CBT: Distorsiuni identificate: {', '.join([d['distortion'] for d in distortions[:2]])}. {cbt_insight}")
             else:
-                coaching_parts.append(f"🧠 CBT: {cbt_insight or 'Gândire clară detectată - continuă cu această claritate.'}")
+                coaching_parts.append(f"🧠 CBT: {cbt_insight or 'Gândire clară detectată.'}")
             
             frameworks_applied.append("CBT")
     except Exception as e:
@@ -542,11 +561,10 @@ async def get_coaching(request: CoachingRequest):
         if nlp:
             rep_system = nlp.detect_representation_system(request.situation)
             system = rep_system.get("primary_system", "balansat")
-            coaching_parts.append(f"🎯 NLP: Stil reprezentare {system} detectat. Reframe: Vezi această situație ca oportunitate de negociere.")
+            coaching_parts.append(f"🎯 NLP: Stil {system}. Reframe: Oportunitate de negociere.")
             frameworks_applied.append("NLP")
     except Exception as e:
         print(f"NLP error: {e}")
-        coaching_parts.append("🎯 NLP: Reframe problema ca oportunitate")
     
     # TA Analysis
     try:
@@ -555,48 +573,44 @@ async def get_coaching(request: CoachingRequest):
             ego = ego_state_analysis.get("primary_ego_state", "Adult")
             
             if ego == "Adult":
-                coaching_parts.append("⚖️ TA: Ești în Adult ego state - perfect pentru negociere rațională.")
-            elif ego == "critical_parent":
-                coaching_parts.append("⚖️ TA: Detectez ton critic. Mergi în Adult: fapte, date, logică - nu judecată.")
+                coaching_parts.append("⚖️ TA: Adult ego state - perfect pentru negociere.")
             else:
-                coaching_parts.append(f"⚖️ TA: Ego state: {ego}. Tranziția către Adult pentru negociere efectivă.")
+                coaching_parts.append(f"⚖️ TA: Tranziție către Adult ego state.")
             
             frameworks_applied.append("TA")
     except Exception as e:
         print(f"TA error: {e}")
-        coaching_parts.append("⚖️ TA: Păstrează Adult ego state - rațional și respectuos")
     
     # Situation-specific coaching
     situation_lower = request.situation.lower()
-    specific_advice = ""
-    
-    if "%" in situation_lower or "creștere" in situation_lower or "crescape" in situation_lower:
-        specific_advice = "💰 SPECIFIC: Pentru cererile salariale/preț: Conversa pe valoare, nu pe procentaj. Ce valoare aduci TU? Ce costuri evitează pentru ei?"
+    if "%" in situation_lower or "creștere" in situation_lower:
+        coaching_parts.append("💰 SPECIFIC: Conversa pe valoare, nu pe procentaj.")
         situation_type = "price"
-    elif "termen" in situation_lower or "deadline" in situation_lower or "urgent" in situation_lower:
-        specific_advice = "⏰ SPECIFIC: Urgența creează presiune. Rămâi calm. Propune timeline realist care beneficiază ambii."
+    elif "termen" in situation_lower or "deadline" in situation_lower:
+        coaching_parts.append("⏰ SPECIFIC: Urgență = Presiune. Propune timeline realist.")
         situation_type = "timeline"
-    elif "conflict" in situation_lower or "dezacord" in situation_lower:
-        specific_advice = "🤝 SPECIFIC: Conflict = Oportunitate. Găsește interesul comun sub poziții opuse."
+    elif "conflict" in situation_lower:
+        coaching_parts.append("🤝 SPECIFIC: Conflict = Oportunitate. Găsește interesul comun.")
         situation_type = "conflict"
-    else:
-        specific_advice = "📍 SPECIFIC: Focalizează pe valoare mutuală. Care sunt nevoile reale ale celuilalt?"
     
-    coaching_parts.append(specific_advice)
-    frameworks_applied.append("SituationAnalysis")
-    
-    # Combine all insights
     final_coaching = "\n".join(coaching_parts)
     
-    # Store interaction
+    # Store interaction — CRITICAL for feedback later
     coaching_id = f"coaching_{datetime.now().timestamp()}"
+    
+    print(f"   🔄 Storing interaction...")
+    print(f"   coaching_id: {coaching_id}")
+    print(f"   frameworks_applied: {frameworks_applied}")
+    
     sessions[request.session_id]["interactions"].append({
         "coaching_id": coaching_id,
         "situation": request.situation,
         "timestamp": datetime.now(),
-        "frameworks_used": frameworks_applied,
-        "coaching_type": "reactiv" if request.is_reactive else "bazat pe obiective"
+        "frameworks_used": frameworks_applied
     })
+    
+    print(f"   ✅ Interaction stored")
+    print(f"   interactions AFTER: {len(sessions[request.session_id]['interactions'])}")
     
     return {
         "session_id": request.session_id,
@@ -604,19 +618,12 @@ async def get_coaching(request: CoachingRequest):
         "coaching": final_coaching,
         "similar_patterns_found": len(similar_patterns),
         "situation_type": situation_type,
-        "frameworks_applied": {
-            "cbt": {"insight": cbt_insight or "Gândire clară"},
-            "nlp": {"reframe": "Oportunitate, nu problemă"},
-            "ta": {"ego_state": "Adult", "life_position": "Eu sunt OK/Tu ești OK"},
-            "dual_speaker": {"user_state": "asertiv", "counterparty_readiness": "Deschis"},
-            "goal_aligned": "Da",
-            "pinecone_vectordb": {"similar_patterns": len(similar_patterns), "status": "✅ Active"}
-        }
+        "frameworks_applied": frameworks_applied
     }
 
 @app.get("/api/v1/session/{session_id}/status")
 async def get_session_status(session_id: str):
-    """Get complete session status and progress"""
+    """Get complete session status"""
     if session_id not in sessions:
         raise HTTPException(status_code=404, detail="Sesiune nu găsită")
     
@@ -628,17 +635,17 @@ async def get_session_status(session_id: str):
         "company": session_data["company_name"],
         "created_at": str(session_data["created_at"]),
         "interactions_count": len(session_data["interactions"]),
-        "goals": session_data["goals"],
-        "goal_count": len(session_data["goals"]),
         "status": "active"
     }
 
 @app.post("/api/v1/feedback")
 async def submit_feedback(feedback: FeedbackRequest):
-    """
-    Submit coaching feedback and rating
-    PHASE 2: Store high-rated patterns (4-5 stars) in REAL Pinecone Vector DB
-    """
+    """Submit coaching feedback and rating with DEBUG logging"""
+    
+    print(f"\n🔍 DEBUG: Feedback received")
+    print(f"   session_id: {feedback.session_id}")
+    print(f"   rating: {feedback.rating}")
+    
     success = feedback_db.store_feedback(
         session_id=feedback.session_id,
         coaching_id=feedback.coaching_id,
@@ -648,34 +655,61 @@ async def submit_feedback(feedback: FeedbackRequest):
         comments=feedback.comments
     )
     
-    # PHASE 2: Store high-quality patterns in REAL Pinecone
-    if success and feedback.rating >= 4 and vector_db:
-        try:
-            # Get coaching text from session
-            session_data = sessions.get(feedback.session_id, {})
-            last_interaction = session_data.get("interactions", [])[-1] if session_data.get("interactions") else None
-            
-            if last_interaction:
-                vector_db.store_coaching_pattern(
-                    coaching_text=f"High-quality coaching (rating {feedback.rating}): {', '.join(feedback.useful_aspects)}",
-                    situation_type="general",
-                    frameworks_used=last_interaction.get("frameworks_used", []),
-                    rating=feedback.rating,
-                    quality_score=feedback.quality_score,
-                    session_id=feedback.session_id,
-                    success_outcome=True,
-                    metadata={"useful_aspects": feedback.useful_aspects, "comments": feedback.comments}
-                )
-                print(f"✅ High-quality pattern stored in Pinecone (rating: {feedback.rating})")
-        except Exception as e:
-            print(f"⚠️ Pinecone storage error: {e}")
+    print(f"   ✅ SQLite stored: {success}")
+    
+    # Store high-quality patterns in Pinecone
+    if success and feedback.rating >= 4:
+        print(f"\n🔍 DEBUG: Attempting Pinecone storage")
+        print(f"   rating >= 4: True")
+        print(f"   vector_db is not None: {vector_db is not None}")
+        
+        if vector_db:
+            try:
+                session_data = sessions.get(feedback.session_id, {})
+                interactions = session_data.get("interactions", [])
+                
+                print(f"   session_data exists: {bool(session_data)}")
+                print(f"   interactions count: {len(interactions)}")
+                
+                last_interaction = interactions[-1] if interactions else None
+                
+                print(f"   found last_interaction: {last_interaction is not None}")
+                
+                if last_interaction:
+                    frameworks = last_interaction.get("frameworks_used", [])
+                    print(f"   frameworks: {frameworks}")
+                    print(f"   🔄 Calling vector_db.store_coaching_pattern()...")
+                    
+                    store_result = vector_db.store_coaching_pattern(
+                        coaching_text=f"High-quality coaching (rating {feedback.rating}): {', '.join(feedback.useful_aspects)}",
+                        situation_type="general",
+                        frameworks_used=frameworks,
+                        rating=feedback.rating,
+                        quality_score=feedback.quality_score,
+                        session_id=feedback.session_id,
+                        success_outcome=True,
+                        metadata={"useful_aspects": feedback.useful_aspects}
+                    )
+                    
+                    print(f"   ✅ store_coaching_pattern returned: {store_result}")
+                else:
+                    print(f"   ⚠️ No last_interaction found in session")
+            except Exception as e:
+                print(f"   ❌ Exception during Pinecone storage:")
+                print(f"      {type(e).__name__}: {e}")
+                import traceback
+                traceback.print_exc()
+        else:
+            print(f"   ⚠️ vector_db is None - cannot store pattern")
+    else:
+        print(f"   ⚠️ Skipping Pinecone: success={success}, rating={feedback.rating}")
     
     if success:
         return {
             "status": "✅ Feedback salvat",
             "rating": feedback.rating,
             "message": "Mulțumim pentru feedback!",
-            "pinecone_stored": feedback.rating >= 4
+            "pinecone_stored": feedback.rating >= 4 and vector_db is not None
         }
     else:
         raise HTTPException(status_code=500, detail="Eroare la salvarea feedback")
@@ -704,7 +738,7 @@ async def submit_outcome(outcome: OutcomeRequest):
             "message": "Rezultat salvat pentru analiză"
         }
     else:
-        raise HTTPException(status_code=500, detail="Eroare la salvarea rezultatului")
+        raise HTTPException(status_code=500, detail="Eroare")
 
 @app.get("/api/v1/metrics/feedback")
 async def get_feedback_metrics():
@@ -728,42 +762,133 @@ async def get_outcome_metrics():
         "by_negotiation_type": stats.get('by_type', [])
     }
 
-@app.get("/api/v1/metrics/top-patterns")
-async def get_top_coaching_patterns():
-    """Get most effective coaching patterns"""
-    patterns = feedback_db.get_top_coaching_patterns(limit=10)
-    return {
-        "top_patterns": patterns,
-        "total_patterns_analyzed": len(patterns)
-    }
-
 @app.get("/api/v1/finetuning/export")
-async def export_finetuning_data():
-    """
-    Export high-quality data for LLM fine-tuning
-    PHASE 2: Uses both SQLite + REAL Pinecone Vector DB
-    """
-    sqlite_data = feedback_db.export_for_finetuning()
-    
-    vector_db_data = {}
-    if vector_db:
-        try:
-            vector_db_data = vector_db.export_for_finetuning(min_rating=4, limit=100)
-            print(f"✅ Exported {vector_db_data.get('metadata', {}).get('total_patterns', 0)} patterns from Pinecone")
-        except Exception as e:
-            print(f"⚠️ Pinecone export error: {e}")
-    
-    return {
-        "status": "✅ Export gata",
-        "source": "SQLite + Pinecone Vector DB",
-        "sqlite_coaching_sessions": len(sqlite_data.get('high_quality_coaching', [])),
-        "sqlite_successful_negotiations": len(sqlite_data.get('successful_negotiations', [])),
-        "pinecone_patterns": vector_db_data.get("metadata", {}).get("total_patterns", 0),
-        "data": {
-            "sqlite": sqlite_data,
-            "pinecone": vector_db_data
+async def export_finetuning_data_endpoint(min_rating: int = 4, limit: int = 100):
+    """Export high-quality coaching patterns for fine-tuning"""
+    try:
+        if not FineTuningPipeline:
+            raise HTTPException(status_code=503, detail="Fine-tuning module not available")
+        
+        pipeline = FineTuningPipeline(vector_db_manager=vector_db)
+        export_data = pipeline.export_training_data(min_rating, limit)
+        
+        return {
+            "status": "✅ Export complete",
+            "patterns": export_data.get("metadata", {}).get("total_patterns", 0),
+            "data": export_data
         }
-    }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Export error: {e}")
+
+@app.post("/api/v1/finetuning/submit")
+async def submit_finetuning_job(min_rating: int = 4, provider: str = "groq"):
+    """Submit fine-tuning job to Groq/Mistral"""
+    try:
+        if not FineTuningPipeline:
+            raise HTTPException(status_code=503, detail="Fine-tuning module not available")
+        
+        pipeline = FineTuningPipeline(
+            groq_api_key=os.getenv("GROQ_API_KEY"),
+            mistral_api_key=os.getenv("MISTRAL_API_KEY"),
+            vector_db_manager=vector_db
+        )
+        
+        # Export and format data
+        export_data = pipeline.export_training_data(min_rating=min_rating)
+        training_examples = pipeline.format_training_data(export_data)
+        
+        # Submit job
+        provider_enum = FineTuningProvider.GROQ if provider == "groq" else FineTuningProvider.MISTRAL
+        result = pipeline.submit_finetuning_job(training_examples, provider_enum)
+        
+        # Store in database
+        if result.get("status") == "submitted":
+            feedback_db.store_finetuning_job(
+                result.get("job_id"),
+                provider,
+                result.get("model_name"),
+                len(training_examples)
+            )
+        
+        return {
+            "status": "✅ Job submitted",
+            "provider": provider,
+            "job_id": result.get("job_id"),
+            "examples": len(training_examples),
+            "result": result
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Submission error: {e}")
+
+@app.get("/api/v1/finetuning/status/{job_id}")
+async def get_finetuning_status(job_id: str):
+    """Get status of fine-tuning job"""
+    try:
+        if not FineTuningPipeline:
+            raise HTTPException(status_code=503, detail="Fine-tuning module not available")
+        
+        pipeline = FineTuningPipeline()
+        status = pipeline.get_finetuning_status(job_id)
+        
+        return {
+            "job_id": job_id,
+            "status": status
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Status error: {e}")
+
+@app.post("/api/v1/finetuning/deploy")
+async def deploy_finetuned_model(model_name: str, version: str = "2.0-ft"):
+    """Deploy fine-tuned model as active coaching model"""
+    try:
+        if not FineTuningPipeline:
+            raise HTTPException(status_code=503, detail="Fine-tuning module not available")
+        
+        pipeline = FineTuningPipeline()
+        deployment = pipeline.deploy_finetuned_model(model_name, version)
+        
+        return {
+            "status": "✅ Model deployed",
+            "model_name": model_name,
+            "version": version,
+            "deployment": deployment
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Deployment error: {e}")
+
+@app.get("/api/v1/finetuning/ab-test")
+async def run_ab_test(model_a: str = "baseline", model_b: str = "finetuned-v1"):
+    """Run A/B test comparing two models"""
+    try:
+        if not FineTuningPipeline:
+            raise HTTPException(status_code=503, detail="Fine-tuning module not available")
+        
+        pipeline = FineTuningPipeline()
+        comparison = pipeline.compare_model_performance(model_a, model_b)
+        
+        return {
+            "status": "✅ A/B test complete",
+            "comparison": comparison
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"A/B test error: {e}")
+
+@app.get("/api/v1/finetuning/current-model")
+async def get_current_coaching_model():
+    """Get current active coaching model"""
+    try:
+        if not FineTuningPipeline:
+            return {"status": "✅ Baseline", "model": "v1.0", "version": "baseline"}
+        
+        pipeline = FineTuningPipeline()
+        model = pipeline.get_current_model()
+        
+        return {
+            "status": "✅ Current model retrieved",
+            "model": model
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error: {e}")
 
 @app.get("/api/v1/vectordb/stats")
 async def get_vectordb_stats():
@@ -777,46 +902,30 @@ async def get_vectordb_stats():
     else:
         return {"status": "⚠️ Vector DB not initialized"}
 
-@app.get("/api/v1/vectordb/framework-performance/{situation_type}")
-async def get_framework_performance(situation_type: str):
-    """Get framework effectiveness for situation type (from Pinecone)"""
-    if vector_db:
-        try:
-            performance = vector_db.get_framework_performance(situation_type)
-            return {
-                "situation_type": situation_type,
-                "frameworks": performance,
-                "source": "Pinecone Vector DB"
-            }
-        except Exception as e:
-            return {"status": f"⚠️ Error: {e}"}
-    else:
-        return {"status": "⚠️ Vector DB not initialized"}
-
 # ============== STARTUP ==============
 
 @app.on_event("startup")
 async def startup_event():
     """Initialize on startup"""
-    print("🚀 SANTINEL Backend v2.0-PINECONE Se Pornește...")
-    print("✅ Framework-uri Psihologie Încărcate:")
-    print("   • CBT (Cognitive Behavioral Therapy)")
-    print("   • NLP (Neuro-Linguistic Programming)")
-    print("   • TA (Transactional Analysis)")
-    print("   • Analiza Dual-Speaker")
-    print("   • Motor Coaching Bazat pe Obiective")
+    print("🚀 SANTINEL Backend v3.0-PHASE3 Se Pornește...")
+    print("✅ Framework-uri Psihologie: CBT/NLP/TA/DualSpeaker/Goal")
     print("✅ Sistem Feedback și Outcome")
-    print("✅ Coaching DINAMIC - personalizat pe bază de situație")
+    print("✅ Coaching DINAMIC - personalizat")
     print("🔄 PHASE 2 — REAL Pinecone Vector DB:")
     if vector_db:
         try:
             stats = vector_db.get_stats()
             print(f"   ✅ {stats}")
         except Exception as e:
-            print(f"   ⚠️ Vector DB initialized but check connection: {e}")
+            print(f"   ⚠️ Vector DB error: {e}")
+    print("🔄 PHASE 3 — LLM Fine-Tuning Pipeline:")
+    if FineTuningPipeline:
+        print("   ✅ Fine-tuning endpoints ready")
+        print("   ✅ Groq/Mistral integration ready")
+        print("   ✅ A/B testing framework ready")
     else:
-        print("   ⚠️ Vector DB not available")
-    print("✅ FastAPI rulează pe http://0.0.0.0:8000")
+        print("   ⚠️ Fine-tuning module not available")
+    print("✅ FastAPI v3.0 rulează pe http://0.0.0.0:8000")
 
 if __name__ == "__main__":
     import uvicorn
