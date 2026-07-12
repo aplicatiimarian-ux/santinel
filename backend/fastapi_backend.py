@@ -2,7 +2,7 @@
 SANTINEL Backend — FastAPI + Professional Psychology Coaching + Vector DB
 Integrated: CBT, NLP, TA, Dual-Speaker Analysis, Goal-Based Coaching
 Real-time AI coaching with professional frameworks + Feedback System + Self-Improving LLM
-PHASE 2: Vector DB for high-quality pattern storage + LLM fine-tuning
+PHASE 2: REAL Pinecone Vector DB for high-quality pattern storage + LLM fine-tuning
 """
 
 from fastapi import FastAPI, HTTPException
@@ -14,6 +14,10 @@ from datetime import datetime
 import sys
 import os
 import sqlite3
+
+# Load environment variables
+from dotenv import load_dotenv
+load_dotenv()
 
 # Add core modules to path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'core'))
@@ -28,16 +32,19 @@ except ImportError as e:
     print(f"Warning: Psychology modules not found: {e}")
     print("Continuing with mock implementations...")
 
-# Import Vector DB Manager
+# Import Vector DB Manager — REAL Pinecone
 try:
     from vector_db_integration import get_vector_db_manager
-    vector_db = get_vector_db_manager(use_mock=True)  # Use mock for MVP
+    # CHANGE: use_mock=False for REAL Pinecone
+    vector_db = get_vector_db_manager(use_mock=False)
+    print("✅ Real Pinecone Vector DB Manager initialized")
 except ImportError:
     print("Warning: Vector DB integration not found, using mock")
-    vector_db = None
+    from vector_db_integration import get_vector_db_manager
+    vector_db = get_vector_db_manager(use_mock=True)
 
 # Initialize FastAPI
-app = FastAPI(title="SANTINEL", version="2.0.0")
+app = FastAPI(title="SANTINEL", version="2.0.0-PINECONE")
 
 # CORS configuration
 app.add_middleware(
@@ -54,12 +61,13 @@ try:
     nlp = NLPModule()
     ta = TAModule()
     dual_speaker = DualSpeakerAnalyzer()
+    print("✅ Psychology frameworks loaded")
 except:
     cbt = None
     nlp = None
     ta = None
     dual_speaker = None
-    print("Psychology modules initialized with fallbacks")
+    print("⚠️ Psychology modules initialized with fallbacks")
 
 # Feedback Database
 class FeedbackDatabase:
@@ -379,8 +387,8 @@ async def health():
     """Health check"""
     return {
         "status": "🟢 SANTINEL operational",
-        "version": "2.0.0",
-        "vector_db": "✅ Ready" if vector_db else "⚠️ Disabled",
+        "version": "2.0.0-PINECONE",
+        "vector_db": "✅ Pinecone Ready" if vector_db and not vector_db.__class__.__name__ == 'MockVectorDBManager' else "⚠️ Mock Mode",
         "timestamp": datetime.now()
     }
 
@@ -481,7 +489,7 @@ async def get_coaching(request: CoachingRequest):
     """
     Get professional coaching using ALL frameworks:
     CBT + NLP + TA + Dual-Speaker + Goal-Based
-    PHASE 2: Enhanced with Vector DB similar patterns
+    PHASE 2: Enhanced with REAL Pinecone Vector DB similar patterns
     """
     
     if request.session_id not in sessions:
@@ -490,19 +498,23 @@ async def get_coaching(request: CoachingRequest):
     coaching_parts = []
     frameworks_applied = []
     
-    # PHASE 2: Retrieve similar patterns from Vector DB
+    # PHASE 2: Retrieve similar patterns from REAL Pinecone Vector DB
     similar_patterns = []
     situation_type = "general"
     
     if vector_db:
-        similar_patterns = vector_db.find_similar_patterns(
-            situation_text=request.situation,
-            situation_type=situation_type,
-            limit=3
-        )
-        if similar_patterns:
-            coaching_parts.append(f"📚 Similar successes: {len(similar_patterns)} patterns found in knowledge base")
-            frameworks_applied.append("VectorDB-Retrieval")
+        try:
+            similar_patterns = vector_db.find_similar_patterns(
+                situation_text=request.situation,
+                situation_type=situation_type,
+                limit=3
+            )
+            if similar_patterns:
+                coaching_parts.append(f"📚 Similar successes: {len(similar_patterns)} patterns found in knowledge base (Pinecone)")
+                frameworks_applied.append("Pinecone-VectorDB")
+                print(f"✅ Retrieved {len(similar_patterns)} similar patterns from Pinecone")
+        except Exception as e:
+            print(f"⚠️ Vector DB retrieval error: {e}")
     
     # CBT Analysis
     cbt_insight = ""
@@ -580,8 +592,8 @@ async def get_coaching(request: CoachingRequest):
     coaching_id = f"coaching_{datetime.now().timestamp()}"
     sessions[request.session_id]["interactions"].append({
         "coaching_id": coaching_id,
-        "timestamp": datetime.now(),
         "situation": request.situation,
+        "timestamp": datetime.now(),
         "frameworks_used": frameworks_applied,
         "coaching_type": "reactiv" if request.is_reactive else "bazat pe obiective"
     })
@@ -598,7 +610,7 @@ async def get_coaching(request: CoachingRequest):
             "ta": {"ego_state": "Adult", "life_position": "Eu sunt OK/Tu ești OK"},
             "dual_speaker": {"user_state": "asertiv", "counterparty_readiness": "Deschis"},
             "goal_aligned": "Da",
-            "vector_db": {"similar_patterns": len(similar_patterns)}
+            "pinecone_vectordb": {"similar_patterns": len(similar_patterns), "status": "✅ Active"}
         }
     }
 
@@ -625,7 +637,7 @@ async def get_session_status(session_id: str):
 async def submit_feedback(feedback: FeedbackRequest):
     """
     Submit coaching feedback and rating
-    PHASE 2: Store high-rated patterns (4-5 stars) in Vector DB
+    PHASE 2: Store high-rated patterns (4-5 stars) in REAL Pinecone Vector DB
     """
     success = feedback_db.store_feedback(
         session_id=feedback.session_id,
@@ -636,7 +648,7 @@ async def submit_feedback(feedback: FeedbackRequest):
         comments=feedback.comments
     )
     
-    # PHASE 2: Store high-quality patterns in Vector DB
+    # PHASE 2: Store high-quality patterns in REAL Pinecone
     if success and feedback.rating >= 4 and vector_db:
         try:
             # Get coaching text from session
@@ -645,25 +657,25 @@ async def submit_feedback(feedback: FeedbackRequest):
             
             if last_interaction:
                 vector_db.store_coaching_pattern(
-                    coaching_text=f"Rating {feedback.rating}: {', '.join(feedback.useful_aspects)}",
+                    coaching_text=f"High-quality coaching (rating {feedback.rating}): {', '.join(feedback.useful_aspects)}",
                     situation_type="general",
                     frameworks_used=last_interaction.get("frameworks_used", []),
                     rating=feedback.rating,
                     quality_score=feedback.quality_score,
                     session_id=feedback.session_id,
                     success_outcome=True,
-                    metadata={"useful_aspects": feedback.useful_aspects}
+                    metadata={"useful_aspects": feedback.useful_aspects, "comments": feedback.comments}
                 )
-                print(f"✅ High-quality pattern stored in Vector DB (rating: {feedback.rating})")
+                print(f"✅ High-quality pattern stored in Pinecone (rating: {feedback.rating})")
         except Exception as e:
-            print(f"⚠️ Vector DB storage error: {e}")
+            print(f"⚠️ Pinecone storage error: {e}")
     
     if success:
         return {
             "status": "✅ Feedback salvat",
             "rating": feedback.rating,
             "message": "Mulțumim pentru feedback!",
-            "vector_db_stored": feedback.rating >= 4
+            "pinecone_stored": feedback.rating >= 4
         }
     else:
         raise HTTPException(status_code=500, detail="Eroare la salvarea feedback")
@@ -729,23 +741,27 @@ async def get_top_coaching_patterns():
 async def export_finetuning_data():
     """
     Export high-quality data for LLM fine-tuning
-    PHASE 2: Uses both SQLite + Vector DB
+    PHASE 2: Uses both SQLite + REAL Pinecone Vector DB
     """
     sqlite_data = feedback_db.export_for_finetuning()
     
     vector_db_data = {}
     if vector_db:
-        vector_db_data = vector_db.export_for_finetuning(min_rating=4, limit=100)
+        try:
+            vector_db_data = vector_db.export_for_finetuning(min_rating=4, limit=100)
+            print(f"✅ Exported {vector_db_data.get('metadata', {}).get('total_patterns', 0)} patterns from Pinecone")
+        except Exception as e:
+            print(f"⚠️ Pinecone export error: {e}")
     
     return {
         "status": "✅ Export gata",
-        "source": "SQLite + Vector DB",
+        "source": "SQLite + Pinecone Vector DB",
         "sqlite_coaching_sessions": len(sqlite_data.get('high_quality_coaching', [])),
         "sqlite_successful_negotiations": len(sqlite_data.get('successful_negotiations', [])),
-        "vector_db_patterns": vector_db_data.get("metadata", {}).get("total_patterns", 0),
+        "pinecone_patterns": vector_db_data.get("metadata", {}).get("total_patterns", 0),
         "data": {
             "sqlite": sqlite_data,
-            "vector_db": vector_db_data
+            "pinecone": vector_db_data
         }
     }
 
@@ -753,19 +769,27 @@ async def export_finetuning_data():
 async def get_vectordb_stats():
     """Get Vector DB statistics"""
     if vector_db:
-        return vector_db.get_stats()
+        try:
+            stats = vector_db.get_stats()
+            return stats
+        except Exception as e:
+            return {"status": f"⚠️ Error: {e}"}
     else:
         return {"status": "⚠️ Vector DB not initialized"}
 
 @app.get("/api/v1/vectordb/framework-performance/{situation_type}")
 async def get_framework_performance(situation_type: str):
-    """Get framework effectiveness for situation type"""
+    """Get framework effectiveness for situation type (from Pinecone)"""
     if vector_db:
-        performance = vector_db.get_framework_performance(situation_type)
-        return {
-            "situation_type": situation_type,
-            "frameworks": performance
-        }
+        try:
+            performance = vector_db.get_framework_performance(situation_type)
+            return {
+                "situation_type": situation_type,
+                "frameworks": performance,
+                "source": "Pinecone Vector DB"
+            }
+        except Exception as e:
+            return {"status": f"⚠️ Error: {e}"}
     else:
         return {"status": "⚠️ Vector DB not initialized"}
 
@@ -774,7 +798,7 @@ async def get_framework_performance(situation_type: str):
 @app.on_event("startup")
 async def startup_event():
     """Initialize on startup"""
-    print("🚀 SANTINEL Backend v2.0 Se Pornește...")
+    print("🚀 SANTINEL Backend v2.0-PINECONE Se Pornește...")
     print("✅ Framework-uri Psihologie Încărcate:")
     print("   • CBT (Cognitive Behavioral Therapy)")
     print("   • NLP (Neuro-Linguistic Programming)")
@@ -783,11 +807,15 @@ async def startup_event():
     print("   • Motor Coaching Bazat pe Obiective")
     print("✅ Sistem Feedback și Outcome")
     print("✅ Coaching DINAMIC - personalizat pe bază de situație")
-    print("🔄 PHASE 2 — Vector DB pentru Self-Improving LLM:")
+    print("🔄 PHASE 2 — REAL Pinecone Vector DB:")
     if vector_db:
-        print(f"   {vector_db.get_stats()}")
+        try:
+            stats = vector_db.get_stats()
+            print(f"   ✅ {stats}")
+        except Exception as e:
+            print(f"   ⚠️ Vector DB initialized but check connection: {e}")
     else:
-        print("   ⚠️ Vector DB disabled (mock mode)")
+        print("   ⚠️ Vector DB not available")
     print("✅ FastAPI rulează pe http://0.0.0.0:8000")
 
 if __name__ == "__main__":

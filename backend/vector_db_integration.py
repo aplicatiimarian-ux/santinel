@@ -2,6 +2,7 @@
 SANTINEL Phase 2 — Vector DB Integration
 Pinecone for storing + retrieving high-quality coaching patterns
 Auto-improvement loop for LLM fine-tuning
+Updated for Pinecone Python SDK v3+ (new API)
 """
 
 import os
@@ -11,10 +12,10 @@ from datetime import datetime
 import uuid
 
 try:
-    import pinecone
+    from pinecone import Pinecone
 except ImportError:
-    print("Warning: Pinecone not installed. Install: pip install pinecone-client")
-    pinecone = None
+    print("Warning: Pinecone not installed. Install: pip install pinecone")
+    Pinecone = None
 
 try:
     from openai import OpenAI
@@ -26,27 +27,36 @@ class VectorDBManager:
     """
     Manages vector database operations for coaching patterns
     Stores high-rated coaching advice for retrieval + fine-tuning
+    Uses new Pinecone Python SDK v3+ API
     """
     
     def __init__(self, pinecone_api_key: str, openai_api_key: str, index_name: str = "coaching-patterns"):
-        """Initialize Pinecone + OpenAI clients"""
+        """Initialize Pinecone + OpenAI clients with new API"""
         
         self.pinecone_api_key = pinecone_api_key
         self.openai_api_key = openai_api_key
         self.index_name = index_name
         self.initialized = False
+        self.pc = None
+        self.index = None
         
         try:
-            if pinecone:
-                pinecone.init(api_key=pinecone_api_key)
-                self.index = pinecone.Index(index_name)
-                print(f"✅ Pinecone index '{index_name}' initialized")
+            if Pinecone:
+                # New API: Create Pinecone instance
+                self.pc = Pinecone(api_key=pinecone_api_key)
+                print(f"✅ Pinecone client initialized")
+                
+                # Get index
+                self.index = self.pc.Index(index_name)
+                print(f"✅ Pinecone index '{index_name}' connected")
             
             if OpenAI:
                 self.openai_client = OpenAI(api_key=openai_api_key)
                 print("✅ OpenAI client initialized")
             
             self.initialized = True
+            print("✅ Vector DB Manager fully initialized with Real Pinecone")
+        
         except Exception as e:
             print(f"⚠️ Vector DB initialization error: {e}")
             print("Continuing without vector DB (will use fallback)")
@@ -83,7 +93,7 @@ class VectorDBManager:
         Called after user rates coaching 4-5 stars
         """
         
-        if not self.initialized:
+        if not self.initialized or not self.index:
             print("⚠️ Vector DB not initialized")
             return False
         
@@ -101,17 +111,17 @@ class VectorDBManager:
                 "pattern_id": pattern_id,
                 "coaching_text": coaching_text,
                 "situation_type": situation_type,
-                "frameworks_used": frameworks_used,
+                "frameworks_used": ",".join(frameworks_used),
                 "rating": rating,
                 "quality_score": quality_score,
                 "session_id": session_id,
-                "success_outcome": success_outcome,
+                "success_outcome": "true" if success_outcome else "false",
                 "negotiation_type": negotiation_type,
                 "timestamp": datetime.now().isoformat(),
                 **(metadata or {})
             }
             
-            # Upsert to Pinecone
+            # Upsert to Pinecone (new API)
             self.index.upsert(
                 vectors=[(
                     pattern_id,
@@ -120,11 +130,11 @@ class VectorDBManager:
                 )]
             )
             
-            print(f"✅ Pattern stored: {pattern_id} (rating: {rating})")
+            print(f"✅ Pattern stored in Pinecone: {pattern_id} (rating: {rating})")
             return True
         
         except Exception as e:
-            print(f"❌ Error storing pattern: {e}")
+            print(f"❌ Error storing pattern in Pinecone: {e}")
             return False
     
     def find_similar_patterns(self, 
@@ -136,7 +146,7 @@ class VectorDBManager:
         Used to enhance current coaching with proven patterns
         """
         
-        if not self.initialized:
+        if not self.initialized or not self.index:
             print("⚠️ Vector DB not initialized")
             return []
         
@@ -146,7 +156,7 @@ class VectorDBManager:
             if not embedding:
                 return []
             
-            # Query similar patterns
+            # Query similar patterns (new API)
             results = self.index.query(
                 vector=embedding,
                 filter={"situation_type": {"$eq": situation_type}},
@@ -157,20 +167,21 @@ class VectorDBManager:
             # Format results
             patterns = []
             for match in results.get("matches", []):
+                metadata = match.get("metadata", {})
                 patterns.append({
-                    "pattern_id": match["metadata"]["pattern_id"],
-                    "coaching_text": match["metadata"]["coaching_text"],
-                    "rating": match["metadata"]["rating"],
-                    "similarity": match["score"],
-                    "frameworks": match["metadata"]["frameworks_used"],
-                    "success_outcome": match["metadata"]["success_outcome"]
+                    "pattern_id": metadata.get("pattern_id", "unknown"),
+                    "coaching_text": metadata.get("coaching_text", ""),
+                    "rating": metadata.get("rating", 0),
+                    "similarity": match.get("score", 0),
+                    "frameworks": metadata.get("frameworks_used", "").split(","),
+                    "success_outcome": metadata.get("success_outcome", "false") == "true"
                 })
             
-            print(f"✅ Found {len(patterns)} similar patterns")
+            print(f"✅ Found {len(patterns)} similar patterns from Pinecone")
             return patterns
         
         except Exception as e:
-            print(f"❌ Error finding patterns: {e}")
+            print(f"❌ Error finding patterns in Pinecone: {e}")
             return []
     
     def get_framework_performance(self, situation_type: str) -> Dict:
@@ -179,13 +190,13 @@ class VectorDBManager:
         Returns frameworks ranked by effectiveness
         """
         
-        if not self.initialized:
+        if not self.initialized or not self.index:
             return {}
         
         try:
             # Query for all patterns of this situation type
             results = self.index.query(
-                vector=[0.0] * 1536,  # Dummy vector (ignored with filter)
+                vector=[0.0] * 1536,  # Dummy vector
                 filter={"situation_type": {"$eq": situation_type}},
                 top_k=1000,
                 include_metadata=True
@@ -195,10 +206,11 @@ class VectorDBManager:
             framework_stats = {}
             
             for match in results.get("matches", []):
-                metadata = match["metadata"]
-                frameworks = metadata.get("frameworks_used", [])
-                rating = metadata.get("rating", 0)
-                success = metadata.get("success_outcome", False)
+                metadata = match.get("metadata", {})
+                frameworks_str = metadata.get("frameworks_used", "")
+                frameworks = [f.strip() for f in frameworks_str.split(",") if f.strip()]
+                rating = int(metadata.get("rating", 0))
+                success = metadata.get("success_outcome", "false") == "true"
                 
                 for fw in frameworks:
                     if fw not in framework_stats:
@@ -218,7 +230,7 @@ class VectorDBManager:
             for fw, stats in framework_stats.items():
                 avg_rating = sum(stats["ratings"]) / len(stats["ratings"]) if stats["ratings"] else 0
                 success_rate = (stats["successes"] / stats["count"] * 100) if stats["count"] > 0 else 0
-                effectiveness = (avg_rating / 5 * 60) + (success_rate / 100 * 40)  # 60% rating, 40% success
+                effectiveness = (avg_rating / 5 * 60) + (success_rate / 100 * 40)
                 
                 framework_performance[fw] = {
                     "avg_rating": round(avg_rating, 2),
@@ -247,7 +259,7 @@ class VectorDBManager:
         Only patterns with rating >= min_rating
         """
         
-        if not self.initialized:
+        if not self.initialized or not self.index:
             return {}
         
         try:
@@ -265,14 +277,17 @@ class VectorDBManager:
             framework_usage = {}
             
             for match in results.get("matches", []):
-                metadata = match["metadata"]
+                metadata = match.get("metadata", {})
+                
+                frameworks_str = metadata.get("frameworks_used", "")
+                frameworks = [f.strip() for f in frameworks_str.split(",") if f.strip()]
                 
                 example = {
                     "situation": metadata.get("coaching_text", ""),
-                    "frameworks": metadata.get("frameworks_used", []),
-                    "rating": metadata.get("rating", 0),
-                    "success_outcome": metadata.get("success_outcome", False),
-                    "quality_score": metadata.get("quality_score", 0)
+                    "frameworks": frameworks,
+                    "rating": int(metadata.get("rating", 0)),
+                    "success_outcome": metadata.get("success_outcome", "false") == "true",
+                    "quality_score": float(metadata.get("quality_score", 0))
                 }
                 training_examples.append(example)
                 
@@ -280,25 +295,26 @@ class VectorDBManager:
                 sit_type = metadata.get("situation_type", "custom")
                 situation_type_counts[sit_type] = situation_type_counts.get(sit_type, 0) + 1
                 
-                for fw in metadata.get("frameworks_used", []):
+                for fw in frameworks:
                     framework_usage[fw] = framework_usage.get(fw, 0) + 1
             
             # Calculate weights
             total = len(training_examples)
             situation_weights = {
                 k: round(v / total, 2) for k, v in situation_type_counts.items()
-            }
+            } if total > 0 else {}
             
             total_fw_usage = sum(framework_usage.values())
             framework_weights = {
                 k: round(v / total_fw_usage, 2) for k, v in framework_usage.items()
-            }
+            } if total_fw_usage > 0 else {}
             
             export_data = {
                 "metadata": {
                     "export_date": datetime.now().isoformat(),
                     "total_patterns": len(training_examples),
-                    "min_rating_threshold": min_rating
+                    "min_rating_threshold": min_rating,
+                    "source": "Pinecone Vector DB"
                 },
                 "training_examples": training_examples,
                 "situation_type_weights": situation_weights,
@@ -311,30 +327,31 @@ class VectorDBManager:
                 }
             }
             
-            print(f"✅ Exported {len(training_examples)} patterns for fine-tuning")
+            print(f"✅ Exported {len(training_examples)} patterns from Pinecone for fine-tuning")
             return export_data
         
         except Exception as e:
-            print(f"❌ Error exporting for fine-tuning: {e}")
+            print(f"❌ Error exporting for fine-tuning from Pinecone: {e}")
             return {}
     
     def get_stats(self) -> Dict:
         """Get vector DB statistics"""
         
-        if not self.initialized:
+        if not self.initialized or not self.index:
             return {"status": "Not initialized"}
         
         try:
             stats = self.index.describe_index_stats()
             return {
-                "status": "✅ Ready",
+                "status": "✅ Pinecone Ready",
                 "total_vectors": stats.get("total_vector_count", 0),
                 "index_name": self.index_name,
-                "dimension": stats.get("dimension", 1536)
+                "dimension": stats.get("dimension", 1536),
+                "source": "Pinecone"
             }
         except Exception as e:
             print(f"Error getting stats: {e}")
-            return {"status": f"Error: {e}"}
+            return {"status": f"⚠️ Error: {e}"}
 
 
 # ============== MOCK VERSION (for testing without Pinecone) ==============
@@ -388,7 +405,7 @@ class MockVectorDBManager:
         """Mock export"""
         high_quality = [p for p in self.patterns if p.get("rating", 0) >= min_rating][:limit]
         return {
-            "metadata": {"total_patterns": len(high_quality)},
+            "metadata": {"total_patterns": len(high_quality), "source": "Mock"},
             "training_examples": high_quality,
             "situation_type_weights": {"price": 0.4, "timeline": 0.3, "conflict": 0.3}
         }
@@ -406,7 +423,7 @@ class MockVectorDBManager:
 
 def get_vector_db_manager(use_mock: bool = False) -> object:
     """
-    Get Vector DB Manager (Pinecone or Mock)
+    Get Vector DB Manager (Real Pinecone or Mock)
     """
     
     if use_mock:
@@ -416,7 +433,11 @@ def get_vector_db_manager(use_mock: bool = False) -> object:
     openai_key = os.getenv("OPENAI_API_KEY")
     
     if not pinecone_key or not openai_key:
-        print("⚠️ Missing API keys, using Mock Vector DB")
+        print("⚠️ Missing API keys (PINECONE_API_KEY or OPENAI_API_KEY), using Mock Vector DB")
         return MockVectorDBManager()
     
-    return VectorDBManager(pinecone_key, openai_key)
+    try:
+        return VectorDBManager(pinecone_key, openai_key)
+    except Exception as e:
+        print(f"⚠️ Failed to initialize real Pinecone: {e}, using Mock instead")
+        return MockVectorDBManager()
