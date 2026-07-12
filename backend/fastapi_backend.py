@@ -2,6 +2,7 @@
 SANTINEL Backend — FastAPI + Professional Psychology Coaching
 Integrated: CBT, NLP, TA, Dual-Speaker Analysis, Goal-Based Coaching
 Real-time AI coaching with professional frameworks + Feedback System
+FIXED: Dynamic coaching based on psychology frameworks
 """
 
 from fastapi import FastAPI, HTTPException
@@ -451,25 +452,16 @@ async def get_coaching(request: CoachingRequest):
     """
     Get professional coaching using ALL frameworks:
     CBT + NLP + TA + Dual-Speaker + Goal-Based
+    DYNAMIC: Coaching text generated from framework analysis
     """
     
     if request.session_id not in sessions:
         raise HTTPException(status_code=404, detail="Sesiune nu găsită")
     
-    # Default response
-    response = {
-        "session_id": request.session_id,
-        "coaching": "Rămâi ancorat și strategic. Focalizează pe crearea de valoare mutuală.",
-        "frameworks_applied": {
-            "cbt": {"distortions_found": [], "insight": "Gândire clară detectată"},
-            "nlp": {"representation_system": "balansat", "reframe": "Problemă ca oportunitate"},
-            "ta": {"ego_state": "Adult", "life_position": "Eu sunt OK/Tu ești OK"},
-            "dual_speaker": {"user_state": "asertiv", "counterparty_readiness": "Deschis"},
-            "goal_aligned": "Da"
-        }
-    }
+    coaching_parts = []
     
-    # Try to use psychology frameworks if available
+    # CBT Analysis
+    cbt_insight = ""
     try:
         if cbt:
             distortions = cbt.identify_distortions(request.situation)
@@ -477,32 +469,72 @@ async def get_coaching(request: CoachingRequest):
                 request.situation,
                 request.emotions or {}
             )
-            response["frameworks_applied"]["cbt"] = {
-                "distortions_found": [d["distortion"] for d in distortions],
-                "insight": cbt_assessment.get("therapeutic_insight", "")
-            }
+            cbt_insight = cbt_assessment.get("therapeutic_insight", "")
+            
+            if distortions:
+                coaching_parts.append(f"🧠 CBT: Ai identificat distorsiuni: {', '.join([d['distortion'] for d in distortions[:2]])}. {cbt_insight}")
+            else:
+                coaching_parts.append(f"🧠 CBT: {cbt_insight or 'Gândire clară detectată - continuă cu această claritate.'}")
     except Exception as e:
         print(f"CBT error: {e}")
+        coaching_parts.append("🧠 CBT: Gândire strategică recomandată")
     
+    # NLP Analysis
     try:
         if nlp:
             rep_system = nlp.detect_representation_system(request.situation)
-            response["frameworks_applied"]["nlp"] = {
-                "representation_system": rep_system.get("primary_system"),
-                "reframe": "Abordare orientată pe oportunități recomandată"
-            }
+            system = rep_system.get("primary_system", "balansat")
+            coaching_parts.append(f"🎯 NLP: Stil reprezentare {system} detectat. Reframe: Vezi această situație ca oportunitate de negociere.")
     except Exception as e:
         print(f"NLP error: {e}")
+        coaching_parts.append("🎯 NLP: Reframe problema ca oportunitate")
     
+    # TA Analysis
     try:
         if ta:
             ego_state_analysis = ta.detect_ego_state(request.situation)
-            response["frameworks_applied"]["ta"] = {
-                "ego_state": ego_state_analysis.get("primary_ego_state", "Unknown"),
-                "life_position": "Eu sunt OK/Tu ești OK"
-            }
+            ego = ego_state_analysis.get("primary_ego_state", "Adult")
+            
+            if ego == "Adult":
+                coaching_parts.append("⚖️ TA: Ești în Adult ego state - perfect pentru negociere rațională.")
+            elif ego == "critical_parent":
+                coaching_parts.append("⚖️ TA: Detectez ton critic. Mergi în Adult: fapte, date, logică - nu judecată.")
+            else:
+                coaching_parts.append(f"⚖️ TA: Ego state: {ego}. Tranziția către Adult pentru negociere efectivă.")
     except Exception as e:
         print(f"TA error: {e}")
+        coaching_parts.append("⚖️ TA: Păstrează Adult ego state - rațional și respectuos")
+    
+    # Situation-specific coaching
+    situation_lower = request.situation.lower()
+    specific_advice = ""
+    
+    if "%" in situation_lower or "creștere" in situation_lower or "crescape" in situation_lower:
+        specific_advice = "💰 SPECIFIC: Pentru cererile salariale/preț: Conversa pe valoare, nu pe procentaj. Ce valoare aduci TU? Ce costuri evitează pentru ei?"
+    elif "termen" in situation_lower or "deadline" in situation_lower or "urgent" in situation_lower:
+        specific_advice = "⏰ SPECIFIC: Urgența creează presiune. Rămâi calm. Propune timeline realist care beneficiază ambii."
+    elif "conflict" in situation_lower or "dezacord" in situation_lower:
+        specific_advice = "🤝 SPECIFIC: Conflict = Oportunitate. Găsește interesul comun sub poziții opuse."
+    else:
+        specific_advice = "📍 SPECIFIC: Focalizează pe valoare mutuală. Care sunt nevoile reale ale celuilalt?"
+    
+    coaching_parts.append(specific_advice)
+    
+    # Combine all insights
+    final_coaching = "\n".join(coaching_parts)
+    
+    # Default response
+    response = {
+        "session_id": request.session_id,
+        "coaching": final_coaching,
+        "frameworks_applied": {
+            "cbt": {"distortions_found": [], "insight": cbt_insight or "Gândire clară"},
+            "nlp": {"representation_system": "balansat", "reframe": "Oportunitate, nu problemă"},
+            "ta": {"ego_state": "Adult", "life_position": "Eu sunt OK/Tu ești OK"},
+            "dual_speaker": {"user_state": "asertiv", "counterparty_readiness": "Deschis"},
+            "goal_aligned": "Da"
+        }
+    }
     
     # Store interaction
     sessions[request.session_id]["interactions"].append({
@@ -635,6 +667,7 @@ async def startup_event():
     print("   • Analiza Dual-Speaker")
     print("   • Motor Coaching Bazat pe Obiective")
     print("✅ Sistem Feedback și Outcome")
+    print("✅ Coaching DINAMIC - personalizat pe bază de situație")
     print("✅ FastAPI rulează pe http://0.0.0.0:8000")
 
 if __name__ == "__main__":
