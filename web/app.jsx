@@ -1,670 +1,299 @@
-// ============================================================
-// SANTINEL — VERSIUNEA WEB (React)
-// Aplicație web cu sistem de rating și outcome tracking
-// STEP 2: Web UI pentru feedback și métrici
-// API_BASE: Fixed pentru conectare la backend
-// FIX: Rating stars GUARANTEED visible (ID-based DOM control)
-// ============================================================
-
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import './app.css';
 
-const API_BASE = 'http://192.168.1.41:8000/api/v1';
-
 export default function SantinelApp() {
-  const [paginaCurenta, setPaginaCurenta] = useState('acasa');
-  const [sesiuni, setSesiuni] = useState([]);
-  const [sesiuneCurenta, setSesiuneCurenta] = useState(null);
-  const [incarca, setIncarca] = useState(false);
-  const [coaching, setCoaching] = useState(null);
-  const [numeContact, setNumeContact] = useState('');
-  const [numeFirma, setNumeFirma] = useState('');
-  const [metrici, setMetrici] = useState(null);
+  const [currentView, setCurrentView] = useState('home');
+  const [userId, setUserId] = useState('1');
+  const [sessionId, setSessionId] = useState('');
+  const [contactName, setContactName] = useState('');
+  const [companyName, setCompanyName] = useState('');
+  const [situation, setSituation] = useState('');
+  const [coaching, setCoaching] = useState('');
+  const [rating, setRating] = useState(5);
+  const [qualityScore, setQualityScore] = useState(0.95);
+  const [comments, setComments] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState('');
+  const [patterns, setPatterns] = useState([]);
 
-  // Preia sesiunile la incarcare
-  useEffect(() => {
-    preiaSesiuni();
-    preiaMetrici();
-  }, []);
+  const API_BASE = 'http://localhost:8002/api/v1';
 
-  const preiaSesiuni = async () => {
-    setIncarca(true);
-    try {
-      const response = await fetch(`${API_BASE}/sessions`);
-      const data = await response.json();
-      setSesiuni(data.sessions || []);
-    } catch (error) {
-      console.error('Eroare la preluarea sesiunilor:', error);
-    }
-    setIncarca(false);
-  };
+  // ===== SESSION MANAGEMENT =====
 
-  const preiaMetrici = async () => {
-    try {
-      const response = await fetch(`${API_BASE}/metrics/feedback`);
-      const data = await response.json();
-      setMetrici(data);
-    } catch (error) {
-      console.error('Eroare la preluarea metricilor:', error);
-    }
-  };
-
-  const creazaSesiune = async () => {
-    if (!numeContact || !numeFirma) {
-      alert('Te rog completează numele contactului și firmei');
+  const handleCreateSession = async () => {
+    if (!contactName || !companyName) {
+      setMessage('❌ Please fill in all fields');
       return;
     }
 
-    setIncarca(true);
+    setLoading(true);
     try {
       const response = await fetch(`${API_BASE}/sessions`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          contact_name: numeContact,
-          company_name: numeFirma,
-          user_id: 'user_' + Date.now()
+          contact_name: contactName,
+          company_name: companyName,
+          user_id: userId
         })
       });
+
       const data = await response.json();
-      
       if (response.ok) {
-        setSesiuneCurenta(data);
-        setCoaching(null);
-        setNumeContact('');
-        setNumeFirma('');
-        
-        // Hide rating section on new session
-        const ratingSection = document.getElementById('rating-section');
-        if (ratingSection) ratingSection.style.display = 'none';
-        
-        alert('✅ Sesiune creată: ' + data.session_id);
+        setSessionId(data.session_id);
+        setMessage(`✅ ${data.message}`);
+        setCurrentView('coaching');
       } else {
-        alert('❌ Eroare la crearea sesiunii');
+        setMessage(`❌ Error: ${data.detail}`);
       }
     } catch (error) {
-      alert('Eroare: ' + error.message);
+      setMessage(`❌ Network error: ${error.message}`);
+    } finally {
+      setLoading(false);
     }
-    setIncarca(false);
   };
 
-  const obtineCoaching = async (situatie) => {
-    if (!situatie) {
-      alert('Te rog descrie situația de negociere');
+  // ===== COACHING =====
+
+  const handleGetCoaching = async () => {
+    if (!situation) {
+      setMessage('❌ Please describe your situation');
       return;
     }
 
-    setIncarca(true);
+    setLoading(true);
     try {
       const response = await fetch(`${API_BASE}/coaching`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          session_id: sesiuneCurenta?.session_id || 'test_session',
-          situation: situatie
+          session_id: sessionId,
+          situation: situation,
+          is_reactive: false
         })
       });
-      
+
       const data = await response.json();
-      console.log('Coaching response:', data);
-      
       if (response.ok) {
-        const textCoaching = data.coaching || data.message || JSON.stringify(data);
-        setCoaching(textCoaching);
-        console.log('✅ Coaching set');
-        
-        // FORCE show rating section by ID
-        setTimeout(() => {
-          const ratingSection = document.getElementById('rating-section');
-          if (ratingSection) {
-            ratingSection.style.display = 'block';
-            console.log('✅ Rating section shown');
-            ratingSection.scrollIntoView({ behavior: 'smooth' });
-          }
-        }, 100);
-        
+        setCoaching(data.coaching);
+        setMessage('✅ Coaching delivered');
+        setCurrentView('feedback');
       } else {
-        alert('❌ Eroare la obținerea coaching');
+        setMessage(`❌ Error: ${data.detail}`);
       }
     } catch (error) {
-      alert('Eroare: ' + error.message);
+      setMessage(`❌ Network error: ${error.message}`);
+    } finally {
+      setLoading(false);
     }
-    
-    setIncarca(false);
   };
 
-  const obtineAegis = async () => {
-    setIncarca(true);
+  // ===== FEEDBACK =====
+
+  const handleSubmitFeedback = async () => {
+    setLoading(true);
     try {
-      const response = await fetch(`${API_BASE}/aegis/contact`, {
+      const response = await fetch(`${API_BASE}/feedback`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          contact_name: sesiuneCurenta?.contact_name || numeContact,
-          company_name: sesiuneCurenta?.company_name || numeFirma
+          session_id: sessionId,
+          coaching_id: `coaching_${Date.now()}`,
+          rating: parseInt(rating),
+          quality_score: parseFloat(qualityScore),
+          useful_aspects: ['Strategy', 'Clarity', 'Framework'],
+          comments: comments
         })
       });
+
       const data = await response.json();
-      
       if (response.ok) {
-        alert('✅ Context AEGIS: ' + JSON.stringify(data, null, 2));
+        setMessage(`✅ ${data.message}`);
+        setCurrentView('export');
       } else {
-        alert('⚠️ AEGIS indisponibil (mod simulare)');
+        setMessage(`❌ Error: ${data.detail}`);
       }
     } catch (error) {
-      alert('Eroare: ' + error.message);
+      setMessage(`❌ Network error: ${error.message}`);
+    } finally {
+      setLoading(false);
     }
-    setIncarca(false);
   };
 
-  // PAGINA: ACASĂ
-  const PaginaAcasa = () => (
-    <div className="page">
-      <div className="header">
-        <h1>🎯 SANTINEL</h1>
-        <p>Asistent AI pentru Negocieri</p>
-      </div>
+  // ===== EXPORT PATTERNS =====
 
-      <div className="stats">
-        <div className="stat">
-          <div className="stat-value">{sesiuni.length}</div>
-          <div className="stat-label">Sesiuni</div>
-        </div>
-        <div className="stat">
-          <div className="stat-value">⭐ {metrici?.average_rating?.toFixed(1) || '0'}</div>
-          <div className="stat-label">Rating Mediu</div>
-        </div>
-        <div className="stat">
-          <div className="stat-value">{metrici?.total_ratings || 0}</div>
-          <div className="stat-label">Evaluări</div>
-        </div>
-      </div>
-
-      <button 
-        className="btn-primary"
-        onClick={() => setPaginaCurenta('sesiune')}
-      >
-        📞 Sesiune Nouă
-      </button>
-
-      <button 
-        className="btn-secondary"
-        onClick={() => setPaginaCurenta('istoric')}
-      >
-        📋 Istoric
-      </button>
-
-      <button 
-        className="btn-secondary"
-        onClick={() => setPaginaCurenta('metrici')}
-      >
-        📊 Metrici
-      </button>
-
-      <div className="info">
-        <h3>✨ Funcții:</h3>
-        <ul>
-          <li>🤖 Coaching IA în timp real</li>
-          <li>⭐ Sistem de rating și feedback</li>
-          <li>📊 Metrici și analiză performanță</li>
-          <li>🔐 Protecție date & criptare</li>
-          <li>📈 Auto-îmbunătățire LLM</li>
-          <li>🌍 Scalabil cloud (1M+ utilizatori)</li>
-        </ul>
-      </div>
-    </div>
-  );
-
-  // PAGINA: SESIUNE NOUĂ
-  const PaginaSesiune = () => (
-    <div className="page">
-      <h1>📞 Sesiune Nouă de Negociere</h1>
-
-      <div className="form-group">
-        <label>Nume Contact:</label>
-        <input
-          type="text"
-          value={numeContact}
-          onChange={(e) => setNumeContact(e.target.value)}
-          placeholder="Ex: Ion Popescu"
-        />
-      </div>
-
-      <div className="form-group">
-        <label>Nume Firmă:</label>
-        <input
-          type="text"
-          value={numeFirma}
-          onChange={(e) => setNumeFirma(e.target.value)}
-          placeholder="Ex: ABC SRL"
-        />
-      </div>
-
-      <button 
-        className="btn-primary"
-        onClick={creazaSesiune}
-        disabled={incarca}
-      >
-        {incarca ? '⏳ Se creează...' : '✅ Crează Sesiune'}
-      </button>
-
-      {sesiuneCurenta && (
-        <div className="session-info">
-          <h3>✅ Sesiune Creată!</h3>
-          <p><strong>ID Sesiune:</strong> {sesiuneCurenta.session_id}</p>
-          <p><strong>Contact:</strong> {sesiuneCurenta.contact_name}</p>
-          <p><strong>Firmă:</strong> {sesiuneCurenta.company_name}</p>
-          <p><strong>Creat:</strong> {sesiuneCurenta.created_at}</p>
-        </div>
-      )}
-
-      {sesiuneCurenta && (
-        <div className="coaching-section">
-          <h3>💬 Obține Coaching</h3>
-          <InterfataCoaching 
-            sesiune={sesiuneCurenta} 
-            onObtineCoaching={obtineCoaching} 
-            incarca={incarca}
-            coaching={coaching}
-            onRefreshMetrici={preiaMetrici}
-          />
-        </div>
-      )}
-
-      <button 
-        className="btn-secondary"
-        onClick={() => setPaginaCurenta('acasa')}
-      >
-        ← Înapoi
-      </button>
-    </div>
-  );
-
-  // PAGINA: INTERFAȚĂ COACHING + RATING
-  const InterfataCoaching = ({ sesiune, onObtineCoaching, incarca, coaching, onRefreshMetrici }) => {
-    const [situatie, setSituatie] = useState('');
-    const [rating, setRating] = useState(0);
-    const [aspecteUtile, setAspecteUtile] = useState([]);
-    const [comentarii, setComentarii] = useState('');
-
-    const submitFeedback = async () => {
-      if (rating === 0) {
-        alert('Te rog selectează o evaluare (1-5 stele)');
-        return;
+  const handleExportPatterns = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch(`${API_BASE}/finetuning/export`);
+      const data = await response.json();
+      if (response.ok) {
+        setPatterns(data.data.training_examples);
+        setMessage(`✅ Exported ${data.patterns} patterns`);
+      } else {
+        setMessage(`❌ Error: ${data.detail}`);
       }
+    } catch (error) {
+      setMessage(`❌ Network error: ${error.message}`);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-      console.log('📤 Submitting feedback with rating:', rating);
+  // ===== RENDER: HOME VIEW =====
 
-      try {
-        const response = await fetch(`${API_BASE}/feedback`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            session_id: sesiune.session_id,
-            coaching_id: 'coaching_' + Date.now(),
-            rating: rating,
-            quality_score: rating / 5,
-            useful_aspects: aspecteUtile,
-            comments: comentarii
-          })
-        });
-
-        const data = await response.json();
-        console.log('Feedback response:', data);
-
-        if (response.ok) {
-          alert('✅ ' + data.message);
-          setRating(0);
-          setAspecteUtile([]);
-          setComentarii('');
-          
-          // Hide rating section
-          const ratingSection = document.getElementById('rating-section');
-          if (ratingSection) ratingSection.style.display = 'none';
-          
-          onRefreshMetrici();
-        } else {
-          alert('❌ Eroare la trimiterea feedback');
-        }
-      } catch (error) {
-        alert('Eroare: ' + error.message);
-        console.error('Feedback error:', error);
-      }
-    };
-
-    const toggleAspect = (aspect) => {
-      setAspecteUtile(prev => 
-        prev.includes(aspect) 
-          ? prev.filter(a => a !== aspect)
-          : [...prev, aspect]
-      );
-    };
-
-    const submitOutcome = async (success) => {
-      console.log('📊 Submitting outcome:', success ? 'SUCCESS' : 'FAILED');
-
-      try {
-        const response = await fetch(`${API_BASE}/outcome`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            session_id: sesiune.session_id,
-            contact_name: sesiune.contact_name,
-            company_name: sesiune.company_name,
-            negotiation_type: 'general',
-            success: success,
-            target_value: 100,
-            actual_value: success ? 105 : 95,
-            target_achieved: success ? 95 : 70,
-            actual_achieved: success ? 100 : 75,
-            notes: situatie.substring(0, 100)
-          })
-        });
-
-        const data = await response.json();
-        console.log('Outcome response:', data);
-
-        if (response.ok) {
-          alert('✅ ' + data.message);
-          onRefreshMetrici();
-        } else {
-          alert('❌ Eroare la înregistrarea rezultatului');
-        }
-      } catch (error) {
-        alert('Eroare: ' + error.message);
-        console.error('Outcome error:', error);
-      }
-    };
-
+  if (currentView === 'home') {
     return (
-      <div>
-        <textarea
-          value={situatie}
-          onChange={(e) => setSituatie(e.target.value)}
-          placeholder="Descrie situația de negociere..."
-          rows="4"
-        />
+      <div className="container">
+        <h1>🧠 SANTINEL v3.0</h1>
+        <p>AI-Powered Psychological Negotiation Coach</p>
 
-        <div className="button-group">
-          <button 
-            className="btn-primary"
-            onClick={() => onObtineCoaching(situatie)}
-            disabled={incarca}
-          >
-            {incarca ? '⏳ Se încarcă...' : '🧠 OBȚINE COACHING'}
+        <div className="form-section">
+          <h2>Create Session</h2>
+          <input
+            type="text"
+            placeholder="Contact Name"
+            value={contactName}
+            onChange={(e) => setContactName(e.target.value)}
+          />
+          <input
+            type="text"
+            placeholder="Company Name"
+            value={companyName}
+            onChange={(e) => setCompanyName(e.target.value)}
+          />
+          <button onClick={handleCreateSession} disabled={loading}>
+            {loading ? 'Creating...' : 'Create Session'}
           </button>
+        </div>
 
-          <button 
-            className="btn-secondary"
-            onClick={() => {
-              try {
-                fetch(`${API_BASE}/aegis/contact`, {
-                  method: 'POST',
-                  headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({
-                    contact_name: sesiune.contact_name,
-                    company_name: sesiune.company_name
-                  })
-                });
-              } catch (e) {}
-              alert('📊 Intel AEGIS - coming soon');
-            }}
-            disabled={incarca}
-          >
-            {incarca ? '⏳ Se încarcă...' : '📊 Intel AEGIS'}
+        {message && <p className="message">{message}</p>}
+        {sessionId && <p className="success">Session ID: {sessionId}</p>}
+      </div>
+    );
+  }
+
+  // ===== RENDER: COACHING VIEW =====
+
+  if (currentView === 'coaching') {
+    return (
+      <div className="container">
+        <h1>🎯 Negotiation Coaching</h1>
+        <p>Session: {sessionId}</p>
+
+        <div className="form-section">
+          <h2>Describe Your Situation</h2>
+          <textarea
+            placeholder="What's the negotiation scenario?"
+            value={situation}
+            onChange={(e) => setSituation(e.target.value)}
+            rows={5}
+          />
+          <button onClick={handleGetCoaching} disabled={loading}>
+            {loading ? 'Generating...' : 'Get Coaching'}
           </button>
         </div>
 
         {coaching && (
-          <div className="coaching-result">
-            <h4>💡 Sfat Coaching:</h4>
-            <p>{coaching}</p>
+          <div className="coaching-section">
+            <h2>💡 Coaching Response</h2>
+            <div className="coaching-text">{coaching}</div>
           </div>
         )}
 
-        <div 
-          id="rating-section"
-          style={{
-            display: 'none',
-            backgroundColor: '#f0f8ff', 
-            padding: '20px', 
-            borderRadius: '8px', 
-            marginTop: '20px', 
-            border: '3px solid #4169E1'
-          }}
-        >
-          <h4 style={{color: '#4169E1', fontSize: '20px'}}>⭐ EVALUEAZĂ COACHING-UL (1-5 stele)</h4>
-          
-          <div style={{
-            display: 'flex', 
-            gap: '15px', 
-            marginBottom: '20px', 
-            fontSize: '50px',
-            justifyContent: 'center'
-          }}>
-            {[1, 2, 3, 4, 5].map(star => (
-              <button
-                key={star}
-                onClick={() => {
-                  setRating(star);
-                  console.log('Star clicked:', star);
-                }}
-                style={{
-                  background: 'none',
-                  border: 'none',
-                  cursor: 'pointer',
-                  color: rating >= star ? '#FFD700' : '#CCCCCC',
-                  fontSize: '50px',
-                  padding: '5px',
-                  transition: 'all 0.2s ease'
-                }}
-                onMouseEnter={(e) => {
-                  if (rating === 0) {
-                    e.target.style.color = '#FFD700';
-                    e.target.style.transform = 'scale(1.2)';
-                  }
-                }}
-                onMouseLeave={(e) => {
-                  if (rating === 0) {
-                    e.target.style.color = '#CCCCCC';
-                    e.target.style.transform = 'scale(1)';
-                  }
-                }}
-              >
-                ★
-              </button>
-            ))}
-          </div>
+        {message && <p className="message">{message}</p>}
 
-          {rating > 0 && (
-            <p style={{textAlign: 'center', fontSize: '18px', color: '#4169E1', fontWeight: 'bold'}}>
-              ✅ Ai selectat {rating} stele
-            </p>
-          )}
-
-          <div style={{marginBottom: '20px'}}>
-            <label style={{fontWeight: 'bold', display: 'block', marginBottom: '10px'}}>Ce ți-a fost util?</label>
-            <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px'}}>
-              {['Strategie', 'Psihologie', 'Tactici', 'Empatie', 'Claritate'].map(aspect => (
-                <label key={aspect} style={{display: 'flex', alignItems: 'center', gap: '8px'}}>
-                  <input
-                    type="checkbox"
-                    checked={aspecteUtile.includes(aspect.toLowerCase())}
-                    onChange={() => toggleAspect(aspect.toLowerCase())}
-                  />
-                  {aspect}
-                </label>
-              ))}
-            </div>
-          </div>
-
-          <textarea
-            value={comentarii}
-            onChange={(e) => setComentarii(e.target.value)}
-            placeholder="Comentarii suplimentare (opțional)..."
-            rows="2"
-            style={{width: '100%', padding: '10px', marginBottom: '15px', borderRadius: '4px'}}
-          />
-
-          <button 
-            style={{
-              width: '100%',
-              padding: '12px',
-              backgroundColor: '#4169E1',
-              color: 'white',
-              border: 'none',
-              borderRadius: '4px',
-              cursor: 'pointer',
-              fontSize: '16px',
-              fontWeight: 'bold'
-            }}
-            onClick={submitFeedback}
-          >
-            ✅ Trimite Feedback ({rating} stele)
-          </button>
-
-          <div style={{marginTop: '20px', paddingTop: '20px', borderTop: '1px solid #ddd'}}>
-            <h4>📊 Rezultatul Negocierii</h4>
-            <p>Cum a decurs negocierea după coaching?</p>
-            
-            <div style={{display: 'grid', gap: '10px', marginTop: '10px'}}>
-              <button 
-                style={{
-                  padding: '12px',
-                  backgroundColor: '#28a745',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: '4px',
-                  cursor: 'pointer',
-                  fontSize: '14px'
-                }}
-                onClick={() => submitOutcome(true)}
-              >
-                ✅ Succes - Negocierea a mers bine
-              </button>
-              
-              <button 
-                style={{
-                  padding: '12px',
-                  backgroundColor: '#ffc107',
-                  color: 'black',
-                  border: 'none',
-                  borderRadius: '4px',
-                  cursor: 'pointer',
-                  fontSize: '14px'
-                }}
-                onClick={() => submitOutcome(false)}
-              >
-                ⚠️ Nereușit - Negocierea a fost mai dificilă
-              </button>
-            </div>
-          </div>
-        </div>
+        <button onClick={() => setCurrentView('home')}>Back</button>
       </div>
     );
-  };
+  }
 
-  // PAGINA: ISTORIC
-  const PaginaIstoric = () => (
-    <div className="page">
-      <h1>📋 Istoric Sesiuni</h1>
+  // ===== RENDER: FEEDBACK VIEW =====
 
-      {sesiuni.length === 0 ? (
-        <p className="empty-state">Nicio sesiune încă. Creează una pentru a începe!</p>
-      ) : (
-        <div className="sessions-list">
-          {sesiuni.map((sesiune, index) => (
-            <div key={index} className="session-item">
-              <div className="session-item-header">
-                <h3>{sesiune.contact || 'Necunoscut'}</h3>
-                <span className="company">{sesiune.company || 'Necunoscut'}</span>
-              </div>
-              <p className="session-id">ID: {sesiune.id || 'N/A'}</p>
-              <p className="session-date">{sesiune.created_at || 'N/A'}</p>
-            </div>
-          ))}
+  if (currentView === 'feedback') {
+    return (
+      <div className="container">
+        <h1>⭐ Rate Coaching</h1>
+        <p>Session: {sessionId}</p>
+
+        <div className="form-section">
+          <h2>How helpful was the coaching?</h2>
+          
+          <label>Rating (1-5):</label>
+          <select value={rating} onChange={(e) => setRating(e.target.value)}>
+            <option value="1">1 - Not helpful</option>
+            <option value="2">2 - Somewhat helpful</option>
+            <option value="3">3 - Neutral</option>
+            <option value="4">4 - Very helpful</option>
+            <option value="5">5 - Extremely helpful</option>
+          </select>
+
+          <label>Quality Score (0-1):</label>
+          <input
+            type="number"
+            min="0"
+            max="1"
+            step="0.01"
+            value={qualityScore}
+            onChange={(e) => setQualityScore(e.target.value)}
+          />
+
+          <label>Comments:</label>
+          <textarea
+            placeholder="What worked? What could improve?"
+            value={comments}
+            onChange={(e) => setComments(e.target.value)}
+            rows={3}
+          />
+
+          <button onClick={handleSubmitFeedback} disabled={loading}>
+            {loading ? 'Submitting...' : 'Submit Feedback'}
+          </button>
         </div>
-      )}
 
-      <button 
-        className="btn-secondary"
-        onClick={() => setPaginaCurenta('acasa')}
-      >
-        ← Înapoi
-      </button>
-    </div>
-  );
+        {message && <p className="message">{message}</p>}
 
-  // PAGINA: METRICI
-  const PaginaMetrici = () => (
-    <div className="page">
-      <h1>📊 Metrici și Performanță</h1>
-
-      {metrici ? (
-        <div className="metrics-container">
-          <div className="metric-card">
-            <h3>⭐ Rating Mediu</h3>
-            <div className="metric-value">{metrici.average_rating?.toFixed(2) || 'N/A'}</div>
-            <p>din 5 stele</p>
-          </div>
-
-          <div className="metric-card">
-            <h3>📈 Total Evaluări</h3>
-            <div className="metric-value">{metrici.total_ratings || 0}</div>
-            <p>evaluări primite</p>
-          </div>
-
-          <div className="metric-card">
-            <h3>✅ Scor Calitate</h3>
-            <div className="metric-value">{(metrici.average_quality_score * 100)?.toFixed(0) || 0}%</div>
-            <p>scor mediu calitate</p>
-          </div>
-        </div>
-      ) : (
-        <p className="empty-state">Se încarcă metricile...</p>
-      )}
-
-      <div className="metrics-info">
-        <h3>💡 Interpretare Metrici:</h3>
-        <ul>
-          <li>⭐ Rating = Evaluarea directă a utilizatorului (1-5 stele)</li>
-          <li>📈 Total Evaluări = Numărul de sesiuni evaluate</li>
-          <li>✅ Scor Calitate = Medie ponderată a satisfacției</li>
-        </ul>
+        <button onClick={() => setCurrentView('coaching')}>Back</button>
       </div>
+    );
+  }
 
-      <button 
-        className="btn-secondary"
-        onClick={() => {
-          preiaMetrici();
-          alert('✅ Metrici reîncărcate');
-        }}
-      >
-        🔄 Reîncarcă Metrici
-      </button>
+  // ===== RENDER: EXPORT VIEW =====
 
-      <button 
-        className="btn-secondary"
-        onClick={() => setPaginaCurenta('acasa')}
-      >
-        ← Înapoi
-      </button>
-    </div>
-  );
+  if (currentView === 'export') {
+    return (
+      <div className="container">
+        <h1>📊 Export Patterns</h1>
 
-  // RANDARE PAGINA CURENTĂ
-  return (
-    <div className="app">
-      {paginaCurenta === 'acasa' && <PaginaAcasa />}
-      {paginaCurenta === 'sesiune' && <PaginaSesiune />}
-      {paginaCurenta === 'istoric' && <PaginaIstoric />}
-      {paginaCurenta === 'metrici' && <PaginaMetrici />}
-
-      {incarca && (
-        <div className="loading-overlay">
-          <div className="spinner">⏳</div>
+        <div className="form-section">
+          <h2>High-Quality Coaching Patterns</h2>
+          <p>Ready for fine-tuning</p>
+          <button onClick={handleExportPatterns} disabled={loading}>
+            {loading ? 'Exporting...' : 'Export Patterns'}
+          </button>
         </div>
-      )}
-    </div>
-  );
+
+        {patterns.length > 0 && (
+          <div className="patterns-section">
+            <h2>📈 Patterns Found: {patterns.length}</h2>
+            {patterns.map((pattern, idx) => (
+              <div key={idx} className="pattern-card">
+                <h4>Pattern {pattern.pattern_id}</h4>
+                <p><strong>Rating:</strong> {pattern.rating}/5</p>
+                <p><strong>Quality:</strong> {pattern.quality_score.toFixed(2)}</p>
+                <p><strong>Text:</strong> {pattern.coaching_text.substring(0, 100)}...</p>
+                <p><strong>Frameworks:</strong> {pattern.frameworks_used.join(', ')}</p>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {message && <p className="message">{message}</p>}
+
+        <button onClick={() => setCurrentView('home')}>New Session</button>
+      </div>
+    );
+  }
+
+  return <div className="container">Unknown view</div>;
 }
