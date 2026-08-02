@@ -7,16 +7,21 @@ import os
 from dotenv import load_dotenv
 import psycopg2
 from psycopg2.extras import RealDictCursor
-import uuid
 
 load_dotenv()
 
 app = FastAPI()
 
-# CORS middleware
+# EXPLICIT CORS - Allow localhost:5173
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=[
+        "http://localhost:5173",
+        "http://localhost:8002",
+        "http://127.0.0.1:5173",
+        "http://127.0.0.1:8002",
+        "*"
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -56,7 +61,6 @@ class FeedbackSubmit(BaseModel):
 # ===== PSYCHOLOGY FRAMEWORKS =====
 
 def apply_cbt(situation: str) -> dict:
-    """Cognitive Behavioral Therapy analysis"""
     distortions = []
     if "will never" in situation.lower() or "can't" in situation.lower():
         distortions.append("catastrophizing")
@@ -69,7 +73,6 @@ def apply_cbt(situation: str) -> dict:
     }
 
 def apply_nlp(situation: str) -> dict:
-    """Neuro-Linguistic Programming"""
     rep_system = "balansat"
     if any(word in situation.lower() for word in ["see", "look", "view", "picture"]):
         rep_system = "visual"
@@ -84,21 +87,18 @@ def apply_nlp(situation: str) -> dict:
     }
 
 def apply_ta(situation: str) -> dict:
-    """Transactional Analysis"""
     return {
         "ego_state": "Adult",
         "life_position": "Eu sunt OK/Tu ești OK"
     }
 
 def apply_dual_speaker(situation: str) -> dict:
-    """Dual Speaker Analysis"""
     return {
         "user_state": "asertiv",
         "counterparty_readiness": "Deschis"
     }
 
 def apply_goal_based(situation: str) -> dict:
-    """Goal-Based Coaching"""
     return {
         "alignment": "Da"
     }
@@ -107,14 +107,12 @@ def apply_goal_based(situation: str) -> dict:
 
 @app.post("/api/v1/sessions")
 async def create_session(session: SessionCreate):
-    """Create new session"""
     conn = get_db_connection()
     cursor = conn.cursor(cursor_factory=RealDictCursor)
     
     try:
         session_id = f"session_{datetime.now().timestamp()}"
         
-        # Insert into sessions table
         cursor.execute("""
             INSERT INTO sessions (session_id, user_id, session_type, objective, created_at)
             VALUES (%s, %s, %s, %s, %s)
@@ -140,7 +138,6 @@ async def create_session(session: SessionCreate):
 
 @app.get("/api/v1/sessions/{session_id}")
 async def get_session(session_id: str):
-    """Get session details"""
     conn = get_db_connection()
     cursor = conn.cursor(cursor_factory=RealDictCursor)
     
@@ -160,12 +157,10 @@ async def get_session(session_id: str):
 
 @app.post("/api/v1/coaching")
 async def get_coaching(request: CoachingRequest):
-    """Generate coaching based on situation"""
     conn = get_db_connection()
     cursor = conn.cursor(cursor_factory=RealDictCursor)
     
     try:
-        # Verify session exists
         cursor.execute("SELECT * FROM sessions WHERE session_id = %s", (request.session_id,))
         session = cursor.fetchone()
         
@@ -175,13 +170,11 @@ async def get_coaching(request: CoachingRequest):
         print(f"\n🔍 DEBUG COACHING: session_id={request.session_id}")
         print(f"   ✅ Session found")
         
-        # Get interaction count
         cursor.execute("SELECT COUNT(*) as count FROM coaching_interactions WHERE session_id = %s", (request.session_id,))
         interactions = cursor.fetchone()
         interactions_before = interactions['count'] if interactions else 0
         print(f"   interactions BEFORE: {interactions_before}")
         
-        # Apply psychology frameworks
         cbt = apply_cbt(request.situation)
         nlp = apply_nlp(request.situation)
         ta = apply_ta(request.situation)
@@ -190,7 +183,6 @@ async def get_coaching(request: CoachingRequest):
         
         frameworks_applied = ["CBT", "NLP", "TA", "Dual-Speaker", "Goal-Based"]
         
-        # Generate coaching response
         coaching_text = f"""🧠 CBT: {cbt['insight']}
 🎯 NLP: Stil reprezentare {nlp['representation_system']} detectat. Reframe: {nlp['reframe']}
 ⚖️ TA: Detectem ton critic. Mergi în Adult: fapte, date, logică - nu judecată.
@@ -198,7 +190,6 @@ async def get_coaching(request: CoachingRequest):
         
         coaching_id = f"coaching_{datetime.now().timestamp()}"
         
-        # Store interaction in database
         print(f"   🔄 Storing interaction...")
         cursor.execute("""
             INSERT INTO coaching_interactions 
@@ -216,12 +207,10 @@ async def get_coaching(request: CoachingRequest):
         
         conn.commit()
         
-        # Get updated count
         cursor.execute("SELECT COUNT(*) as count FROM coaching_interactions WHERE session_id = %s", (request.session_id,))
         interactions_after = cursor.fetchone()['count']
         print(f"   interactions AFTER: {interactions_after}")
         print(f"   coaching_id: {coaching_id}")
-        print(f"   frameworks_applied: {frameworks_applied}")
         print(f"   ✅ Interaction stored")
         
         return {
@@ -247,12 +236,10 @@ async def get_coaching(request: CoachingRequest):
 
 @app.post("/api/v1/feedback")
 async def submit_feedback(feedback: FeedbackSubmit):
-    """Submit feedback after coaching"""
     conn = get_db_connection()
     cursor = conn.cursor(cursor_factory=RealDictCursor)
     
     try:
-        # Store feedback
         cursor.execute("""
             INSERT INTO feedback 
             (session_id, coaching_id, rating, quality_score, useful_aspects, comments, timestamp)
@@ -283,16 +270,14 @@ async def submit_feedback(feedback: FeedbackSubmit):
         cursor.close()
         conn.close()
 
-# ===== FINE-TUNING / EXPORT =====
+# ===== EXPORT =====
 
 @app.get("/api/v1/finetuning/export")
 async def export_patterns():
-    """Export high-quality patterns for fine-tuning"""
     conn = get_db_connection()
     cursor = conn.cursor(cursor_factory=RealDictCursor)
     
     try:
-        # Get high-quality patterns (rating >= 4)
         cursor.execute("""
             SELECT f.coaching_id, f.comments, f.rating, f.quality_score, f.session_id
             FROM feedback f
@@ -343,18 +328,16 @@ async def export_patterns():
 
 @app.get("/api/v1/finetuning/status/{job_id}")
 async def finetuning_status(job_id: str):
-    """Check fine-tuning job status"""
     return {
         "job_id": job_id,
         "status": "pending",
         "message": "Fine-tuning feature coming soon"
     }
 
-# ===== HEALTH CHECK =====
+# ===== HEALTH =====
 
 @app.get("/api/v1/health")
 async def health_check():
-    """Health check endpoint"""
     return {
         "status": "✅ SANTINEL Backend v3.0-PHASE3 (PostgreSQL)",
         "database": "Connected",
