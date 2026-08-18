@@ -2,6 +2,102 @@ import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom/client';
 import './app.css';
 
+function CookieConsent() {
+  const [showConsent, setShowConsent] = useState(false);
+
+  useEffect(() => {
+    const cookieConsent = localStorage.getItem('cookieConsent');
+    if (!cookieConsent) {
+      setShowConsent(true);
+    }
+  }, []);
+
+  const handleAccept = () => {
+    localStorage.setItem('cookieConsent', 'accepted');
+    setShowConsent(false);
+  };
+
+  const handleReject = () => {
+    localStorage.setItem('cookieConsent', 'rejected');
+    setShowConsent(false);
+  };
+
+  if (!showConsent) return null;
+
+  return (
+    <div style={{
+      position: 'fixed',
+      bottom: 0,
+      left: 0,
+      right: 0,
+      backgroundColor: 'rgba(15, 23, 42, 0.95)',
+      borderTop: '1px solid #334155',
+      padding: '20px',
+      zIndex: '999',
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      flexWrap: 'wrap',
+      gap: '20px'
+    }}>
+      <div style={{ flex: 1, minWidth: '250px' }}>
+        <p style={{ margin: '0 0 10px 0', fontSize: '0.9rem', color: '#cbd5e1' }}>
+          <strong>Cookie & Privacy Notice</strong>
+        </p>
+        <p style={{ margin: 0, fontSize: '0.85rem', color: '#94a3b8' }}>
+          We use cookies for authentication and preferences. By accepting, you consent to our Privacy Policy and Terms of Service.
+        </p>
+      </div>
+      <div style={{ display: 'flex', gap: '10px' }}>
+        <button
+          onClick={handleReject}
+          style={{
+            padding: '10px 20px',
+            backgroundColor: 'transparent',
+            border: '1px solid #475569',
+            color: '#cbd5e1',
+            borderRadius: '6px',
+            cursor: 'pointer',
+            fontSize: '0.9rem',
+            fontWeight: '600',
+            transition: 'all 0.2s ease'
+          }}
+          onMouseEnter={(e) => {
+            e.target.style.backgroundColor = 'rgba(71, 85, 105, 0.2)';
+          }}
+          onMouseLeave={(e) => {
+            e.target.style.backgroundColor = 'transparent';
+          }}
+        >
+          Reject
+        </button>
+        <button
+          onClick={handleAccept}
+          style={{
+            padding: '10px 20px',
+            background: 'linear-gradient(135deg, #6366f1 0%, #4f46e5 100%)',
+            border: 'none',
+            color: 'white',
+            borderRadius: '6px',
+            cursor: 'pointer',
+            fontSize: '0.9rem',
+            fontWeight: '600',
+            transition: 'all 0.2s ease'
+          }}
+          onMouseEnter={(e) => {
+            e.target.style.boxShadow = '0 4px 12px rgba(99, 102, 241, 0.4)';
+          }}
+          onMouseLeave={(e) => {
+            e.target.style.boxShadow = 'none';
+          }}
+        >
+          Accept All
+        </button>
+      </div>
+    </div>
+  );
+}
+
 function SantinelApp() {
   const [currentView, setCurrentView] = useState('home');
   const [userId, setUserId] = useState('2');
@@ -379,7 +475,7 @@ function SantinelApp() {
             {patterns.map((pattern, idx) => (
               <div key={idx} className="pattern-card">
                 <h4>Pattern {pattern.pattern_id}</h4>
-                <p><strong>Rating:</strong> {pattern.rating}/5 ⭐</p>
+                <p><strong>Rating:</strong> {pattern.rating}/5</p>
                 <p><strong>Quality Score:</strong> {(pattern.quality_score * 100).toFixed(0)}%</p>
                 <p><strong>Coaching Excerpt:</strong></p>
                 <p style={{ fontSize: '0.85rem', fontStyle: 'italic' }}>
@@ -415,8 +511,17 @@ function SantinelApp() {
   );
 }
 
+function AppWithConsent() {
+  return (
+    <>
+      <SantinelApp />
+      <CookieConsent />
+    </>
+  );
+}
+
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <SantinelApp />
+    <AppWithConsent />
   </React.StrictMode>,
 )

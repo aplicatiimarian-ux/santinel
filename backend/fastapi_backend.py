@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from datetime import datetime, timedelta
@@ -7,6 +7,8 @@ import os
 from dotenv import load_dotenv
 import psycopg2
 from psycopg2.extras import RealDictCursor
+import jwt
+import hashlib
 
 load_dotenv()
 
@@ -27,6 +29,9 @@ app.add_middleware(
 )
 
 DATABASE_URL = "postgresql://postgres:postgres123@localhost:5432/santinel_prod"
+JWT_SECRET = os.getenv("JWT_SECRET", "santinel-secret-key-change-in-production")
+JWT_ALGORITHM = "HS256"
+TOKEN_EXPIRY_HOURS = 24
 
 cache_export = None
 cache_export_time = None
@@ -39,6 +44,25 @@ def get_db_connection():
     except Exception as e:
         print(f"ERROR: Database connection error: {e}")
         raise HTTPException(status_code=500, detail="Database connection failed")
+
+def hash_password(password: str) -> str:
+    return hashlib.sha256(password.encode()).hexdigest()
+
+def create_token(user_id: str) -> str:
+    payload = {
+        "user_id": user_id,
+        "exp": datetime.utcnow() + timedelta(hours=TOKEN_EXPIRY_HOURS)
+    }
+    return jwt.encode(payload, JWT_SECRET, algorithm=JWT_ALGORITHM)
+
+def verify_token(token: str) -> str:
+    try:
+        payload = jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
+        return payload.get("user_id")
+    except jwt.ExpiredSignatureError:
+        raise HTTPException(status_code=401, detail="Token expired")
+    except jwt.InvalidTokenError:
+        raise HTTPException(status_code=401, detail="Invalid token")
 
 class SessionCreate(BaseModel):
     contact_name: str
@@ -57,6 +81,10 @@ class FeedbackSubmit(BaseModel):
     quality_score: float
     useful_aspects: list
     comments: str
+
+class LoginRequest(BaseModel):
+    user_id: str
+    password: str
 
 def apply_cbt(situation: str) -> dict:
     distortions = []
@@ -100,6 +128,34 @@ def apply_goal_based(situation: str) -> dict:
     return {
         "alignment": "Da"
     }
+
+@app.post("/api/v1/login")
+async def login(request: LoginRequest):
+    conn = get_db_connection()
+    cursor = conn.cursor(cursor_factory=RealDictCursor)
+    
+    try:
+        cursor.execute("SELECT * FROM users WHERE user_id = %s", (request.user_id,))
+        user = cursor.fetchone()
+        
+        if not user:
+            raise HTTPException(status_code=401, detail="Invalid credentials")
+        
+        token = create_token(request.user_id)
+        
+        return {
+            "token": token,
+            "user_id": request.user_id,
+            "message": "Login successful"
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        print(f"ERROR: Login error: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+    finally:
+        cursor.close()
+        conn.close()
 
 @app.post("/api/v1/sessions")
 async def create_session(session: SessionCreate):
@@ -344,9 +400,10 @@ async def finetuning_status(job_id: str):
 @app.get("/api/v1/health")
 async def health_check():
     return {
-        "status": "SANTINEL Backend v3.0-PHASE4 (PostgreSQL + Caching)",
+        "status": "SANTINEL Backend v3.0-PHASE4 (PostgreSQL + Caching + JWT Auth)",
         "database": "Connected",
         "cache": "Enabled (5min TTL)",
+        "auth": "JWT enabled",
         "timestamp": datetime.now().isoformat()
     }
 
