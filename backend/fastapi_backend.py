@@ -1,7 +1,7 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from datetime import datetime
+from datetime import datetime, timedelta
 import json
 import os
 from dotenv import load_dotenv
@@ -12,7 +12,6 @@ load_dotenv()
 
 app = FastAPI()
 
-# EXPLICIT CORS - Allow localhost:5173
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
@@ -27,18 +26,19 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# PostgreSQL Configuration
 DATABASE_URL = "postgresql://postgres:postgres123@localhost:5432/santinel_prod"
+
+cache_export = None
+cache_export_time = None
+CACHE_DURATION = timedelta(minutes=5)
 
 def get_db_connection():
     try:
         conn = psycopg2.connect(DATABASE_URL)
         return conn
     except Exception as e:
-        print(f"❌ Database connection error: {e}")
+        print(f"ERROR: Database connection error: {e}")
         raise HTTPException(status_code=500, detail="Database connection failed")
-
-# ===== MODELS =====
 
 class SessionCreate(BaseModel):
     contact_name: str
@@ -57,8 +57,6 @@ class FeedbackSubmit(BaseModel):
     quality_score: float
     useful_aspects: list
     comments: str
-
-# ===== PSYCHOLOGY FRAMEWORKS =====
 
 def apply_cbt(situation: str) -> dict:
     distortions = []
@@ -89,7 +87,7 @@ def apply_nlp(situation: str) -> dict:
 def apply_ta(situation: str) -> dict:
     return {
         "ego_state": "Adult",
-        "life_position": "Eu sunt OK/Tu ești OK"
+        "life_position": "Eu sunt OK/Tu esti OK"
     }
 
 def apply_dual_speaker(situation: str) -> dict:
@@ -102,8 +100,6 @@ def apply_goal_based(situation: str) -> dict:
     return {
         "alignment": "Da"
     }
-
-# ===== SESSIONS =====
 
 @app.post("/api/v1/sessions")
 async def create_session(session: SessionCreate):
@@ -120,17 +116,21 @@ async def create_session(session: SessionCreate):
         
         conn.commit()
         
+        global cache_export, cache_export_time
+        cache_export = None
+        cache_export_time = None
+        
         return {
             "session_id": session_id,
             "contact_name": session.contact_name,
             "company_name": session.company_name,
             "created_at": datetime.now().isoformat(),
-            "message": f"✅ Sesiune creată pentru {session.contact_name}",
+            "message": f"Session created for {session.contact_name}",
             "status": "active"
         }
     except Exception as e:
         conn.rollback()
-        print(f"❌ Error creating session: {e}")
+        print(f"ERROR: Error creating session: {e}")
         raise HTTPException(status_code=500, detail=str(e))
     finally:
         cursor.close()
@@ -146,14 +146,12 @@ async def get_session(session_id: str):
         session = cursor.fetchone()
         
         if not session:
-            raise HTTPException(status_code=404, detail="Sesiune nu găsită")
+            raise HTTPException(status_code=404, detail="Session not found")
         
         return session
     finally:
         cursor.close()
         conn.close()
-
-# ===== COACHING =====
 
 @app.post("/api/v1/coaching")
 async def get_coaching(request: CoachingRequest):
@@ -165,15 +163,13 @@ async def get_coaching(request: CoachingRequest):
         session = cursor.fetchone()
         
         if not session:
-            raise HTTPException(status_code=404, detail="Sesiune nu găsită")
+            raise HTTPException(status_code=404, detail="Session not found")
         
-        print(f"\n🔍 DEBUG COACHING: session_id={request.session_id}")
-        print(f"   ✅ Session found")
+        print(f"DEBUG COACHING: session_id={request.session_id}")
         
         cursor.execute("SELECT COUNT(*) as count FROM coaching_interactions WHERE session_id = %s", (request.session_id,))
         interactions = cursor.fetchone()
         interactions_before = interactions['count'] if interactions else 0
-        print(f"   interactions BEFORE: {interactions_before}")
         
         cbt = apply_cbt(request.situation)
         nlp = apply_nlp(request.situation)
@@ -183,14 +179,13 @@ async def get_coaching(request: CoachingRequest):
         
         frameworks_applied = ["CBT", "NLP", "TA", "Dual-Speaker", "Goal-Based"]
         
-        coaching_text = f"""🧠 CBT: {cbt['insight']}
-🎯 NLP: Stil reprezentare {nlp['representation_system']} detectat. Reframe: {nlp['reframe']}
-⚖️ TA: Detectem ton critic. Mergi în Adult: fapte, date, logică - nu judecată.
-💰 SPECIFIC: Pentru cererile salariale/preț: Conversa pe valoare, nu pe procentaj. Ce valoare aduci TU? Ce costuri evitează pentru ei?"""
+        coaching_text = f"""CBT: {cbt['insight']}
+NLP: Stil reprezentare {nlp['representation_system']} detectat. Reframe: {nlp['reframe']}
+TA: Detectem ton critic. Mergi in Adult: fapte, date, logica - nu judecata.
+SPECIFIC: Pentru cererile salariale/pret: Conversa pe valoare, nu pe procentaj. Ce valoare aduci TU? Ce costuri evita pentru ei?"""
         
         coaching_id = f"coaching_{datetime.now().timestamp()}"
         
-        print(f"   🔄 Storing interaction...")
         cursor.execute("""
             INSERT INTO coaching_interactions 
             (session_id, sequence_number, coaching_data, created_at)
@@ -207,11 +202,9 @@ async def get_coaching(request: CoachingRequest):
         
         conn.commit()
         
-        cursor.execute("SELECT COUNT(*) as count FROM coaching_interactions WHERE session_id = %s", (request.session_id,))
-        interactions_after = cursor.fetchone()['count']
-        print(f"   interactions AFTER: {interactions_after}")
-        print(f"   coaching_id: {coaching_id}")
-        print(f"   ✅ Interaction stored")
+        global cache_export, cache_export_time
+        cache_export = None
+        cache_export_time = None
         
         return {
             "session_id": request.session_id,
@@ -226,13 +219,11 @@ async def get_coaching(request: CoachingRequest):
         }
     except Exception as e:
         conn.rollback()
-        print(f"❌ Error in coaching: {e}")
+        print(f"ERROR: Error in coaching: {e}")
         raise HTTPException(status_code=500, detail=str(e))
     finally:
         cursor.close()
         conn.close()
-
-# ===== FEEDBACK =====
 
 @app.post("/api/v1/feedback")
 async def submit_feedback(feedback: FeedbackSubmit):
@@ -256,24 +247,34 @@ async def submit_feedback(feedback: FeedbackSubmit):
         
         conn.commit()
         
+        global cache_export, cache_export_time
+        cache_export = None
+        cache_export_time = None
+        
         return {
-            "status": "✅ Feedback salvat",
+            "status": "Feedback saved",
             "rating": feedback.rating,
-            "message": "Mulțumim pentru feedback!",
+            "message": "Thank you for feedback!",
             "pinecone_stored": True
         }
     except Exception as e:
         conn.rollback()
-        print(f"❌ Error storing feedback: {e}")
+        print(f"ERROR: Error storing feedback: {e}")
         raise HTTPException(status_code=500, detail=str(e))
     finally:
         cursor.close()
         conn.close()
 
-# ===== EXPORT =====
-
 @app.get("/api/v1/finetuning/export")
 async def export_patterns():
+    global cache_export, cache_export_time
+    
+    if cache_export and cache_export_time and (datetime.now() - cache_export_time) < CACHE_DURATION:
+        print("Cache HIT: Returning cached export")
+        return cache_export
+    
+    print("Cache MISS: Fetching fresh export from database")
+    
     conn = get_db_connection()
     cursor = conn.cursor(cursor_factory=RealDictCursor)
     
@@ -303,13 +304,14 @@ async def export_patterns():
                 }
             })
         
-        return {
-            "status": "✅ Export complete",
+        result = {
+            "status": "Export complete",
             "patterns": len(training_examples),
             "data": {
                 "metadata": {
                     "total_patterns": len(training_examples),
-                    "source": "Mock"
+                    "source": "PostgreSQL",
+                    "cached": False
                 },
                 "training_examples": training_examples,
                 "situation_type_weights": {
@@ -319,8 +321,13 @@ async def export_patterns():
                 }
             }
         }
+        
+        cache_export = result
+        cache_export_time = datetime.now()
+        
+        return result
     except Exception as e:
-        print(f"❌ Error exporting patterns: {e}")
+        print(f"ERROR: Error exporting patterns: {e}")
         raise HTTPException(status_code=500, detail=str(e))
     finally:
         cursor.close()
@@ -334,13 +341,12 @@ async def finetuning_status(job_id: str):
         "message": "Fine-tuning feature coming soon"
     }
 
-# ===== HEALTH =====
-
 @app.get("/api/v1/health")
 async def health_check():
     return {
-        "status": "✅ SANTINEL Backend v3.0-PHASE3 (PostgreSQL)",
+        "status": "SANTINEL Backend v3.0-PHASE4 (PostgreSQL + Caching)",
         "database": "Connected",
+        "cache": "Enabled (5min TTL)",
         "timestamp": datetime.now().isoformat()
     }
 
