@@ -84,7 +84,7 @@ class TestSalesScriptsFramework:
         assert "selected_script" in result
         assert "confidence_score" in result
         assert 0 <= result["confidence_score"] <= 1
-        assert "why_selected" in result
+        assert "analysis_text" in result
 
     @pytest.mark.unit
     def test_select_script_analytical_pitch(self, sales_scripts_module):

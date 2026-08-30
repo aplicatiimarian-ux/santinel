@@ -194,25 +194,25 @@ class SomaticModule:
         """Detect somatic patterns in the text."""
         hits = self._scan(text, "patterns")
         counts = {k: 0 for k in self._PATTERN_KEYS}
-        matched = {k: [] for k in self._PATTERN_KEYS}
+        raw_matches = {k: [] for k in self._PATTERN_KEYS}
 
         for h in hits:
             counts[h["category"]] += 1
-            matched[h["category"]].append(h["keyword"])
+            raw_matches[h["category"]].append(h["keyword"])
 
         total = sum(counts.values())
         if total == 0:
             scores = {k: 0.0 for k in self._PATTERN_KEYS}
-            primary = None
+            primary_finding = None
         else:
-            primary = max(counts, key=counts.get)
+            primary_finding = max(counts, key=counts.get)
             scores = {k: round(v / total, 3) for k, v in counts.items()}
 
         return {
             "patterns": scores,
-            "primary_pattern": primary,
-            "matched": matched,
-            "analysis": _PATTERN_INSIGHT.get(primary, ("No pattern identified.", "", "")) if primary else None,
+            "primary_finding": primary_finding,
+            "raw_matches": raw_matches,
+            "analysis_text": _PATTERN_INSIGHT.get(primary_finding, ("No pattern identified.", "", "")) if primary_finding else None,
         }
 
     # -- Somatic state assessment -----------------------------------
@@ -241,10 +241,10 @@ class SomaticModule:
         return {
             "grounding_state": grounding_state,
             "presence_state": presence_state,
-            "confidence_state": confidence_state,
+            "emotional_state": confidence_state,
             "grounding_indicators": grounding_count,
             "presence_indicators": presence_count,
-            "confidence_score": confidence_score,
+            "confidence_score": round(confidence_score, 3),
             "overall_summary": f"{grounding_state} + {presence_state} + {confidence_state}",
         }
 

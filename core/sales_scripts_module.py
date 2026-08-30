@@ -300,7 +300,7 @@ class SalesScriptsModule:
         return {
             "selected_script": best_script,
             "confidence_score": round(best_score, 2),
-            "why_selected": f"Best fit for {personality_type} personality + {category} situation",
+            "analysis_text": f"Best fit for {personality_type} personality + {category} situation",
         }
 
     def get_counter_responses(self, objection_type: str, language: str = "en") -> List[Dict]:

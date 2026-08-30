@@ -278,9 +278,9 @@ class EIModule:
         your_ei = EIModule().analyze(your_text)
         their_ei = EIModule().analyze(their_text)
 
-        your_state = your_ei["emotional_state"]["primary_emotional_state"]
-        their_state = their_ei["emotional_state"]["primary_emotional_state"]
-        your_comp = your_ei["competencies"]["primary_competency"]
+        your_state = your_ei["emotional_state"]["primary_finding"]
+        their_state = their_ei["emotional_state"]["primary_finding"]
+        your_comp = your_ei["competencies"]["primary_finding"]
 
         return (
             f"DUAL-SPEAKER COACHING\n\n"

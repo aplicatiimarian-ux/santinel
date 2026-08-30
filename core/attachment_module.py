@@ -199,10 +199,10 @@ class AttachmentModule:
         return {
             "anxiety": anxiety_score,
             "avoidance": avoidance_score,
-            "secure_baseline": secure_score,
-            "attachment_style": style,
-            "matched_anxiety": [h["keyword"] for h in (anxiety_hits + ro_anxiety)],
-            "matched_avoidance": [h["keyword"] for h in (avoidance_hits + ro_avoidance)],
+            "confidence_score": secure_score,
+            "primary_finding": style,
+            "raw_matches_anxiety": [h["keyword"] for h in (anxiety_hits + ro_anxiety)],
+            "raw_matches_avoidance": [h["keyword"] for h in (avoidance_hits + ro_avoidance)],
         }
 
     @staticmethod
@@ -227,18 +227,18 @@ class AttachmentModule:
         for h in wounds_hits:
             entry = by_wound.setdefault(h["category"], {
                 "wound": h["category"],
-                "label": _WOUND_IMPACT[h["category"]][0],
+                "analysis_text": _WOUND_IMPACT[h["category"]][0],
                 "trigger_pattern": _WOUND_IMPACT[h["category"]][1],
-                "impact_in_negotiation": _WOUND_IMPACT[h["category"]][2],
-                "matched_keywords": [],
+                "coaching_guidance": _WOUND_IMPACT[h["category"]][2],
+                "raw_matches": [],
             })
-            entry["matched_keywords"].append(h["keyword"])
+            entry["raw_matches"].append(h["keyword"])
 
         wounds = list(by_wound.values())
         return {
-            "wounds_detected": wounds,
+            "detected_patterns": wounds,
             "count": len(wounds),
-            "primary_wound": wounds[0]["wound"] if wounds else None,
+            "primary_finding": wounds[0]["wound"] if wounds else None,
         }
 
     # -- Full analysis -----------------------------------------------
@@ -264,8 +264,8 @@ class AttachmentModule:
         your = module.score_attachment(your_text)
         their = module.score_attachment(their_text)
 
-        your_style = your["attachment_style"]
-        their_style = their["attachment_style"]
+        your_style = your.get("primary_finding") or your.get("attachment_style", "secure")
+        their_style = their.get("primary_finding") or their.get("attachment_style", "secure")
 
         return (
             f"DUAL-ATTACHMENT COACHING\n\n"

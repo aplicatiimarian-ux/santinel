@@ -350,12 +350,12 @@ class FeedbackExtractionModule:
 
         return {
             "close_probability_score": close_data["close_probability"],
-            "interpretation": close_data["interpretation"],
+            "analysis_text": close_data["interpretation"],
             "your_verbals": close_data["your_verbals"]["verbal_counts"],
             "their_verbals": close_data["their_verbals"]["verbal_counts"] if their_text else None,
             "your_vocals": close_data["your_vocals"]["vocal_counts"],
             "their_vocals": close_data["their_vocals"]["vocal_counts"] if their_text else None,
-            "coaching": self._generate_coaching(close_data["close_probability"], close_data["their_verbals"] if their_text else None),
+            "coaching_guidance": self._generate_coaching(close_data["close_probability"], close_data["their_verbals"] if their_text else None),
         }
 
     @staticmethod
