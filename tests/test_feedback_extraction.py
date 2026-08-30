@@ -240,7 +240,7 @@ class TestFeedbackExtractionFramework:
         their_text = "That's good, but I need to compare with others."
         result = feedback_module.analyze_real_time(your_text, their_text)
 
-        coaching = result["coaching"]
+        coaching = result["coaching_guidance"]
         # Coaching should mention specific next steps
         assert len(coaching) > 10
 

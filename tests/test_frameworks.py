@@ -19,22 +19,22 @@ class TestTAFramework:
         """Test ego state detection in English."""
         result = ta_module.detect_ego_state(sample_texts_en["agreement"])
         assert result is not None
-        assert "ego_state" in result
-        assert result["ego_state"] in ["parent", "adult", "child"]
+        assert "primary_finding" in result
+        assert result["primary_finding"] in ["parent", "adult", "child", "critical_parent", "nurturing_parent", "free_child", "adapted_child"]
 
     @pytest.mark.unit
     def test_ego_state_detection_ro(self, ta_module, sample_texts_ro):
         """Test ego state detection in Romanian."""
         result = ta_module.detect_ego_state(sample_texts_ro["agreement"])
         assert result is not None
-        assert "ego_state" in result
+        assert "primary_finding" in result
 
     @pytest.mark.unit
     def test_life_position_analysis(self, ta_module, sample_texts_en):
         """Test life position analysis."""
         result = ta_module.analyze_life_position(sample_texts_en["agreement"])
         assert result is not None
-        assert "life_position" in result
+        assert "primary_finding" in result
 
     @pytest.mark.unit
     def test_psychological_games_detection(self, ta_module):
@@ -42,7 +42,7 @@ class TestTAFramework:
         game_text = "You always do this to me. Why are you trying to hurt me?"
         result = ta_module.detect_psychological_game(game_text)
         assert result is not None
-        assert "game_detected" in result
+        assert "detected_patterns" in result or "coaching_guidance" in result
 
     @pytest.mark.edge_case
     def test_empty_text_ta(self, ta_module):
@@ -70,14 +70,17 @@ class TestEIFramework:
         """Test EI competency detection in English."""
         result = ei_module.detect_competencies(sample_texts_en["agreement"])
         assert result is not None
-        assert "competencies" in result or "confidence" in result
+        assert "primary_finding" in result
+        assert "scores" in result
+        assert "confidence_score" in result or "coaching_guidance" in result
 
     @pytest.mark.unit
     def test_emotional_state_detection_en(self, ei_module, sample_texts_en):
         """Test emotional state detection in English."""
         result = ei_module.detect_emotional_state(sample_texts_en["agreement"])
         assert result is not None
-        assert "emotional_state" in result or "confidence" in result
+        assert "primary_finding" in result
+        assert "coaching_guidance" in result
 
     @pytest.mark.unit
     def test_emotional_state_detection_ro(self, ei_module, sample_texts_ro):
