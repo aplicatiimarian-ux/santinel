@@ -215,10 +215,12 @@ class TAModule:
             primary = max(counts, key=counts.get)
             scores = {k: round(v / total, 3) for k, v in counts.items()}
         return {
-            "primary_ego_state": primary,
+            "primary_finding": primary,
             "scores": scores,
-            "matched": matched,
-            "analysis": self._ego_state_analysis(primary),
+            "detected_patterns": [k for k, v in counts.items() if v > 0],
+            "raw_matches": matched,
+            "analysis_text": self._ego_state_analysis(primary),
+            "coaching_guidance": f"Primary ego state: {primary.replace('_', ' ').title()}. {self._ego_state_analysis(primary)}",
         }
 
     @staticmethod
@@ -240,12 +242,12 @@ class TAModule:
         else:
             position = "i_ok_you_ok"  # default assumption
         return {
-            "life_position": position,
-            "label": _POSITION_LABEL[position],
-            "positions_present": list(present),
-            "matched": [present[p]["keyword"] for p in present],
+            "primary_finding": position,
+            "detected_patterns": list(present.keys()),
+            "raw_matches": {p: present[p]["keyword"] for p in present},
             "assumed_default": not present,
-            "guidance": _POSITION_GUIDANCE[position],
+            "analysis_text": _POSITION_LABEL[position],
+            "coaching_guidance": _POSITION_GUIDANCE[position],
         }
 
     def detect_life_position(self, text: str, emotion: str = "") -> LifePosition:
@@ -271,8 +273,8 @@ class TAModule:
             entry["matched_keywords"].append(h["keyword"])
         games = list(by_game.values())
         return {
-            "games_detected": games,
-            "coaching": self._game_coaching(games) if games
+            "detected_patterns": games,
+            "coaching_guidance": self._game_coaching(games) if games
             else "No psychological games detected.",
         }
 
@@ -291,10 +293,23 @@ class TAModule:
     # -- Umbrella + prescription -----------------------------
 
     def analyze(self, text: str) -> Dict:
+        ego = self.detect_ego_state(text)
+        life_pos = self.analyze_life_position(text)
+        games = self.detect_psychological_game(text)
+
+        confidence = 0.7
+        if ego["detected_patterns"]:
+            confidence += 0.15
+        if life_pos["detected_patterns"]:
+            confidence += 0.1
+        if games["detected_patterns"]:
+            confidence += 0.05
+
         return {
-            "ego_states": self.detect_ego_state(text),
-            "life_position": self.analyze_life_position(text),
-            "games": self.detect_psychological_game(text),
+            "ego_states": ego,
+            "life_position": life_pos,
+            "games": games,
+            "confidence_score": min(float(confidence), 1.0),
         }
 
     def prescribe_healthy_transaction(self, situation: str = "") -> str:

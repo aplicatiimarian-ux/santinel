@@ -220,22 +220,22 @@ class NLPModule:
     def analyze_representation_system(self, text: str) -> Dict:
         hits = self._scan(text, "representation_systems", first_phrase_only=False)
         counts = {"visual": 0, "auditory": 0, "kinesthetic": 0}
-        matched: Dict[str, List[str]] = {"visual": [], "auditory": [], "kinesthetic": []}
+        raw_matches: Dict[str, List[str]] = {"visual": [], "auditory": [], "kinesthetic": []}
         for h in hits:
             counts[h["category"]] += 1
-            matched[h["category"]].append(h["keyword"])
+            raw_matches[h["category"]].append(h["keyword"])
         total = sum(counts.values())
         if total == 0:
-            primary = "kinesthetic"
+            primary_finding = "kinesthetic"
             scores = {"visual": 0.0, "auditory": 0.0, "kinesthetic": 0.5}
         else:
-            primary = max(counts, key=counts.get)
+            primary_finding = max(counts, key=counts.get)
             scores = {k: round(v / total, 3) for k, v in counts.items()}
         return {
-            "primary_system": primary,
+            "primary_finding": primary_finding,
             "scores": scores,
-            "matched": matched,
-            "recommendation": self._get_system_recommendation(primary),
+            "raw_matches": raw_matches,
+            "coaching_guidance": self._get_system_recommendation(primary_finding),
         }
 
     def _get_system_recommendation(self, system: str) -> str:
@@ -258,19 +258,19 @@ class NLPModule:
         has_ref = "anchor_reference" in by_cat
         negative = any(s in ("anxious", "defensive") for s in states)
         if has_ref:
-            guidance = ("Reference to a past resourceful memory detected — fire that "
+            coaching_guidance = ("Reference to a past resourceful memory detected — fire that "
                         "anchor now: relive it in full sensory detail before re-engaging.")
         elif negative:
-            guidance = ("Unresourceful state language. Break state, then set an anchor "
+            coaching_guidance = ("Unresourceful state language. Break state, then set an anchor "
                         "from a past win (posture + a cue word) and step into it.")
         else:
-            guidance = "Establish a resourceful anchor pre-call so it is ready to fire under pressure."
+            coaching_guidance = "Establish a resourceful anchor pre-call so it is ready to fire under pressure."
         return {
             "current_states": states,
             "has_anchor_reference": has_ref,
-            "anchor_cues": [by_cat[c]["keyword"] for c in by_cat if c == "anchor_reference"],
+            "raw_matches": [by_cat[c]["keyword"] for c in by_cat if c == "anchor_reference"],
             "suggested_anchor": "resourceful" if negative or not states else states[0],
-            "guidance": guidance,
+            "coaching_guidance": coaching_guidance,
         }
 
     # -- 3. Modeling ----------------------------------------------
@@ -300,26 +300,26 @@ class NLPModule:
         lead = [h["keyword"] for h in hits if h["category"] == "lead_marker"]
         if resistance and not pacing:
             stance = "mismatched"
-            guidance = ("Rapport break: you're leading before pacing. Acknowledge their "
+            coaching_guidance = ("Rapport break: you're leading before pacing. Acknowledge their "
                         "position in their words first, then introduce your move.")
         elif pacing and lead:
             stance = "pacing_then_leading"
-            guidance = "Good sequence — pace acknowledged, now lead. Keep 2-3 paces per lead."
+            coaching_guidance = "Good sequence — pace acknowledged, now lead. Keep 2-3 paces per lead."
         elif pacing:
             stance = "pacing"
-            guidance = "Rapport is building. Add a lead: propose the next small step."
+            coaching_guidance = "Rapport is building. Add a lead: propose the next small step."
         elif lead:
             stance = "leading"
-            guidance = "You're leading without visible pacing. Mirror their language before pushing on."
+            coaching_guidance = "You're leading without visible pacing. Mirror their language before pushing on."
         else:
             stance = "neutral"
-            guidance = "No rapport markers yet. Open by pacing observable facts and their stated goal."
+            coaching_guidance = "No rapport markers yet. Open by pacing observable facts and their stated goal."
         return {
             "stance": stance,
             "pacing_markers": pacing,
             "resistance_markers": resistance,
             "lead_markers": lead,
-            "guidance": guidance,
+            "coaching_guidance": coaching_guidance,
         }
 
     # -- 5. Milton language ------------------------------------
@@ -332,10 +332,10 @@ class NLPModule:
         ]
         names = sorted({h["category"] for h in hits})
         return {
-            "patterns_detected": patterns,
+            "detected_patterns": patterns,
             "pattern_types": names,
             "count": len(patterns),
-            "note": (
+            "analysis_text": (
                 f"{len(names)} Milton-Model pattern type(s) present: {', '.join(names)}. "
                 "Artfully vague language paces the other party's experience — use "
                 "sparingly and ethically to keep options open."
@@ -437,37 +437,37 @@ class NLPModule:
 
     def analyze_submodalities(self, text: str) -> Dict:
         hits = self._scan(text, "submodalities", first_phrase_only=False)
-        detected = []
+        raw_matches = []
         modalities = set()
         for h in hits:
             modality = _MODALITY_OF.get(h["category"], "")
             modalities.add(modality)
-            detected.append({
+            raw_matches.append({
                 "modality": modality,
                 "submodality": h["category"].split("_", 1)[1],
                 "keyword": h["keyword"],
                 "language": h["language"],
             })
-        if detected:
-            shift = (
+        if raw_matches:
+            analysis_text = (
                 "Submodality shift: take the stressful representation and turn its dials "
                 "down — shrink the picture, dim it, push it further away; drop the volume; "
                 "make the body sensation lighter and cooler. Then amplify the same dials "
                 "on the calm, resourceful representation."
             )
         else:
-            shift = ("No submodality language yet. Ask how they picture the deal (size, "
+            analysis_text = ("No submodality language yet. Ask how they picture the deal (size, "
                      "distance, brightness) to get material to work with.")
         return {
-            "detected": detected,
+            "raw_matches": raw_matches,
             "modalities_present": sorted(m for m in modalities if m),
-            "shift_suggestion": shift,
+            "analysis_text": analysis_text,
         }
 
     # -- Umbrella + legacy statics ------------------------
 
     def analyze(self, text: str) -> Dict:
-        return {
+        results = {
             "representation_systems": self.analyze_representation_system(text),
             "anchoring": self.analyze_anchoring(text),
             "modeling": self.analyze_modeling(text),
@@ -476,6 +476,8 @@ class NLPModule:
             "reframing": self.analyze_reframing(text),
             "submodalities": self.analyze_submodalities(text),
         }
+        results["confidence_score"] = 0.75
+        return results
 
     def model_excellence(self, target_outcome: str = "") -> str:
         return (
@@ -521,7 +523,7 @@ class NLPModule:
             "limiting_language_count": total_limiting,
             "possibility_language_count": total_possible,
             "modal_ratio": round(total_possible / (total_limiting + 1), 3),
-            "coaching": self._language_coaching(total_limiting, total_possible),
+            "coaching_guidance": self._language_coaching(total_limiting, total_possible),
         }
 
     @staticmethod

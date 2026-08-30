@@ -212,17 +212,17 @@ class BehavioralEconomicsModule:
                 "label": _BIAS_PROFILE[h["category"]][0],
                 "in_negotiation": _BIAS_PROFILE[h["category"]][1],
                 "danger": _BIAS_DANGER[h["category"]],
-                "mitigation": _BIAS_MITIGATION[h["category"]],
-                "matched_keywords": [],
+                "coaching_guidance": _BIAS_MITIGATION[h["category"]],
+                "raw_matches": [],
                 "language": h["language"],
             })
-            entry["matched_keywords"].append(h["keyword"])
+            entry["raw_matches"].append(h["keyword"])
 
         biases = list(by_bias.values())
         return {
-            "biases_detected": biases,
+            "detected_patterns": biases,
             "count": len(biases),
-            "primary_bias": biases[0]["bias"] if biases else None,
+            "primary_finding": biases[0]["bias"] if biases else None,
         }
 
     def analyze(self, text: str) -> Dict:

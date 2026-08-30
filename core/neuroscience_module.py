@@ -192,25 +192,25 @@ class NeuroscienceModule:
         """Detect neurobiological patterns in the text."""
         hits = self._scan(text, "patterns")
         counts = {k: 0 for k in self._PATTERN_KEYS}
-        matched = {k: [] for k in self._PATTERN_KEYS}
+        raw_matches = {k: [] for k in self._PATTERN_KEYS}
 
         for h in hits:
             counts[h["category"]] += 1
-            matched[h["category"]].append(h["keyword"])
+            raw_matches[h["category"]].append(h["keyword"])
 
         total = sum(counts.values())
         if total == 0:
             scores = {k: 0.0 for k in self._PATTERN_KEYS}
-            primary = None
+            primary_finding = None
         else:
-            primary = max(counts, key=counts.get)
+            primary_finding = max(counts, key=counts.get)
             scores = {k: round(v / total, 3) for k, v in counts.items()}
 
         return {
             "patterns": scores,
-            "primary_pattern": primary,
-            "matched": matched,
-            "analysis": self._pattern_analysis(primary) if primary else None,
+            "primary_finding": primary_finding,
+            "raw_matches": raw_matches,
+            "analysis_text": self._pattern_analysis(primary_finding) if primary_finding else None,
         }
 
     @staticmethod
@@ -242,12 +242,12 @@ class NeuroscienceModule:
             state = "balanced"
 
         return {
-            "state": state,
+            "emotional_state": state,
             "sympathetic_indicators": symp_count,
             "parasympathetic_indicators": para_count,
             "balanced_indicators": bal_count,
-            "label": _NERVOUS_SYSTEM_GUIDANCE[state][0],
-            "guidance": _NERVOUS_SYSTEM_GUIDANCE[state][2],
+            "analysis_text": _NERVOUS_SYSTEM_GUIDANCE[state][0],
+            "coaching_guidance": _NERVOUS_SYSTEM_GUIDANCE[state][2],
         }
 
     # -- Threat/Safety/Reward scoring --------------------------------
@@ -278,8 +278,8 @@ class NeuroscienceModule:
             "threat": threat_score,
             "safety": safety_score,
             "reward": reward_score,
-            "overall_state": state,
-            "state_guidance": _THREAT_SAFETY_REWARD[state],
+            "primary_finding": state,
+            "coaching_guidance": _THREAT_SAFETY_REWARD[state],
         }
 
     # -- Full analysis -----------------------------------------------

@@ -187,26 +187,26 @@ class GameTheoryModule:
         """Detect which game structure the negotiation resembles."""
         hits = self._scan(text, "games")
         counts = {k: 0 for k in self._GAME_KEYS}
-        matched = {k: [] for k in self._GAME_KEYS}
+        raw_matches = {k: [] for k in self._GAME_KEYS}
 
         for h in hits:
             counts[h["category"]] += 1
-            matched[h["category"]].append(h["keyword"])
+            raw_matches[h["category"]].append(h["keyword"])
 
         total = sum(counts.values())
         if total == 0:
-            primary = "coordination_game"  # assume cooperation-friendly by default
+            primary_finding = "coordination_game"  # assume cooperation-friendly by default
             scores = {k: 0.0 for k in self._GAME_KEYS}
         else:
-            primary = max(counts, key=counts.get)
+            primary_finding = max(counts, key=counts.get)
             scores = {k: round(v / total, 3) for k, v in counts.items()}
 
         return {
-            "game_archetype": primary,
+            "primary_finding": primary_finding,
             "scores": scores,
-            "matched": matched,
-            "label": _GAME_PROFILE[primary][0],
-            "dynamics": _GAME_DYNAMICS[primary],
+            "raw_matches": raw_matches,
+            "analysis_text": _GAME_PROFILE[primary_finding][0],
+            "coaching_guidance": _GAME_DYNAMICS[primary_finding],
         }
 
     # -- Strategic position assessment ----------------------------
@@ -231,12 +231,12 @@ class GameTheoryModule:
             "disadvantaged": disadvantaged_count,
         }
 
-        primary = max(positions, key=positions.get) if max(positions.values()) > 0 else "parity"
+        primary_finding = max(positions, key=positions.get) if max(positions.values()) > 0 else "parity"
 
         return {
-            "strategic_position": primary,
+            "primary_finding": primary_finding,
             "position_scores": positions,
-            "guidance": _STRATEGIC_POSITION_GUIDANCE[primary],
+            "coaching_guidance": _STRATEGIC_POSITION_GUIDANCE[primary_finding],
         }
 
     # -- BATNA & ZOPA -----------------------------------------------
@@ -250,9 +250,9 @@ class GameTheoryModule:
         ro_zopa = find_all(text, {"zopa": RO["zopa"]}, lang="ro", first_phrase_only=False)
 
         return {
-            "batna_indicators": [h["keyword"] for h in batna_hits + ro_batna],
+            "raw_matches_batna": [h["keyword"] for h in batna_hits + ro_batna],
             "batna_count": len(set((h["keyword"] for h in batna_hits + ro_batna))),
-            "zopa_indicators": [h["keyword"] for h in zopa_hits + ro_zopa],
+            "raw_matches_zopa": [h["keyword"] for h in zopa_hits + ro_zopa],
             "zopa_count": len(set((h["keyword"] for h in zopa_hits + ro_zopa))),
             "batna_clarity": "clear" if len(set((h["keyword"] for h in batna_hits + ro_batna))) > 0 else "unclear",
             "zopa_clarity": "exists" if len(set((h["keyword"] for h in zopa_hits + ro_zopa))) > 0 else "undefined",

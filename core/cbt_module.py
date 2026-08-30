@@ -204,16 +204,30 @@ CBT COACHING INTERVENTION:
         """
         Comprehensive emotional assessment using CBT framework
         Returns: Situation Analysis → Thoughts → Emotions → Behaviors → Consequences
+        (Standardized output format)
         """
         distortions = self.identify_distortions(situation)
 
+        dominant_emotion = max(emotions, key=emotions.get) if emotions else "neutral"
+        emotion_intensity = max(emotions.values()) if emotions else 0.0
+        confidence = (len(distortions) / max(15, 16)) if distortions else 0.5
+
         return {
-            "situation": situation,
-            "cognitive_distortions": distortions,
-            "emotion_intensity": max(emotions.values()) if emotions else 0,
-            "dominant_emotion": max(emotions, key=emotions.get) if emotions else "neutral",
-            "cbt_intervention": self.generate_cbt_intervention(distortions, situation),
-            "therapeutic_insight": self._generate_insight(distortions, emotions),
+            "cognitive_distortions": {
+                "primary_finding": distortions[0]["distortion"] if distortions else None,
+                "detected_patterns": [d["distortion"] for d in distortions],
+                "raw_matches": {d["distortion"]: d.get("keyword") for d in distortions},
+                "analysis_text": self._generate_insight(distortions, emotions),
+                "coaching_guidance": self.generate_cbt_intervention(distortions, situation),
+            },
+            "emotional_state": {
+                "primary_finding": dominant_emotion,
+                "intensity_score": float(emotion_intensity),
+                "detected_emotions": list(emotions.keys()) if emotions else [],
+                "analysis_text": f"Primary emotion: {dominant_emotion} (intensity: {emotion_intensity:.2f})",
+                "coaching_guidance": "Ground yourself in observable facts and current reality.",
+            },
+            "confidence_score": float(min(confidence, 1.0)),
         }
 
     def _generate_insight(self, distortions: List[Dict], emotions: Dict) -> str:
@@ -229,3 +243,9 @@ CBT COACHING INTERVENTION:
             return "You're experiencing some cognitive distortions. Ground yourself in observable facts."
         else:
             return "One primary thinking pattern detected. Challenge it with evidence."
+
+    def analyze(self, text: str, emotions: Dict[str, float] = None) -> Dict:
+        """Unified analyze() method for orchestrator integration."""
+        if emotions is None:
+            emotions = {}
+        return self.assess_emotional_state(text, emotions)

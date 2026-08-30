@@ -202,12 +202,16 @@ class EIModule:
             primary = max(counts, key=counts.get)
             scores = {k: round(v / total, 3) for k, v in counts.items()}
 
+        analysis = self._competency_analysis(primary) if primary else \
+                   ("No competencies detected.", "Practice naming emotions and managing reactions.")
+
         return {
-            "primary_competency": primary,
+            "primary_finding": primary,
             "scores": scores,
-            "matched": matched,
-            "analysis": self._competency_analysis(primary) if primary else
-                        ("No competencies detected.", "Practice naming emotions and managing reactions."),
+            "detected_patterns": [k for k in self._COMPETENCY_KEYS if counts[k] > 0],
+            "raw_matches": matched,
+            "analysis_text": analysis[0],
+            "coaching_guidance": analysis[1],
         }
 
     @staticmethod
@@ -231,22 +235,34 @@ class EIModule:
         else:
             primary = "openness"  # neutral default
 
+        guidance = _EMOTIONAL_STATE_GUIDANCE.get(primary, ("Unknown state", ""))
+
         return {
-            "primary_emotional_state": primary,
-            "label": _EMOTIONAL_STATE_GUIDANCE[primary][0],
-            "states_present": list(present.keys()),
-            "matched": [present[s]["keyword"] for s in present],
+            "primary_finding": primary,
+            "detected_patterns": list(present.keys()),
+            "raw_matches": [present[s]["keyword"] for s in present] if present else [],
             "assumed_default": not present,
-            "guidance": _EMOTIONAL_STATE_GUIDANCE[primary][1],
+            "analysis_text": guidance[0],
+            "coaching_guidance": guidance[1],
         }
 
     # -- Umbrella + coaching ----------------------------------------
 
     def analyze(self, text: str) -> Dict:
         """Full EI analysis: competencies + emotional state."""
+        comp = self.detect_competencies(text)
+        state = self.detect_emotional_state(text)
+
+        confidence = 0.6
+        if comp["detected_patterns"]:
+            confidence += 0.2
+        if state["detected_patterns"]:
+            confidence += 0.2
+
         return {
-            "competencies": self.detect_competencies(text),
-            "emotional_state": self.detect_emotional_state(text),
+            "competencies": comp,
+            "emotional_state": state,
+            "confidence_score": min(float(confidence), 1.0),
         }
 
     def dual_speaker_assessment(self, your_text: str, their_text: str) -> Dict:

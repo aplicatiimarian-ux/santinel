@@ -169,26 +169,26 @@ class NarrativeModule:
         """Detect which narrative archetype dominates the text."""
         hits = self._scan(text, "narratives")
         counts = {k: 0 for k in self._NARRATIVE_KEYS}
-        matched = {k: [] for k in self._NARRATIVE_KEYS}
+        raw_matches = {k: [] for k in self._NARRATIVE_KEYS}
 
         for h in hits:
             counts[h["category"]] += 1
-            matched[h["category"]].append(h["keyword"])
+            raw_matches[h["category"]].append(h["keyword"])
 
         total = sum(counts.values())
         if total == 0:
-            primary = "collaborative_narrative"  # assume collaborative by default
+            primary_finding = "collaborative_narrative"  # assume collaborative by default
             scores = {k: 0.0 for k in self._NARRATIVE_KEYS}
         else:
-            primary = max(counts, key=counts.get)
+            primary_finding = max(counts, key=counts.get)
             scores = {k: round(v / total, 3) for k, v in counts.items()}
 
         return {
-            "dominant_narrative": primary,
+            "primary_finding": primary_finding,
             "scores": scores,
-            "matched": matched,
-            "profile": _NARRATIVE_PROFILE[primary],
-            "impact": _NARRATIVE_IMPACT[primary],
+            "raw_matches": raw_matches,
+            "profile": _NARRATIVE_PROFILE[primary_finding],
+            "impact": _NARRATIVE_IMPACT[primary_finding],
         }
 
     # -- Identity story analysis ---------------------------------

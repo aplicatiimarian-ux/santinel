@@ -96,11 +96,11 @@ class SantinelUnifiedCoach:
 
         # Framework 4: Behavioral Economics
         if self.behavioral_econ:
-            findings["behavioral_econ"] = self.behavioral_econ.detect_biases(their_text) if their_text else None
+            findings["behavioral_econ"] = self.behavioral_econ.analyze(their_text) if their_text else None
 
         # Framework 5: Game Theory
         if self.game_theory:
-            findings["game_theory"] = self.game_theory.detect_game_archetype(their_text) if their_text else None
+            findings["game_theory"] = self.game_theory.analyze(their_text) if their_text else None
 
         # Framework 6: Neuroscience
         if self.neuroscience:
@@ -164,11 +164,11 @@ class SantinelUnifiedCoach:
     def _determine_personality(findings: Dict) -> str:
         """Infer personality type from framework signals."""
         ei = findings.get("ei", {})
-        emotional_state = ei.get("emotional_state", {}).get("primary_emotional_state", "neutral")
+        emotional_state = ei.get("emotional_state", {}).get("primary_finding", "neutral")
 
         if emotional_state in ["excitement", "enthusiasm"]:
             return "expressive"
-        elif emotional_state in ["calm", "grounded"]:
+        elif emotional_state in ["calm", "grounded", "openness"]:
             return "analytical"
         else:
             return "driver"
@@ -192,7 +192,7 @@ class SantinelUnifiedCoach:
         # Engagement from EI + feedback + somatic
         ei = findings.get("ei", {})
         if ei and ei.get("emotional_state"):
-            state = ei["emotional_state"].get("primary_emotional_state")
+            state = ei["emotional_state"].get("primary_finding")
             synthesis["engagement_level"] = "HIGH" if state in ["openness", "curiosity"] else "MEDIUM" if state in ["acceptance"] else "LOW"
 
         # Decision readiness from feedback
@@ -202,12 +202,14 @@ class SantinelUnifiedCoach:
             synthesis["decision_readiness"] = "READY" if close_prob >= 8 else "PROGRESSING" if close_prob >= 5 else "EARLY"
 
         # Relationship quality from attachment + narrative + somatic
-        attach = findings.get("attachment", {}).get("attachment_style", {})
-        synthesis["relationship_quality"] = attach.get("attachment_style", "unknown")
+        attach = findings.get("attachment", {})
+        attachment_style = attach.get("attachment_style", {})
+        synthesis["relationship_quality"] = attachment_style.get("primary_finding", "unknown")
 
         # Strategic position from game theory
         game = findings.get("game_theory", {})
-        synthesis["strategic_position"] = game.get("strategic_position", {}).get("strategic_position", "unknown")
+        strategic_pos = game.get("strategic_position", {})
+        synthesis["strategic_position"] = strategic_pos.get("primary_finding", "unknown")
 
         return synthesis
 
@@ -221,14 +223,20 @@ class SantinelUnifiedCoach:
         game_theory = findings.get("game_theory", {})
         narrative = findings.get("narrative", {})
 
-        if game_theory.get("game_archetype") == "zero_sum" and narrative.get("dominant_narrative", {}).get("dominant_narrative") == "collaborative_narrative":
+        game_archetype = game_theory.get("game_archetype", {}).get("primary_finding")
+        dominant_narrative = narrative.get("dominant_narrative", {}).get("primary_finding")
+
+        if game_archetype == "zero_sum" and dominant_narrative == "collaborative_narrative":
             conflicts.append("CONFLICT: Game theory says zero-sum (compete) but narrative says collaborative. Clarify whether this is win-win or winner-take-all.")
 
         # Example synergies
         neuroscience = findings.get("neuroscience", {})
         somatic = findings.get("somatic", {})
 
-        if neuroscience.get("nervous_system_state", {}).get("state") == "parasympathetic" and somatic.get("somatic_state", {}).get("grounding_state") == "grounded":
+        nervous_state = neuroscience.get("nervous_system_state", {}).get("primary_finding")
+        somatic_state = somatic.get("somatic_state", {}).get("primary_finding")
+
+        if nervous_state == "parasympathetic" and somatic_state == "grounded":
             synergies.append("SYNERGY: Both neuroscience and somatic show calm, grounded state. Optimal for trust-building and problem-solving.")
 
         return conflicts, synergies
