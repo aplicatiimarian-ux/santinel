@@ -5,30 +5,22 @@ Identifies cognitive distortions, automatic thoughts, emotions, behaviors
 Professional-grade emotional assessment framework
 
 Bilingual (EN + RO): Romanian input is handled with a dedicated lexicon
-(core/cbt_keywords_ro.py), diacritic folding, Snowball stemming, and
-clause-scoped negation handling.
+(core/cbt_keywords_ro.py). Diacritic folding, Snowball stemming and
+clause-scoped negation are shared with the other frameworks via
+core/text_norm.py.
 """
 
-import re
-import unicodedata
 from enum import Enum
 from typing import Dict, List
 
 try:  # imported as package (repo root on path)
+    from core.text_norm import find_all, merge_by_category, EN_NEGATIONS, STEMMING_ENABLED
     from core.cbt_keywords_ro import RO_DISTORTION_KEYWORDS, RO_NEGATION_TOKENS
 except ImportError:  # imported flat (core/ dir on path, e.g. backend/feedback_database.py)
+    from text_norm import find_all, merge_by_category, EN_NEGATIONS, STEMMING_ENABLED
     from cbt_keywords_ro import RO_DISTORTION_KEYWORDS, RO_NEGATION_TOKENS
 
-try:  # optional dependency; matching degrades to exact-token if unavailable
-    import snowballstemmer
-
-    _EN_STEMMER = snowballstemmer.stemmer("english")
-    _RO_STEMMER = snowballstemmer.stemmer("romanian")
-except Exception:  # pragma: no cover
-    _EN_STEMMER = None
-    _RO_STEMMER = None
-
-STEMMING_ENABLED = _RO_STEMMER is not None
+__all__ = ["CognitivDistortion", "CBTAssessment", "STEMMING_ENABLED"]
 
 
 class CognitivDistortion(Enum):
@@ -50,85 +42,6 @@ class CognitivDistortion(Enum):
     CONTROL_FALLACY = "control_fallacy"           # Helpless / hyper-responsible
     FAIRNESS_FALLACY = "fairness_fallacy"         # Everything judged by "fair"
     ALWAYS_BEING_RIGHT = "always_being_right"     # Being wrong is intolerable
-
-
-# ---------------------------------------------------------------------------
-# Text normalization helpers (module level, shared EN/RO)
-# ---------------------------------------------------------------------------
-
-_NT_CONTRACTION = re.compile(r"n['’`]t\b")
-_WORD_RE = re.compile(r"[^\W\d_]+", re.UNICODE)
-# Clause boundaries for negation scoping. Apostrophes are intra-word (handled
-# by tokenization / the n't rule), so they are deliberately not listed here.
-_CLAUSE_RE = re.compile(r"[.,;:!?()\[\]{}\"\n–—…]+", re.UNICODE)
-
-_EN_NEGATIONS = {
-    "not", "no", "never", "none", "without", "hardly", "barely",
-    "cannot", "nor", "neither",
-}
-_LOCAL_NEG_WINDOW = 3
-
-
-def _strip_diacritics(text: str) -> str:
-    decomposed = unicodedata.normalize("NFKD", text)
-    return "".join(ch for ch in decomposed if not unicodedata.combining(ch))
-
-
-def _prep(text: str) -> str:
-    """Lowercase, expand n't -> not, drop diacritics. Punctuation is kept."""
-    text = (text or "").lower()
-    text = _NT_CONTRACTION.sub(" not ", text)
-    return _strip_diacritics(text)
-
-
-def _tokens(text: str) -> List[str]:
-    return _WORD_RE.findall(text)
-
-
-def _split_clauses(prepped_text: str) -> List[str]:
-    return [c for c in _CLAUSE_RE.split(prepped_text) if c and c.strip()]
-
-
-def _seq_index(haystack: List[str], needle: List[str], fuzzy_last: bool = False) -> int:
-    """Index of `needle` in `haystack` as a token subsequence.
-
-    Tokens must match exactly, except that with `fuzzy_last` the final token
-    may match by prefix in either direction when both sides are >= 4 chars.
-    `fuzzy_last` is only used on the stemmed pass (both sides already reduced
-    to roots), so a prefix relation there means a shared stem, e.g. text
-    "dezastr" vs keyword "dezastru". It is never used on raw tokens, where a
-    short word like "e" would spuriously prefix-match "everyone".
-    """
-    n, m = len(haystack), len(needle)
-    if m == 0 or m > n:
-        return -1
-    last = m - 1
-    for i in range(n - m + 1):
-        for j in range(m):
-            a, b = haystack[i + j], needle[j]
-            if a == b:
-                continue
-            if (fuzzy_last and j == last
-                    and min(len(a), len(b)) >= 4
-                    and (a.startswith(b) or b.startswith(a))):
-                continue
-            break
-        else:
-            return i
-    return -1
-
-
-def _is_negated(clause_tokens: List[str], start: int, negations: set) -> bool:
-    """Negation if a cue sits just before the match (local), or the clause
-    opens with a cue that scopes the whole clause (e.g. "nu cred ca ...").
-    A phrase that itself starts at the clause opening is treated as an idiom
-    ("nu e corect", "it's not fair") and is not suppressed."""
-    lo = max(0, start - _LOCAL_NEG_WINDOW)
-    if any(tok in negations for tok in clause_tokens[lo:start]):
-        return True
-    if start > 0 and any(tok in negations for tok in clause_tokens[:2]):
-        return True
-    return False
 
 
 class CBTAssessment:
@@ -207,47 +120,21 @@ class CBTAssessment:
         Returns one entry per distortion, each with keyword, language,
         confidence and description. Negated mentions are skipped.
         """
-        results: Dict[str, Dict] = {}
-        for clause in _split_clauses(_prep(user_statement)):
-            clause_tokens = _tokens(clause)
-            if not clause_tokens:
-                continue
-            for match in self._scan(clause_tokens, self._en_keywords, _EN_STEMMER,
-                                    _EN_NEGATIONS, "en"):
-                results.setdefault(match["distortion"], match)
-            for match in self._scan(clause_tokens, self._ro_keywords, _RO_STEMMER,
-                                    RO_NEGATION_TOKENS, "ro"):
-                results.setdefault(match["distortion"], match)
-        return list(results.values())
-
-    def _scan(self, tokens, keyword_map, stemmer, negations, lang) -> List[Dict]:
-        stems = [stemmer.stemWord(t) for t in tokens] if stemmer else None
-        found = []
-        for key, phrases in keyword_map.items():
-            for phrase in phrases:
-                phrase_tokens = _tokens(_prep(phrase))
-                if not phrase_tokens:
-                    continue
-                idx = _seq_index(tokens, phrase_tokens)
-                matched_by = "exact"
-                if idx == -1 and stems is not None:
-                    idx = _seq_index(stems, [stemmer.stemWord(t) for t in phrase_tokens],
-                                     fuzzy_last=True)
-                    matched_by = "stem"
-                if idx == -1:
-                    continue
-                if _is_negated(tokens, idx, negations):
-                    continue
-                found.append({
-                    "distortion": key,
-                    "keyword": phrase,
-                    "language": lang,
-                    "confidence": 0.8,
-                    "matched_by": matched_by,
-                    "description": self._describe(key),
-                })
-                break
-        return found
+        en = find_all(user_statement, self._en_keywords, lang="en",
+                      negations=EN_NEGATIONS)
+        ro = find_all(user_statement, self._ro_keywords, lang="ro",
+                      negations=RO_NEGATION_TOKENS)
+        out = []
+        for hit in merge_by_category(en, ro):
+            out.append({
+                "distortion": hit["category"],
+                "keyword": hit["keyword"],
+                "language": hit["language"],
+                "confidence": 0.8,
+                "matched_by": hit["matched_by"],
+                "description": self._describe(hit["category"]),
+            })
+        return out
 
     def _describe(self, key: str) -> str:
         for distortion in CognitivDistortion:
