@@ -88,6 +88,12 @@ const translations = {
     close_probability: 'Close Probability', win_rate: 'Win Rate', top_script: 'Top Script', recent_calls: 'Recent Calls',
     search_scripts: 'Search scripts...', personality_assessment: 'Personality Assessment', language: 'Language', theme: 'Dark Mode',
     notifications: 'Notifications', billing_plan: 'Billing Plan', current_plan: 'Current Plan', upgrade: 'Upgrade', your_score: 'Your Score',
+    analyze_negotiation: 'Analyze Negotiation', paste_text: 'Paste negotiation text:', what_did_you_say: 'What did you say? What did they say?',
+    analyzing: 'Analyzing...', analyze_all: 'Analyze with All 10 Frameworks', clear: 'Clear', error_empty: 'Please enter negotiation text',
+    analysis_results: 'Analysis Results', copy_json: 'Copy JSON', how_it_works: 'How it works:',
+    step1: 'Paste your negotiation text above', step2: 'Click the analyze button',
+    step3: 'View results from all 10 frameworks (CBT, TA, EI, NLP, etc.)', step4: 'Copy the JSON for integration with your app',
+    finding: 'Finding', confidence: 'Confidence', copied: 'Copied to clipboard!',
   },
   ro: {
     dashboard: 'Tablou de Bord', history: 'Istoric', scripts: 'Script-uri', profile: 'Profil', settings: 'Setari', billing: 'Facturare',
@@ -95,6 +101,12 @@ const translations = {
     close_probability: 'Probabilitate Inchidere', win_rate: 'Rata de Castig', top_script: 'Script Preferat', recent_calls: 'Apeluri Recente',
     search_scripts: 'Cauta script-uri...', personality_assessment: 'Evaluare Personalitate', language: 'Limba', theme: 'Mod Inchis',
     notifications: 'Notificari', billing_plan: 'Plan Facturare', current_plan: 'Plan Actual', upgrade: 'Upgrade', your_score: 'Scorul Tau',
+    analyze_negotiation: 'Analizati Negocierea', paste_text: 'Incollati textul negocierii:', what_did_you_say: 'Ce ai spus? Ce au spus ei?',
+    analyzing: 'Se analizează...', analyze_all: 'Analizati cu toate 10 Framework-urile', clear: 'Sterge', error_empty: 'Va rog introduceti text',
+    analysis_results: 'Rezultatele Analizei', copy_json: 'Copiati JSON', how_it_works: 'Cum functioneaza:',
+    step1: 'Incollati textul negocierii mai sus', step2: 'Apasati butonul de analiza',
+    step3: 'Vedeti rezultatele din toate 10 framework-urile', step4: 'Copiati JSON-ul pentru integrare',
+    finding: 'Gasire', confidence: 'Incredere', copied: 'Copiat in clipboard!',
   },
 };
 
@@ -107,45 +119,169 @@ function DashboardPage() {
   const { theme } = useContext(ThemeContext);
   const { lang } = useContext(LanguageContext);
   const t = translations[lang];
-  const [transcript] = useState('Lead: "We\'re interested but need more time."\nYou: "I understand. Let me show you why timing matters now..."');
-  const [closeProbability] = useState(0.76);
+  const [text, setText] = useState('');
+  const [result, setResult] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const handleAnalyze = async () => {
+    if (!text.trim()) {
+      setError(lang === 'en' ? 'Please enter negotiation text' : 'Va rog introduceti text');
+      return;
+    }
+
+    setLoading(true);
+    setError(null);
+    setResult(null);
+
+    try {
+      const response = await fetch(`${API_BASE}/analyze`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text: text.trim() }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`API error: ${response.status}`);
+      }
+
+      const data = await response.json();
+      setResult(data);
+    } catch (err) {
+      setError(err.message || (lang === 'en' ? 'Error analyzing text' : 'Eroare la analiza'));
+      console.error('Analysis error:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter' && e.ctrlKey) {
+      handleAnalyze();
+    }
+  };
 
   return (
     <div className="space-y-6">
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {[
-          { label: t.win_rate, value: '76%', color: 'text-green-500' },
-          { label: t.close_probability, value: (closeProbability * 100).toFixed(0) + '%', color: 'text-blue-500' },
-          { label: t.top_script, value: 'script_closing_driver', color: 'text-purple-500' },
-        ].map((stat, i) => (
-          <div key={i} className={`${themes[theme].card} p-6 rounded-lg`}>
-            <h3 className="text-sm font-semibold opacity-70">{stat.label}</h3>
-            <p className={`text-3xl font-bold ${stat.color}`}>{stat.value}</p>
-          </div>
-        ))}
-      </div>
+      {/* Input Section */}
+      <div className={`${themes[theme].card} p-8 rounded-lg border ${themes[theme].border}`}>
+        <h2 className="text-2xl font-bold mb-4">
+          {lang === 'en' ? 'Analyze Negotiation' : 'Analizati Negocierea'}
+        </h2>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className={`${themes[theme].card} p-6 rounded-lg`}>
-          <h3 className="text-lg font-semibold mb-4">{t.call_transcript}</h3>
-          <div className={`${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-100'} p-4 rounded font-mono text-sm h-64 overflow-y-auto`}>{transcript}</div>
+        <label className="block text-sm font-semibold mb-3 opacity-80">
+          {lang === 'en' ? 'Paste negotiation text:' : 'Incollati textul negocierii:'}
+        </label>
+
+        <textarea
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+          onKeyPress={handleKeyPress}
+          placeholder={lang === 'en' ? 'What did you say? What did they say?' : 'Ce ai spus? Ce au spus ei?'}
+          className={`w-full h-40 p-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none ${
+            themes[theme].input
+          } ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}
+        />
+
+        <div className="mt-4 flex gap-4">
+          <button
+            onClick={handleAnalyze}
+            disabled={loading || !text.trim()}
+            className={`flex-1 py-3 px-6 rounded-lg font-semibold text-white transition ${
+              loading || !text.trim()
+                ? 'bg-blue-400 opacity-50 cursor-not-allowed'
+                : 'bg-blue-500 hover:bg-blue-600 cursor-pointer'
+            }`}
+          >
+            {loading
+              ? (lang === 'en' ? 'Analyzing...' : 'Se analizează...')
+              : (lang === 'en' ? 'Analyze with All 10 Frameworks' : 'Analizati cu toate 10 Framework-urile')
+            }
+          </button>
+
+          {text && (
+            <button
+              onClick={() => { setText(''); setResult(null); setError(null); }}
+              className={`px-6 py-3 rounded-lg font-semibold transition ${
+                themes[theme].card
+              } hover:opacity-80`}
+            >
+              {lang === 'en' ? 'Clear' : 'Sterge'}
+            </button>
+          )}
         </div>
 
-        <div className={`${themes[theme].card} p-6 rounded-lg`}>
-          <h3 className="text-lg font-semibold mb-4">{t.live_coaching}</h3>
-          <div className="space-y-4">
-            {[
-              { finding: 'Urgency signal detected', suggestion: 'Respond with directness and timeline pressure' },
-              { finding: 'Emotional hesitation', suggestion: 'Address fear with social proof and case studies' },
-            ].map((item, i) => (
-              <div key={i} className={`${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-100'} p-4 rounded`}>
-                <p className="font-semibold text-orange-500">{item.finding}</p>
-                <p className="text-sm mt-1">{item.suggestion}</p>
-              </div>
-            ))}
+        {error && (
+          <div className="mt-4 p-4 bg-red-500 bg-opacity-20 border border-red-500 rounded-lg text-red-400 text-sm">
+            {error}
           </div>
-        </div>
+        )}
       </div>
+
+      {/* Results Section */}
+      {result && (
+        <div className={`${themes[theme].card} p-8 rounded-lg border border-green-500 border-opacity-50`}>
+          <h3 className="text-2xl font-bold text-green-500 mb-4">
+            {lang === 'en' ? 'Analysis Results' : 'Rezultatele Analizei'}
+          </h3>
+
+          <div className={`${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-50'} p-6 rounded-lg border ${themes[theme].border} overflow-x-auto`}>
+            <pre className={`text-sm font-mono ${theme === 'dark' ? 'text-green-400' : 'text-green-700'} whitespace-pre-wrap break-words`}>
+              {JSON.stringify(result, null, 2)}
+            </pre>
+          </div>
+
+          {/* Quick Summary */}
+          {result.framework_findings && (
+            <div className="mt-6 grid grid-cols-1 lg:grid-cols-2 gap-4">
+              {Object.entries(result.framework_findings).slice(0, 4).map(([framework, data]) => (
+                <div key={framework} className={`${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-50'} p-4 rounded-lg`}>
+                  <h4 className="font-semibold text-blue-500 mb-2 capitalize">{framework}</h4>
+                  {data.primary_finding && (
+                    <p className="text-sm opacity-80">
+                      <span className="font-semibold">Finding:</span> {
+                        typeof data.primary_finding === 'string'
+                          ? data.primary_finding
+                          : JSON.stringify(data.primary_finding)
+                      }
+                    </p>
+                  )}
+                  {data.confidence_score && (
+                    <p className="text-sm opacity-80 mt-2">
+                      <span className="font-semibold">Confidence:</span> {(data.confidence_score * 100).toFixed(0)}%
+                    </p>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
+
+          <button
+            onClick={() => {
+              const jsonStr = JSON.stringify(result, null, 2);
+              navigator.clipboard.writeText(jsonStr).then(() => {
+                alert(lang === 'en' ? 'Copied to clipboard!' : 'Copiat in clipboard!');
+              });
+            }}
+            className="mt-6 px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 text-sm font-semibold"
+          >
+            {lang === 'en' ? 'Copy JSON' : 'Copiati JSON'}
+          </button>
+        </div>
+      )}
+
+      {/* Info Section */}
+      {!result && !loading && (
+        <div className={`${themes[theme].card} p-8 rounded-lg opacity-60`}>
+          <h4 className="font-semibold mb-3">{lang === 'en' ? 'How it works:' : 'Cum functioneaza:'}</h4>
+          <ul className="space-y-2 text-sm">
+            <li>1. {lang === 'en' ? 'Paste your negotiation text above' : 'Incollati textul negocierii mai sus'}</li>
+            <li>2. {lang === 'en' ? 'Click the analyze button' : 'Apasati butonul de analiza'}</li>
+            <li>3. {lang === 'en' ? 'View results from all 10 frameworks (CBT, TA, EI, NLP, etc.)' : 'Vedeti rezultatele din toate 10 framework-urile'}</li>
+            <li>4. {lang === 'en' ? 'Copy the JSON for integration with your app' : 'Copiati JSON-ul pentru integrare'}</li>
+          </ul>
+        </div>
+      )}
     </div>
   );
 }
