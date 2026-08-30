@@ -1,0 +1,438 @@
+# ============================================================
+# SANTINEL — ELK STACK CONFIGURATION
+# Elasticsearch, Logstash, Kibana for centralized logging
+# ============================================================
+
+---
+# Elasticsearch Configuration
+elasticsearch:
+  version: 8.11.0
+  cluster:
+    name: santinel-cluster
+  node:
+    name: es-node-1
+  discovery:
+    type: single-node
+  security:
+    enabled: true
+    enrollment:
+      enabled: true
+  xpack:
+    security:
+      enabled: true
+      enrollment:
+        enabled: true
+      http:
+        ssl:
+          enabled: false  # Enable in production with proper certs
+  jvm:
+    heap_size: 512m
+  indices:
+    memory:
+      index_buffer_size: 30%
+  thread_pool:
+    search:
+      queue_size: 1000
+    bulk:
+      queue_size: 1000
+
+---
+# Logstash Configuration
+logstash:
+  pipeline:
+    workers: 4
+    batch:
+      size: 125
+      delay: 50
+  config:
+    input:
+      # Receive logs from Docker containers
+      tcp:
+        port: 5000
+        codec: json_lines
+
+      # Receive logs from Syslog
+      udp:
+        port: 5001
+        codec: plain
+
+    filter:
+      # Parse JSON logs
+      json:
+        source: message
+        target: data
+        skip_on_invalid_json: true
+
+      # Add timestamp
+      date:
+        match:
+          - timestamp
+          - "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+          - "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+          - "ISO8601"
+        target: "@timestamp"
+
+      # Mutate to add fields
+      mutate:
+        add_fields:
+          environment: "production"
+          service: "santinel"
+          version: "1.0"
+
+      # Geolocation enrichment (if IP present)
+      geoip:
+        source: client_ip
+        target: geoip
+        skip_on_empty: true
+
+      # Fingerprint for deduplication
+      fingerprint:
+        source:
+          - message
+          - timestamp
+        target: fingerprint
+        method: MD5
+
+    output:
+      # Send to Elasticsearch
+      elasticsearch:
+        hosts: ["elasticsearch:9200"]
+        user: "elastic"
+        password: "elastic123"
+        index: "santinel-%{+YYYY.MM.dd}"
+        document_type: "_doc"
+
+      # Send errors to separate index
+      if:
+        condition: "level >= 'ERROR'"
+      elasticsearch:
+        hosts: ["elasticsearch:9200"]
+        user: "elastic"
+        password: "elastic123"
+        index: "santinel-errors-%{+YYYY.MM.dd}"
+
+      # Stdout for debugging
+      stdout:
+        codec: rubydebug
+
+---
+# Kibana Configuration
+kibana:
+  server:
+    name: santinel-kibana
+    host: "0.0.0.0"
+    port: 5601
+    basePath: "/kibana"
+    rewriteBasePath: false
+
+  kibana:
+    index: ".kibana"
+    defaultAppId: "discover"
+    autocompleteTerminate: true
+
+  elasticsearch:
+    hosts: ["http://elasticsearch:9200"]
+    username: "elastic"
+    password: "elastic123"
+
+  logging:
+    level: info
+    appenders:
+      default:
+        type: console
+        layout:
+          type: pattern
+          highlight: true
+
+  xpack:
+    security:
+      enabled: true
+
+---
+# Index Patterns - Kibana index configuration
+kibana_index_patterns:
+  - name: "santinel-*"
+    time_field: "@timestamp"
+    pattern: "santinel-*"
+    interval: daily
+    default: true
+
+  - name: "santinel-errors-*"
+    time_field: "@timestamp"
+    pattern: "santinel-errors-*"
+    interval: daily
+
+---
+# Kibana Dashboards
+kibana_dashboards:
+  - dashboard_id: "santinel-overview"
+    title: "SANTINEL Overview"
+    description: "Main dashboard for system monitoring"
+    panels:
+      - type: "visualization"
+        visualization_id: "request-rate"
+        x: 0
+        y: 0
+        w: 6
+        h: 4
+
+      - type: "visualization"
+        visualization_id: "error-rate"
+        x: 6
+        y: 0
+        w: 6
+        h: 4
+
+      - type: "visualization"
+        visualization_id: "response-time"
+        x: 0
+        y: 4
+        w: 12
+        h: 4
+
+      - type: "visualization"
+        visualization_id: "top-endpoints"
+        x: 0
+        y: 8
+        w: 6
+        h: 4
+
+      - type: "visualization"
+        visualization_id: "error-types"
+        x: 6
+        y: 8
+        w: 6
+        h: 4
+
+  - dashboard_id: "santinel-voice"
+    title: "Voice Processing Dashboard"
+    description: "Voice module performance and metrics"
+    panels:
+      - type: "visualization"
+        visualization_id: "voice-latency"
+        x: 0
+        y: 0
+        w: 6
+        h: 4
+
+      - type: "visualization"
+        visualization_id: "voice-quality"
+        x: 6
+        y: 0
+        w: 6
+        h: 4
+
+      - type: "visualization"
+        visualization_id: "voice-events"
+        x: 0
+        y: 4
+        w: 12
+        h: 4
+
+---
+# Kibana Visualizations
+kibana_visualizations:
+  - visualization_id: "request-rate"
+    title: "Request Rate"
+    type: "line"
+    datasource: "santinel-*"
+    metrics:
+      - type: "count"
+    aggregations:
+      - type: "date_histogram"
+        field: "@timestamp"
+        interval: "1m"
+
+  - visualization_id: "error-rate"
+    title: "Error Rate"
+    type: "line"
+    datasource: "santinel-errors-*"
+    metrics:
+      - type: "count"
+    aggregations:
+      - type: "date_histogram"
+        field: "@timestamp"
+        interval: "1m"
+
+  - visualization_id: "response-time"
+    title: "Response Time Distribution"
+    type: "histogram"
+    datasource: "santinel-*"
+    field: "response_time_ms"
+
+  - visualization_id: "top-endpoints"
+    title: "Top Endpoints"
+    type: "table"
+    datasource: "santinel-*"
+    metrics:
+      - type: "count"
+    aggregations:
+      - type: "terms"
+        field: "endpoint"
+        size: 20
+
+  - visualization_id: "error-types"
+    title: "Error Types"
+    type: "pie"
+    datasource: "santinel-errors-*"
+    metrics:
+      - type: "count"
+    aggregations:
+      - type: "terms"
+        field: "error_type"
+        size: 10
+
+  - visualization_id: "voice-latency"
+    title: "Voice Processing Latency"
+    type: "line"
+    datasource: "santinel-*"
+    field: "voice_latency_ms"
+
+  - visualization_id: "voice-quality"
+    title: "Voice Signal Quality"
+    type: "gauge"
+    datasource: "santinel-*"
+    field: "voice_quality_score"
+
+  - visualization_id: "voice-events"
+    title: "Voice Processing Events"
+    type: "line"
+    datasource: "santinel-*"
+    metrics:
+      - type: "count"
+    aggregations:
+      - type: "date_histogram"
+        field: "@timestamp"
+        interval: "5m"
+
+---
+# Index Lifecycle Management (ILM)
+ilm_policies:
+  santinel-ilm-policy:
+    phases:
+      hot:
+        min_age: 0d
+        actions:
+          rollover:
+            max_primary_shard_size: 50GB
+            max_age: 1d
+          set_priority:
+            priority: 100
+
+      warm:
+        min_age: 7d
+        actions:
+          set_priority:
+            priority: 50
+          forcemerge:
+            max_num_segments: 1
+
+      cold:
+        min_age: 30d
+        actions:
+          set_priority:
+            priority: 0
+          searchable_snapshot:
+            snapshot_repository: "backup"
+
+      delete:
+        min_age: 90d
+        actions:
+          delete: {}
+
+---
+# Alerting Rules for Kibana
+kibana_alerts:
+  - alert_id: "high-error-rate"
+    title: "High Error Rate Detected"
+    condition: "error_rate > 5%"
+    frequency: "5m"
+    actions:
+      - type: "email"
+        recipients: ["devops@santinel.ai"]
+      - type: "slack"
+        webhook: "${SLACK_WEBHOOK_URL}"
+
+  - alert_id: "high-latency"
+    title: "High Response Latency"
+    condition: "p95_latency > 1000"
+    frequency: "10m"
+    actions:
+      - type: "email"
+        recipients: ["devops@santinel.ai"]
+
+  - alert_id: "voice-failure"
+    title: "Voice Processing Failure"
+    condition: "voice_error_rate > 2%"
+    frequency: "5m"
+    actions:
+      - type: "pagerduty"
+        service_key: "${PAGERDUTY_SERVICE_KEY}"
+
+---
+# Log Retention Policies
+log_retention:
+  default_retention_days: 90
+  error_logs_retention_days: 180
+  voice_logs_retention_days: 60
+  audit_logs_retention_days: 365
+
+---
+# Security Settings
+security:
+  ssl:
+    enabled: false  # Set to true in production with proper certificates
+    certificate_authorities: []
+    certificate: []
+    key: []
+    verification_mode: full
+
+  authentication:
+    type: native  # Can also use SAML, LDAP, OpenID Connect
+    realm:
+      name: default
+      type: native
+
+  rbac:
+    enabled: true
+    roles:
+      - name: analytics_viewer
+        privileges:
+          - cluster: ["monitor"]
+          - indices:
+              - names: ["santinel-*"]
+                privileges: ["read"]
+      - name: admin
+        privileges:
+          - cluster: ["all"]
+          - indices:
+              - names: ["*"]
+                privileges: ["all"]
+
+---
+# Backup Configuration
+backup:
+  repository:
+    name: backup
+    type: fs
+    settings:
+      location: /elasticsearch/backup
+
+  snapshots:
+    frequency: daily
+    retention_days: 30
+    indices: ["santinel-*"]
+
+---
+# Performance Tuning
+performance:
+  refresh_interval: "30s"
+  number_of_shards: 3
+  number_of_replicas: 1
+  codec: best_compression
+  merge:
+    scheduler:
+      max_thread_count: 1
+    policy:
+      segments_per_tier: 10
+      max_merged_segment: 5GB

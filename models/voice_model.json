@@ -1,0 +1,30 @@
+{
+  "status": "success",
+  "samples": 4,
+  "feature_stats": {
+    "pitch_mean": [
+      127.5,
+      15.20690632574555
+    ],
+    "pace_wpm": [
+      135.0,
+      20.615528128088304
+    ],
+    "energy_db": [
+      -20.25,
+      3.491060010942235
+    ],
+    "breathing_rate": [
+      14.25,
+      1.479019945774904
+    ]
+  },
+  "personality_distribution": {
+    "expressive": 1,
+    "analytical": 1,
+    "amiable": 1,
+    "driver": 1
+  },
+  "model_type": "gradient_boosting",
+  "timestamp": "2026-08-30T22:33:58.016245"
+}

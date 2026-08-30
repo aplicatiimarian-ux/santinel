@@ -1,0 +1,5098 @@
+[
+  {
+    "scenario": {
+      "language": "en",
+      "type": "confident",
+      "speaker": "Negotiator (You)",
+      "text": "I understand your position. However, our analysis shows a 15% increase is justified by market conditions."
+    },
+    "signals": [
+      {
+        "signals": {
+          "pitch_hz": 143.93734039751737,
+          "pitch_variance": 1.1524819365233838,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -23.744199752807617,
+          "energy_variance": 0.36129227188171226,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.442574+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 2.2211074829101562,
+          "sts_latency_ms": 0.028848648071289062,
+          "signal_analysis_latency_ms": 2.1905899047851562,
+          "processing_latency_ms": 2.2211074829101562,
+          "end_to_end_latency_ms": 2.2842884063720703,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.442650+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 138.94807300787124,
+          "pitch_variance": 1.6272268662388636,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -23.404483795166016,
+          "energy_variance": 0.38323550986338295,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.444543+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.7740726470947266,
+          "sts_latency_ms": 0.019311904907226562,
+          "signal_analysis_latency_ms": 1.7533302307128906,
+          "processing_latency_ms": 1.7740726470947266,
+          "end_to_end_latency_ms": 4.24647331237793,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.444589+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 139.77638775239976,
+          "pitch_variance": 2.322643512305615,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -24.13165855407715,
+          "energy_variance": 0.6309269671559761,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.446426+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.7273426055908203,
+          "sts_latency_ms": 0.015497207641601562,
+          "signal_analysis_latency_ms": 1.711130142211914,
+          "processing_latency_ms": 1.7273426055908203,
+          "end_to_end_latency_ms": 6.128072738647461,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.446468+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 143.08672902059024,
+          "pitch_variance": 1.537793686267219,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -24.504867553710938,
+          "energy_variance": 0.5703676103579388,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.448422+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.8486976623535156,
+          "sts_latency_ms": 0.015497207641601562,
+          "signal_analysis_latency_ms": 1.8322467803955078,
+          "processing_latency_ms": 1.8486976623535156,
+          "end_to_end_latency_ms": 8.123636245727539,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.448463+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 136.95194992681843,
+          "pitch_variance": 0.8044806961170297,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -24.26974868774414,
+          "energy_variance": 0.5307398150876482,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.450313+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.7383098602294922,
+          "sts_latency_ms": 0.01621246337890625,
+          "signal_analysis_latency_ms": 1.7211437225341797,
+          "processing_latency_ms": 1.7383098602294922,
+          "end_to_end_latency_ms": 10.014772415161133,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.450354+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 143.7303332040174,
+          "pitch_variance": 1.5852754120375816,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -23.53692626953125,
+          "energy_variance": 0.27530089409821956,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.453384+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 2.931356430053711,
+          "sts_latency_ms": 0.026702880859375,
+          "signal_analysis_latency_ms": 2.9039382934570312,
+          "processing_latency_ms": 2.931356430053711,
+          "end_to_end_latency_ms": 13.094902038574219,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.453447+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 138.94807300787124,
+          "pitch_variance": 1.6272268662388636,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -23.93073081970215,
+          "energy_variance": 0.4534649880947737,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.455419+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.7971992492675781,
+          "sts_latency_ms": 0.019073486328125,
+          "signal_analysis_latency_ms": 1.7771720886230469,
+          "processing_latency_ms": 1.7971992492675781,
+          "end_to_end_latency_ms": 15.122413635253906,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.455468+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 140.37248126884725,
+          "pitch_variance": 1.741575325515176,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -24.470855712890625,
+          "energy_variance": 0.5696284701896785,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.457339+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.7390251159667969,
+          "sts_latency_ms": 0.016450881958007812,
+          "signal_analysis_latency_ms": 1.7213821411132812,
+          "processing_latency_ms": 1.7390251159667969,
+          "end_to_end_latency_ms": 17.04120635986328,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.457384+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 143.301332775017,
+          "pitch_variance": 1.5893806109604947,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -24.260234832763672,
+          "energy_variance": 0.6374984458578726,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.459226+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.718759536743164,
+          "sts_latency_ms": 0.015974044799804688,
+          "signal_analysis_latency_ms": 1.7023086547851562,
+          "processing_latency_ms": 1.718759536743164,
+          "end_to_end_latency_ms": 18.927812576293945,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.459278+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 136.56231423618917,
+          "pitch_variance": 0.8020576495547184,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -24.277189254760742,
+          "energy_variance": 0.5465939074059849,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.461121+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.7266273498535156,
+          "sts_latency_ms": 0.015735626220703125,
+          "signal_analysis_latency_ms": 1.7101764678955078,
+          "processing_latency_ms": 1.7266273498535156,
+          "end_to_end_latency_ms": 20.822763442993164,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.461164+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 143.71894017911714,
+          "pitch_variance": 0.9507849701027616,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -25.3073787689209,
+          "energy_variance": 0.751669449324759,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.463001+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.7197132110595703,
+          "sts_latency_ms": 0.015735626220703125,
+          "signal_analysis_latency_ms": 1.7032623291015625,
+          "processing_latency_ms": 1.7197132110595703,
+          "end_to_end_latency_ms": 22.70221710205078,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.463043+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 138.94807300787124,
+          "pitch_variance": 1.6272268662388636,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -24.205413818359375,
+          "energy_variance": 0.5990320650132074,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.464877+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.7218589782714844,
+          "sts_latency_ms": 0.016689300537109375,
+          "signal_analysis_latency_ms": 1.7042160034179688,
+          "processing_latency_ms": 1.7218589782714844,
+          "end_to_end_latency_ms": 24.57880973815918,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.464919+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 140.20121914858757,
+          "pitch_variance": 2.782017316078659,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -24.772214889526367,
+          "energy_variance": 0.643542658963425,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.466753+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.7178058624267578,
+          "sts_latency_ms": 0.015497207641601562,
+          "signal_analysis_latency_ms": 1.70135498046875,
+          "processing_latency_ms": 1.7178058624267578,
+          "end_to_end_latency_ms": 26.45397186279297,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.466793+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 143.5158329895172,
+          "pitch_variance": 1.6017567765658673,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -23.72338104248047,
+          "energy_variance": 0.2918733078395037,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.469851+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 2.955198287963867,
+          "sts_latency_ms": 0.024557113647460938,
+          "signal_analysis_latency_ms": 2.930164337158203,
+          "processing_latency_ms": 2.955198287963867,
+          "end_to_end_latency_ms": 29.55913543701172,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.469910+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 137.34500271231903,
+          "pitch_variance": 0.9071164111765389,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -23.938636779785156,
+          "energy_variance": 0.5332077097443533,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.471812+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.7337799072265625,
+          "sts_latency_ms": 0.0152587890625,
+          "signal_analysis_latency_ms": 1.7178058624267578,
+          "processing_latency_ms": 1.7337799072265625,
+          "end_to_end_latency_ms": 31.513214111328125,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.471853+00:00"
+      }
+    ],
+    "summary": {
+      "chunks_analyzed": 15,
+      "avg_pitch_hz": 140.62293884230343,
+      "avg_pace_wpm": 205.71428571428575,
+      "avg_energy_db": -24.165194702148437,
+      "total_pauses": 0,
+      "breathing_detected": false,
+      "avg_confidence": 0.8499999999999999,
+      "latency_stats": {
+        "mean_ms": 1.9380569458007812,
+        "median_ms": 1.7383098602294922,
+        "min_ms": 1.7178058624267578,
+        "max_ms": 2.955198287963867,
+        "within_target_pct": 100.0
+      }
+    }
+  },
+  {
+    "scenario": {
+      "language": "en",
+      "type": "hesitant",
+      "speaker": "Counterparty",
+      "text": "Well, um... I think... maybe we could... look at alternative options?"
+    },
+    "signals": [
+      {
+        "signals": {
+          "pitch_hz": 107.0557961808387,
+          "pitch_variance": 1.8410934652698123,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -24.405548095703125,
+          "energy_variance": 0.5632486374192013,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.499415+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.9190311431884766,
+          "sts_latency_ms": 0.02288818359375,
+          "signal_analysis_latency_ms": 1.8951892852783203,
+          "processing_latency_ms": 1.9190311431884766,
+          "end_to_end_latency_ms": 1.9681453704833984,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.499483+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 97.57049721227553,
+          "pitch_variance": 3.2657136746136226,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -24.270448684692383,
+          "energy_variance": 0.6022174258303551,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.502573+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 2.9692649841308594,
+          "sts_latency_ms": 0.026464462280273438,
+          "signal_analysis_latency_ms": 2.941608428955078,
+          "processing_latency_ms": 2.9692649841308594,
+          "end_to_end_latency_ms": 5.128622055053711,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.502634+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 99.64497760329782,
+          "pitch_variance": 4.043876892879304,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -29.093448638916016,
+          "energy_variance": 0.9676253170289442,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.504712+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.9028186798095703,
+          "sts_latency_ms": 0.020742416381835938,
+          "signal_analysis_latency_ms": 1.8813610076904297,
+          "processing_latency_ms": 1.9028186798095703,
+          "end_to_end_latency_ms": 7.263422012329102,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.504776+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 106.54321974776867,
+          "pitch_variance": 3.430876448150783,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -28.336566925048828,
+          "energy_variance": 1.0929571175771136,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.506723+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.7931461334228516,
+          "sts_latency_ms": 0.017404556274414062,
+          "signal_analysis_latency_ms": 1.7745494842529297,
+          "processing_latency_ms": 1.7931461334228516,
+          "end_to_end_latency_ms": 9.272336959838867,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.506781+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 93.95825355863194,
+          "pitch_variance": 1.536427001965683,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -23.60305404663086,
+          "energy_variance": 0.4107331683404585,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.508690+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.7745494842529297,
+          "sts_latency_ms": 0.016689300537109375,
+          "signal_analysis_latency_ms": 1.7571449279785156,
+          "processing_latency_ms": 1.7745494842529297,
+          "end_to_end_latency_ms": 11.238336563110352,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.508744+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 107.19552703197292,
+          "pitch_variance": 2.348276721779264,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -23.94628143310547,
+          "energy_variance": 0.44784548884086794,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.510648+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.7774105072021484,
+          "sts_latency_ms": 0.015497207641601562,
+          "signal_analysis_latency_ms": 1.760244369506836,
+          "processing_latency_ms": 1.7774105072021484,
+          "end_to_end_latency_ms": 13.19575309753418,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.510702+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 97.38007567215341,
+          "pitch_variance": 3.368390713269896,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -44.53099060058594,
+          "energy_variance": 0.005544306157284872,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.7
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.512610+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.7840862274169922,
+          "sts_latency_ms": 0.016450881958007812,
+          "signal_analysis_latency_ms": 1.7666816711425781,
+          "processing_latency_ms": 1.7840862274169922,
+          "end_to_end_latency_ms": 15.157699584960938,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.512662+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 99.3378286356946,
+          "pitch_variance": 4.018114075125489,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -25.07485580444336,
+          "energy_variance": 0.6729957112396644,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.514559+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.7762184143066406,
+          "sts_latency_ms": 0.0152587890625,
+          "signal_analysis_latency_ms": 1.7597675323486328,
+          "processing_latency_ms": 1.7762184143066406,
+          "end_to_end_latency_ms": 17.106294631958008,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.514612+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 105.46559170027054,
+          "pitch_variance": 3.016040416127273,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -24.076580047607422,
+          "energy_variance": 0.6878113323338765,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.516659+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.9316673278808594,
+          "sts_latency_ms": 0.017642974853515625,
+          "signal_analysis_latency_ms": 1.9130706787109375,
+          "processing_latency_ms": 1.9316673278808594,
+          "end_to_end_latency_ms": 19.208192825317383,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.516715+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 94.32421023357625,
+          "pitch_variance": 1.4352647880952023,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -45.14228820800781,
+          "energy_variance": 0.007200526892382483,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.7
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.519551+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 2.715587615966797,
+          "sts_latency_ms": 0.026702880859375,
+          "signal_analysis_latency_ms": 2.688169479370117,
+          "processing_latency_ms": 2.715587615966797,
+          "end_to_end_latency_ms": 22.10712432861328,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.519615+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 106.58628600742014,
+          "pitch_variance": 2.000693095567638,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -23.680816650390625,
+          "energy_variance": 0.4521410570594948,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.521688+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.8661022186279297,
+          "sts_latency_ms": 0.019788742065429688,
+          "signal_analysis_latency_ms": 1.8451213836669922,
+          "processing_latency_ms": 1.8661022186279297,
+          "end_to_end_latency_ms": 24.23882484436035,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.521750+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 97.51224810177142,
+          "pitch_variance": 3.8048952662365703,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -29.031108856201172,
+          "energy_variance": 0.9687737438252787,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.523710+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.8062591552734375,
+          "sts_latency_ms": 0.018596649169921875,
+          "signal_analysis_latency_ms": 1.7864704132080078,
+          "processing_latency_ms": 1.8062591552734375,
+          "end_to_end_latency_ms": 26.259183883666992,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.523766+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 99.66134992615162,
+          "pitch_variance": 4.207067268772436,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -28.692426681518555,
+          "energy_variance": 1.0420949403705724,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.525676+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.7769336700439453,
+          "sts_latency_ms": 0.015974044799804688,
+          "signal_analysis_latency_ms": 1.7595291137695312,
+          "processing_latency_ms": 1.7769336700439453,
+          "end_to_end_latency_ms": 28.223752975463867,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.525730+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 105.43799931840147,
+          "pitch_variance": 2.4840646159189803,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -24.424575805664062,
+          "energy_variance": 0.5163806641210513,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.527628+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.7750263214111328,
+          "sts_latency_ms": 0.015497207641601562,
+          "signal_analysis_latency_ms": 1.758575439453125,
+          "processing_latency_ms": 1.7750263214111328,
+          "end_to_end_latency_ms": 30.17592430114746,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.527681+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 93.76708357505692,
+          "pitch_variance": 1.2759338435529388,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -24.26009178161621,
+          "energy_variance": 0.577893307408567,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.529583+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.773834228515625,
+          "sts_latency_ms": 0.015497207641601562,
+          "signal_analysis_latency_ms": 1.7576217651367188,
+          "processing_latency_ms": 1.773834228515625,
+          "end_to_end_latency_ms": 32.13024139404297,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.529635+00:00"
+      }
+    ],
+    "summary": {
+      "chunks_analyzed": 15,
+      "avg_pitch_hz": 100.76272963368544,
+      "avg_pace_wpm": 205.71428571428575,
+      "avg_energy_db": -28.171272150675456,
+      "total_pauses": 0,
+      "breathing_detected": false,
+      "avg_confidence": 0.8299999999999998,
+      "latency_stats": {
+        "mean_ms": 1.9561290740966797,
+        "median_ms": 1.7931461334228516,
+        "min_ms": 1.773834228515625,
+        "max_ms": 2.9692649841308594,
+        "within_target_pct": 100.0
+      }
+    }
+  },
+  {
+    "scenario": {
+      "language": "en",
+      "type": "energetic",
+      "speaker": "Negotiator (You)",
+      "text": "This is a fantastic opportunity! We can expand together and both benefit significantly!"
+    },
+    "signals": [
+      {
+        "signals": {
+          "pitch_hz": 154.61195210772271,
+          "pitch_variance": 1.8574234582381197,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -23.986093521118164,
+          "energy_variance": 0.6110312510301824,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.541281+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.8944740295410156,
+          "sts_latency_ms": 0.020503997802734375,
+          "signal_analysis_latency_ms": 1.8727779388427734,
+          "processing_latency_ms": 1.8944740295410156,
+          "end_to_end_latency_ms": 1.9419193267822266,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.541334+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 147.95550372262622,
+          "pitch_variance": 2.3008133329747498,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -24.086502075195312,
+          "energy_variance": 0.5515180071080952,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.543180+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.7361640930175781,
+          "sts_latency_ms": 0.014781951904296875,
+          "signal_analysis_latency_ms": 1.720428466796875,
+          "processing_latency_ms": 1.7361640930175781,
+          "end_to_end_latency_ms": 3.837108612060547,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.543231+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 149.5809910511674,
+          "pitch_variance": 2.698064042103216,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -24.527572631835938,
+          "energy_variance": 0.6352358229619389,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.545073+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.7349720001220703,
+          "sts_latency_ms": 0.014543533325195312,
+          "signal_analysis_latency_ms": 1.7189979553222656,
+          "processing_latency_ms": 1.7349720001220703,
+          "end_to_end_latency_ms": 5.72967529296875,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.545113+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 154.11880986700766,
+          "pitch_variance": 1.9869819890374945,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -24.8764705657959,
+          "energy_variance": 0.6432217354027887,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.546982+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.737833023071289,
+          "sts_latency_ms": 0.015020370483398438,
+          "signal_analysis_latency_ms": 1.7213821411132812,
+          "processing_latency_ms": 1.737833023071289,
+          "end_to_end_latency_ms": 7.638692855834961,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.547156+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 145.45855279800236,
+          "pitch_variance": 0.7635225045860285,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -24.02484703063965,
+          "energy_variance": 0.510562286177979,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.549259+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.9822120666503906,
+          "sts_latency_ms": 0.017404556274414062,
+          "signal_analysis_latency_ms": 1.9640922546386719,
+          "processing_latency_ms": 1.9822120666503906,
+          "end_to_end_latency_ms": 9.917497634887695,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.549304+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 154.8515448001456,
+          "pitch_variance": 1.4068144272479293,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -24.03067398071289,
+          "energy_variance": 0.45435213310389416,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.552054+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 2.6388168334960938,
+          "sts_latency_ms": 0.0286102294921875,
+          "signal_analysis_latency_ms": 2.6092529296875,
+          "processing_latency_ms": 2.6388168334960938,
+          "end_to_end_latency_ms": 12.722015380859375,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.552142+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 147.9599820907089,
+          "pitch_variance": 2.448792380928793,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -24.66339874267578,
+          "energy_variance": 0.6126946645410177,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.554301+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.9092559814453125,
+          "sts_latency_ms": 0.02288818359375,
+          "signal_analysis_latency_ms": 1.8851757049560547,
+          "processing_latency_ms": 1.9092559814453125,
+          "end_to_end_latency_ms": 14.96434211730957,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.554366+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 150.05098438943148,
+          "pitch_variance": 2.758172874354069,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -23.392425537109375,
+          "energy_variance": 0.22435007566558726,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.556411+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.889944076538086,
+          "sts_latency_ms": 0.017404556274414062,
+          "signal_analysis_latency_ms": 1.871347427368164,
+          "processing_latency_ms": 1.889944076538086,
+          "end_to_end_latency_ms": 17.070293426513672,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.556471+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 154.12815917109958,
+          "pitch_variance": 2.315442832482797,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -24.534446716308594,
+          "energy_variance": 0.5803491930271473,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.558378+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.7707347869873047,
+          "sts_latency_ms": 0.016689300537109375,
+          "signal_analysis_latency_ms": 1.7535686492919922,
+          "processing_latency_ms": 1.7707347869873047,
+          "end_to_end_latency_ms": 19.036293029785156,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.558432+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 145.02175236120192,
+          "pitch_variance": 0.9838987127403824,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -24.166179656982422,
+          "energy_variance": 0.6223503464730676,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.560354+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.794576644897461,
+          "sts_latency_ms": 0.01621246337890625,
+          "signal_analysis_latency_ms": 1.7774105072021484,
+          "processing_latency_ms": 1.794576644897461,
+          "end_to_end_latency_ms": 21.012067794799805,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.560407+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 154.84666358452765,
+          "pitch_variance": 1.1026995728154263,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -23.875072479248047,
+          "energy_variance": 0.5184877908925989,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.562374+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.8448829650878906,
+          "sts_latency_ms": 0.016450881958007812,
+          "signal_analysis_latency_ms": 1.827239990234375,
+          "processing_latency_ms": 1.8448829650878906,
+          "end_to_end_latency_ms": 23.031949996948242,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.562426+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 148.44704924444272,
+          "pitch_variance": 3.2235869414506806,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -24.761667251586914,
+          "energy_variance": 0.62828906524135,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.564450+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.9016265869140625,
+          "sts_latency_ms": 0.018596649169921875,
+          "signal_analysis_latency_ms": 1.8820762634277344,
+          "processing_latency_ms": 1.9016265869140625,
+          "end_to_end_latency_ms": 25.110244750976562,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.564507+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 149.3752975952503,
+          "pitch_variance": 3.342685909189003,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -23.506168365478516,
+          "energy_variance": 0.3107888429889827,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.566380+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.7406940460205078,
+          "sts_latency_ms": 0.015497207641601562,
+          "signal_analysis_latency_ms": 1.7244815826416016,
+          "processing_latency_ms": 1.7406940460205078,
+          "end_to_end_latency_ms": 27.03714370727539,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.566421+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 154.38198238323233,
+          "pitch_variance": 2.509680202143675,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -23.68967056274414,
+          "energy_variance": 0.29396928171603065,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.569286+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 2.7666091918945312,
+          "sts_latency_ms": 0.026702880859375,
+          "signal_analysis_latency_ms": 2.73895263671875,
+          "processing_latency_ms": 2.7666091918945312,
+          "end_to_end_latency_ms": 29.9532413482666,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.569350+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 145.24015257960212,
+          "pitch_variance": 0.9073093746721762,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -24.078466415405273,
+          "energy_variance": 0.4430374378579733,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.571415+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.8801689147949219,
+          "sts_latency_ms": 0.020503997802734375,
+          "signal_analysis_latency_ms": 1.8587112426757812,
+          "processing_latency_ms": 1.8801689147949219,
+          "end_to_end_latency_ms": 32.07659721374512,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.571487+00:00"
+      }
+    ],
+    "summary": {
+      "chunks_analyzed": 15,
+      "avg_pitch_hz": 150.40195851641127,
+      "avg_pace_wpm": 205.71428571428575,
+      "avg_energy_db": -24.146643702189127,
+      "total_pauses": 0,
+      "breathing_detected": false,
+      "avg_confidence": 0.8499999999999999,
+      "latency_stats": {
+        "mean_ms": 1.9481976826985676,
+        "median_ms": 1.8801689147949219,
+        "min_ms": 1.7349720001220703,
+        "max_ms": 2.7666091918945312,
+        "within_target_pct": 100.0
+      }
+    }
+  },
+  {
+    "scenario": {
+      "language": "en",
+      "type": "calm_deliberate",
+      "speaker": "Counterparty",
+      "text": "Let me think through this carefully. I need to understand all the implications before committing."
+    },
+    "signals": [
+      {
+        "signals": {
+          "pitch_hz": 97.07182718149225,
+          "pitch_variance": 0.6304963337925481,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -23.514324188232422,
+          "energy_variance": 0.3214086565257254,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.587482+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 2.149343490600586,
+          "sts_latency_ms": 0.024080276489257812,
+          "signal_analysis_latency_ms": 2.1245479583740234,
+          "processing_latency_ms": 2.149343490600586,
+          "end_to_end_latency_ms": 2.2230148315429688,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.587542+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 94.96524589568874,
+          "pitch_variance": 0.9626250181751701,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -23.881023406982422,
+          "energy_variance": 0.5063724247280849,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.589406+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.6963481903076172,
+          "sts_latency_ms": 0.0152587890625,
+          "signal_analysis_latency_ms": 1.6798973083496094,
+          "processing_latency_ms": 1.6963481903076172,
+          "end_to_end_latency_ms": 4.139900207519531,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.589448+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 95.62863678010946,
+          "pitch_variance": 1.0354084515205424,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -23.869848251342773,
+          "energy_variance": 0.5415711423769699,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.591307+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.749277114868164,
+          "sts_latency_ms": 0.014781951904296875,
+          "signal_analysis_latency_ms": 1.7337799072265625,
+          "processing_latency_ms": 1.749277114868164,
+          "end_to_end_latency_ms": 6.041049957275391,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.591348+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 96.88293931054857,
+          "pitch_variance": 1.0341507636512264,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -24.237749099731445,
+          "energy_variance": 0.5483369207252913,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.593170+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.7158985137939453,
+          "sts_latency_ms": 0.015020370483398438,
+          "signal_analysis_latency_ms": 1.6999244689941406,
+          "processing_latency_ms": 1.7158985137939453,
+          "end_to_end_latency_ms": 7.903575897216797,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.593210+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 94.02700005224415,
+          "pitch_variance": 0.38006954478659305,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -23.85903549194336,
+          "energy_variance": 0.44609404170424666,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.595079+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.7614364624023438,
+          "sts_latency_ms": 0.0152587890625,
+          "signal_analysis_latency_ms": 1.7452239990234375,
+          "processing_latency_ms": 1.7614364624023438,
+          "end_to_end_latency_ms": 9.81283187866211,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.595119+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 96.67761956918584,
+          "pitch_variance": 0.2920774005111326,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -50.574310302734375,
+          "energy_variance": 0.0015283234557273019,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.7
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.596235+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.0099411010742188,
+          "sts_latency_ms": 0.0171661376953125,
+          "signal_analysis_latency_ms": 0.9920597076416016,
+          "processing_latency_ms": 1.0099411010742188,
+          "end_to_end_latency_ms": 10.970592498779297,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.596302+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 0.0,
+          "pitch_variance": 0.0,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -49.436790466308594,
+          "energy_variance": 0.0004981617768656251,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.5
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.596773+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 0.33593177795410156,
+          "sts_latency_ms": 0.015020370483398438,
+          "signal_analysis_latency_ms": 0.3199577331542969,
+          "processing_latency_ms": 0.33593177795410156,
+          "end_to_end_latency_ms": 11.507272720336914,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.596823+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 95.7212913170594,
+          "pitch_variance": 0.8962950805899388,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -24.17144012451172,
+          "energy_variance": 0.4913418721984096,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.598746+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.8112659454345703,
+          "sts_latency_ms": 0.015497207641601562,
+          "signal_analysis_latency_ms": 1.7943382263183594,
+          "processing_latency_ms": 1.8112659454345703,
+          "end_to_end_latency_ms": 13.480424880981445,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.598797+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 97.08011961579075,
+          "pitch_variance": 1.0947151789371374,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -23.990697860717773,
+          "energy_variance": 0.3993712862803464,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.600738+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.875162124633789,
+          "sts_latency_ms": 0.06318092346191406,
+          "signal_analysis_latency_ms": 1.8100738525390625,
+          "processing_latency_ms": 1.875162124633789,
+          "end_to_end_latency_ms": 15.519142150878906,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.600894+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 94.2115508440824,
+          "pitch_variance": 0.380859422830039,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -23.667583465576172,
+          "energy_variance": 0.26912029373435264,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.603703+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 2.5861263275146484,
+          "sts_latency_ms": 0.025987625122070312,
+          "signal_analysis_latency_ms": 2.5594234466552734,
+          "processing_latency_ms": 2.5861263275146484,
+          "end_to_end_latency_ms": 18.444061279296875,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.603763+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 0.0,
+          "pitch_variance": 0.0,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -50.575721740722656,
+          "energy_variance": 0.0015274304959820386,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.5
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.604274+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 0.3178119659423828,
+          "sts_latency_ms": 0.016927719116210938,
+          "signal_analysis_latency_ms": 0.30040740966796875,
+          "processing_latency_ms": 0.3178119659423828,
+          "end_to_end_latency_ms": 19.008874893188477,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.604322+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 0.0,
+          "pitch_variance": 0.0,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -50.009765625,
+          "energy_variance": 0.0009416468573284242,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.5
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.604752+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 0.2963542938232422,
+          "sts_latency_ms": 0.015497207641601562,
+          "signal_analysis_latency_ms": 0.2803802490234375,
+          "processing_latency_ms": 0.2963542938232422,
+          "end_to_end_latency_ms": 19.4857120513916,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.604794+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 95.53581858774378,
+          "pitch_variance": 1.1367756211617774,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -24.441368103027344,
+          "energy_variance": 0.6388660927587579,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.606675+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.7650127410888672,
+          "sts_latency_ms": 0.0209808349609375,
+          "signal_analysis_latency_ms": 1.743316650390625,
+          "processing_latency_ms": 1.7650127410888672,
+          "end_to_end_latency_ms": 21.413087844848633,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.606724+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 96.7785192933486,
+          "pitch_variance": 0.6469222897296776,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -24.73253631591797,
+          "energy_variance": 0.6340166888454473,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.608545+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.7020702362060547,
+          "sts_latency_ms": 0.015735626220703125,
+          "signal_analysis_latency_ms": 1.6851425170898438,
+          "processing_latency_ms": 1.7020702362060547,
+          "end_to_end_latency_ms": 23.279190063476562,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.608588+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 0.0,
+          "pitch_variance": 0.0,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -50.454402923583984,
+          "energy_variance": 0.00118919109822508,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.5
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.608989+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 0.28061866760253906,
+          "sts_latency_ms": 0.014543533325195312,
+          "signal_analysis_latency_ms": 0.2651214599609375,
+          "processing_latency_ms": 0.28061866760253906,
+          "end_to_end_latency_ms": 23.721694946289062,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.609028+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 0.0,
+          "pitch_variance": 0.0,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -50.243282318115234,
+          "energy_variance": 0.0013765611716492182,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.5
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.609429+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 0.28967857360839844,
+          "sts_latency_ms": 0.014543533325195312,
+          "signal_analysis_latency_ms": 0.27441978454589844,
+          "processing_latency_ms": 0.28967857360839844,
+          "end_to_end_latency_ms": 24.16229248046875,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.609469+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 94.95966051091095,
+          "pitch_variance": 0.628607092280726,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -24.60709571838379,
+          "energy_variance": 0.5975307152947356,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.611347+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.77001953125,
+          "sts_latency_ms": 0.0152587890625,
+          "signal_analysis_latency_ms": 1.7542839050292969,
+          "processing_latency_ms": 1.77001953125,
+          "end_to_end_latency_ms": 26.080846786499023,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.611387+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 95.44058754750098,
+          "pitch_variance": 1.1183010743871271,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -24.333026885986328,
+          "energy_variance": 0.691578697260013,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.613536+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 2.0389556884765625,
+          "sts_latency_ms": 0.017642974853515625,
+          "signal_analysis_latency_ms": 2.0203590393066406,
+          "processing_latency_ms": 2.0389556884765625,
+          "end_to_end_latency_ms": 28.27167510986328,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.613582+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 96.97682133214141,
+          "pitch_variance": 0.8312332932932792,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -24.511402130126953,
+          "energy_variance": 0.5834199789790117,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.615399+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.692056655883789,
+          "sts_latency_ms": 0.0152587890625,
+          "signal_analysis_latency_ms": 1.6756057739257812,
+          "processing_latency_ms": 1.692056655883789,
+          "end_to_end_latency_ms": 30.132532119750977,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.615451+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 94.21046525118925,
+          "pitch_variance": 0.2075477876783631,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -23.654394149780273,
+          "energy_variance": 0.351411627221873,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.617311+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.7437934875488281,
+          "sts_latency_ms": 0.015020370483398438,
+          "signal_analysis_latency_ms": 1.728057861328125,
+          "processing_latency_ms": 1.7437934875488281,
+          "end_to_end_latency_ms": 32.044410705566406,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.617351+00:00"
+      }
+    ],
+    "summary": {
+      "chunks_analyzed": 20,
+      "avg_pitch_hz": 95.74454020593575,
+      "avg_pace_wpm": 205.71428571428572,
+      "avg_energy_db": -31.93828992843628,
+      "total_pauses": 0,
+      "breathing_detected": false,
+      "avg_confidence": 0.7549999999999999,
+      "latency_stats": {
+        "mean_ms": 1.4293551445007324,
+        "median_ms": 1.7298460006713867,
+        "min_ms": 0.28061866760253906,
+        "max_ms": 2.5861263275146484,
+        "within_target_pct": 100.0
+      }
+    }
+  },
+  {
+    "scenario": {
+      "language": "en",
+      "type": "stressed_rushed",
+      "speaker": "Negotiator (You)",
+      "text": "Look, we need to decide NOW! The market window is closing and we're running out of time!"
+    },
+    "signals": [
+      {
+        "signals": {
+          "pitch_hz": 165.56761319105323,
+          "pitch_variance": 2.8652279038761748,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -25.160202026367188,
+          "energy_variance": 0.7500947121495977,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.627811+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 2.1224021911621094,
+          "sts_latency_ms": 0.022411346435546875,
+          "signal_analysis_latency_ms": 2.098560333251953,
+          "processing_latency_ms": 2.1224021911621094,
+          "end_to_end_latency_ms": 2.167224884033203,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.627876+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 150.69286577377193,
+          "pitch_variance": 5.821132958156298,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -23.247364044189453,
+          "energy_variance": 0.15891050645274335,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.629780+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.7764568328857422,
+          "sts_latency_ms": 0.0152587890625,
+          "signal_analysis_latency_ms": 1.7600059509277344,
+          "processing_latency_ms": 1.7764568328857422,
+          "end_to_end_latency_ms": 4.131555557250977,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.629822+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 153.37610700842626,
+          "pitch_variance": 6.397005427997043,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -22.91883659362793,
+          "energy_variance": 1.3154302540123466,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.631672+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.7440319061279297,
+          "sts_latency_ms": 0.0152587890625,
+          "signal_analysis_latency_ms": 1.728057861328125,
+          "processing_latency_ms": 1.7440319061279297,
+          "end_to_end_latency_ms": 6.022930145263672,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.631712+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 163.75182238237534,
+          "pitch_variance": 5.774494302839594,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -24.52029800415039,
+          "energy_variance": 0.6106481724043289,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.633509+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.6908645629882812,
+          "sts_latency_ms": 0.0152587890625,
+          "signal_analysis_latency_ms": 1.6751289367675781,
+          "processing_latency_ms": 1.6908645629882812,
+          "end_to_end_latency_ms": 7.859945297241211,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.633549+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 143.95684421664774,
+          "pitch_variance": 2.0368639108588216,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -25.25723648071289,
+          "energy_variance": 0.7294054237594806,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.636360+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 2.7158260345458984,
+          "sts_latency_ms": 0.027418136596679688,
+          "signal_analysis_latency_ms": 2.687692642211914,
+          "processing_latency_ms": 2.7158260345458984,
+          "end_to_end_latency_ms": 10.72072982788086,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.636432+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 166.14637969494183,
+          "pitch_variance": 3.027818788680803,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -22.71366310119629,
+          "energy_variance": 1.4027067297839035,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.638419+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.7724037170410156,
+          "sts_latency_ms": 0.016689300537109375,
+          "signal_analysis_latency_ms": 1.7547607421875,
+          "processing_latency_ms": 1.7724037170410156,
+          "end_to_end_latency_ms": 12.770891189575195,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.638464+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 149.97474646420858,
+          "pitch_variance": 5.611994551309633,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -24.29580307006836,
+          "energy_variance": 0.4502120679072281,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.640310+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.7352104187011719,
+          "sts_latency_ms": 0.015020370483398438,
+          "signal_analysis_latency_ms": 1.7192363739013672,
+          "processing_latency_ms": 1.7352104187011719,
+          "end_to_end_latency_ms": 14.661312103271484,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.640351+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 153.19499104464242,
+          "pitch_variance": 7.145725550412923,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -22.751523971557617,
+          "energy_variance": 1.3484890657995556,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.642202+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.744985580444336,
+          "sts_latency_ms": 0.015020370483398438,
+          "signal_analysis_latency_ms": 1.7290115356445312,
+          "processing_latency_ms": 1.744985580444336,
+          "end_to_end_latency_ms": 16.553163528442383,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.642243+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 163.68564731291937,
+          "pitch_variance": 4.781010291079627,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -23.724258422851562,
+          "energy_variance": 0.34830553576668266,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.644352+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 2.006053924560547,
+          "sts_latency_ms": 0.016689300537109375,
+          "signal_analysis_latency_ms": 1.9881725311279297,
+          "processing_latency_ms": 2.006053924560547,
+          "end_to_end_latency_ms": 18.70417594909668,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.644406+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 143.74277353628386,
+          "pitch_variance": 2.1033036569752204,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -24.122312545776367,
+          "energy_variance": 0.6422696959935109,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.646260+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.7328262329101562,
+          "sts_latency_ms": 0.015497207641601562,
+          "signal_analysis_latency_ms": 1.7163753509521484,
+          "processing_latency_ms": 1.7328262329101562,
+          "end_to_end_latency_ms": 20.61152458190918,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.646312+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 165.5734574531567,
+          "pitch_variance": 3.027617322718459,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -21.546798706054688,
+          "energy_variance": 1.141893250594269,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.648185+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.7576217651367188,
+          "sts_latency_ms": 0.01811981201171875,
+          "signal_analysis_latency_ms": 1.7383098602294922,
+          "processing_latency_ms": 1.7576217651367188,
+          "end_to_end_latency_ms": 22.538423538208008,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.648238+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 149.5069747151572,
+          "pitch_variance": 5.578254908508217,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -24.28045654296875,
+          "energy_variance": 0.5224025239545543,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.650177+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.8303394317626953,
+          "sts_latency_ms": 0.018358230590820312,
+          "signal_analysis_latency_ms": 1.8107891082763672,
+          "processing_latency_ms": 1.8303394317626953,
+          "end_to_end_latency_ms": 24.53136444091797,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.650231+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 146.14614614614615,
+          "pitch_variance": 2.0020020020020013,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -23.038864135742188,
+          "energy_variance": 0.08651710898356535,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 100,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.651899+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.565694808959961,
+          "sts_latency_ms": 0.025033950805664062,
+          "signal_analysis_latency_ms": 1.538991928100586,
+          "processing_latency_ms": 1.565694808959961,
+          "end_to_end_latency_ms": 26.25751495361328,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.651968+00:00"
+      }
+    ],
+    "summary": {
+      "chunks_analyzed": 13,
+      "avg_pitch_hz": 155.02433607228696,
+      "avg_pace_wpm": 205.71428571428575,
+      "avg_energy_db": -23.65981674194336,
+      "total_pauses": 0,
+      "breathing_detected": false,
+      "avg_confidence": 0.8499999999999999,
+      "latency_stats": {
+        "mean_ms": 1.861132108248197,
+        "median_ms": 1.7576217651367188,
+        "min_ms": 1.565694808959961,
+        "max_ms": 2.7158260345458984,
+        "within_target_pct": 100.0
+      }
+    }
+  },
+  {
+    "scenario": {
+      "language": "ro",
+      "type": "confident",
+      "speaker": "Negociator (Tu)",
+      "text": "\u00cen\u021beleg pozi\u021bia dvs. Cu toate acestea, analiza noastr\u0103 arat\u0103 c\u0103 o cre\u0219tere de 15% este justificat\u0103 de condi\u021biile pie\u021bei."
+    },
+    "signals": [
+      {
+        "signals": {
+          "pitch_hz": 144.15964061981762,
+          "pitch_variance": 1.4896939886313052,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -24.351511001586914,
+          "energy_variance": 0.6076869463987113,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.662640+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.8825531005859375,
+          "sts_latency_ms": 0.02193450927734375,
+          "signal_analysis_latency_ms": 1.8589496612548828,
+          "processing_latency_ms": 1.8825531005859375,
+          "end_to_end_latency_ms": 1.9304752349853516,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.662698+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 138.55493029882135,
+          "pitch_variance": 1.92547787427813,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -24.07280158996582,
+          "energy_variance": 0.5367388703497785,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.664575+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.7561912536621094,
+          "sts_latency_ms": 0.016689300537109375,
+          "signal_analysis_latency_ms": 1.7387866973876953,
+          "processing_latency_ms": 1.7561912536621094,
+          "end_to_end_latency_ms": 3.8611888885498047,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.664621+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 139.97666717147686,
+          "pitch_variance": 2.227913200505324,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -24.409225463867188,
+          "energy_variance": 0.6087806153506906,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.666498+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.76239013671875,
+          "sts_latency_ms": 0.01621246337890625,
+          "signal_analysis_latency_ms": 1.745462417602539,
+          "processing_latency_ms": 1.76239013671875,
+          "end_to_end_latency_ms": 5.783796310424805,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.666542+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 143.08313600349,
+          "pitch_variance": 1.3719178928029112,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -23.290510177612305,
+          "energy_variance": 0.18350697931665852,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.670056+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 2.8314590454101562,
+          "sts_latency_ms": 0.026941299438476562,
+          "signal_analysis_latency_ms": 2.8035640716552734,
+          "processing_latency_ms": 2.8314590454101562,
+          "end_to_end_latency_ms": 9.350061416625977,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.670120+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 136.76221428616418,
+          "pitch_variance": 1.1791145468067898,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -24.272552490234375,
+          "energy_variance": 0.5732477884751371,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.672019+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.7142295837402344,
+          "sts_latency_ms": 0.017881393432617188,
+          "signal_analysis_latency_ms": 1.6956329345703125,
+          "processing_latency_ms": 1.7142295837402344,
+          "end_to_end_latency_ms": 11.305570602416992,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.672069+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 144.15964061981762,
+          "pitch_variance": 1.4896939886313052,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -24.231435775756836,
+          "energy_variance": 0.5072725509946447,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.674010+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.7979145050048828,
+          "sts_latency_ms": 0.017642974853515625,
+          "signal_analysis_latency_ms": 1.779317855834961,
+          "processing_latency_ms": 1.7979145050048828,
+          "end_to_end_latency_ms": 13.296365737915039,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.674066+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 138.351430123742,
+          "pitch_variance": 1.7769176694528672,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -24.470853805541992,
+          "energy_variance": 0.5951847202249151,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.676094+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.8932819366455078,
+          "sts_latency_ms": 0.0171661376953125,
+          "signal_analysis_latency_ms": 1.8749237060546875,
+          "processing_latency_ms": 1.8932819366455078,
+          "end_to_end_latency_ms": 15.379667282104492,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.676140+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 139.76567397539728,
+          "pitch_variance": 1.9721468076089717,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -25.002500534057617,
+          "energy_variance": 0.7294505397144309,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.678034+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.76239013671875,
+          "sts_latency_ms": 0.015735626220703125,
+          "signal_analysis_latency_ms": 1.7461776733398438,
+          "processing_latency_ms": 1.76239013671875,
+          "end_to_end_latency_ms": 17.3189640045166,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.678078+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 143.30902924289046,
+          "pitch_variance": 1.9062961951488278,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -23.933191299438477,
+          "energy_variance": 0.36673276256434645,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.679956+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.7604827880859375,
+          "sts_latency_ms": 0.015735626220703125,
+          "signal_analysis_latency_ms": 1.7437934875488281,
+          "processing_latency_ms": 1.7604827880859375,
+          "end_to_end_latency_ms": 19.2415714263916,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.680000+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 136.56906155063857,
+          "pitch_variance": 1.2572764283267315,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -23.414031982421875,
+          "energy_variance": 0.38327911261716857,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.681800+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.6872882843017578,
+          "sts_latency_ms": 0.015497207641601562,
+          "signal_analysis_latency_ms": 1.6710758209228516,
+          "processing_latency_ms": 1.6872882843017578,
+          "end_to_end_latency_ms": 21.08454704284668,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.681841+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 143.9451404053174,
+          "pitch_variance": 1.567127271340573,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -24.606407165527344,
+          "energy_variance": 0.6386521427585266,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.683728+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.7757415771484375,
+          "sts_latency_ms": 0.015497207641601562,
+          "signal_analysis_latency_ms": 1.7592906951904297,
+          "processing_latency_ms": 1.7757415771484375,
+          "end_to_end_latency_ms": 23.01192283630371,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.683768+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 138.7515900527676,
+          "pitch_variance": 1.8001545773009668,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -24.525964736938477,
+          "energy_variance": 0.6434655630926526,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.686748+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 2.8715133666992188,
+          "sts_latency_ms": 0.02574920654296875,
+          "signal_analysis_latency_ms": 2.844572067260742,
+          "processing_latency_ms": 2.8715133666992188,
+          "end_to_end_latency_ms": 26.04055404663086,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.686810+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 140.37617782587404,
+          "pitch_variance": 1.888274897132819,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -23.888668060302734,
+          "energy_variance": 0.4626248372744245,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.688761+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.7724037170410156,
+          "sts_latency_ms": 0.017642974853515625,
+          "signal_analysis_latency_ms": 1.7538070678710938,
+          "processing_latency_ms": 1.7724037170410156,
+          "end_to_end_latency_ms": 28.047561645507812,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.688820+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 142.87222880609002,
+          "pitch_variance": 1.4632940886883734,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -24.113704681396484,
+          "energy_variance": 0.5969464328921859,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.690693+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.7352104187011719,
+          "sts_latency_ms": 0.016689300537109375,
+          "signal_analysis_latency_ms": 1.7178058624267578,
+          "processing_latency_ms": 1.7352104187011719,
+          "end_to_end_latency_ms": 29.978513717651367,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.690739+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 136.56231423618917,
+          "pitch_variance": 0.8020576495547184,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -25.002155303955078,
+          "energy_variance": 0.7255166948144787,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.692729+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.8665790557861328,
+          "sts_latency_ms": 0.016927719116210938,
+          "signal_analysis_latency_ms": 1.8486976623535156,
+          "processing_latency_ms": 1.8665790557861328,
+          "end_to_end_latency_ms": 32.01556205749512,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.692785+00:00"
+      }
+    ],
+    "summary": {
+      "chunks_analyzed": 15,
+      "avg_pitch_hz": 140.47992501456628,
+      "avg_pace_wpm": 205.71428571428575,
+      "avg_energy_db": -24.239034271240236,
+      "total_pauses": 0,
+      "breathing_detected": false,
+      "avg_confidence": 0.8499999999999999,
+      "latency_stats": {
+        "mean_ms": 1.9246419270833333,
+        "median_ms": 1.7724037170410156,
+        "min_ms": 1.6872882843017578,
+        "max_ms": 2.8715133666992188,
+        "within_target_pct": 100.0
+      }
+    }
+  },
+  {
+    "scenario": {
+      "language": "ro",
+      "type": "hesitant",
+      "speaker": "Contrapartid\u0103",
+      "text": "Ei bine, um... cred c\u0103... poate... am putea s\u0103 ne g\u00e2ndim la alte op\u021biuni?"
+    },
+    "signals": [
+      {
+        "signals": {
+          "pitch_hz": 106.58163781194351,
+          "pitch_variance": 1.8750549132812007,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -23.547489166259766,
+          "energy_variance": 0.3316628325802195,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.704401+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 2.196073532104492,
+          "sts_latency_ms": 0.024318695068359375,
+          "signal_analysis_latency_ms": 2.1708011627197266,
+          "processing_latency_ms": 2.196073532104492,
+          "end_to_end_latency_ms": 2.264738082885742,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.704479+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 97.70763328260578,
+          "pitch_variance": 3.7889306947740335,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -24.12355613708496,
+          "energy_variance": 0.6421715213973225,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.706423+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.7809867858886719,
+          "sts_latency_ms": 0.017642974853515625,
+          "signal_analysis_latency_ms": 1.76239013671875,
+          "processing_latency_ms": 1.7809867858886719,
+          "end_to_end_latency_ms": 4.281759262084961,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.706480+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 98.82486792324951,
+          "pitch_variance": 4.2744109750101815,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -28.511520385742188,
+          "energy_variance": 1.0768174228284362,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.708352+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.7392635345458984,
+          "sts_latency_ms": 0.02002716064453125,
+          "signal_analysis_latency_ms": 1.718759536743164,
+          "processing_latency_ms": 1.7392635345458984,
+          "end_to_end_latency_ms": 6.210803985595703,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.708403+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 106.17043316808554,
+          "pitch_variance": 3.1034473743981947,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -28.2310791015625,
+          "energy_variance": 1.113187894449737,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.710271+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.7294883728027344,
+          "sts_latency_ms": 0.0152587890625,
+          "signal_analysis_latency_ms": 1.7137527465820312,
+          "processing_latency_ms": 1.7294883728027344,
+          "end_to_end_latency_ms": 8.126974105834961,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.710318+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 93.94610715237734,
+          "pitch_variance": 1.0921349222956218,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -23.849365234375,
+          "energy_variance": 0.5351160526384539,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.712148+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.7232894897460938,
+          "sts_latency_ms": 0.018596649169921875,
+          "signal_analysis_latency_ms": 1.7037391662597656,
+          "processing_latency_ms": 1.7232894897460938,
+          "end_to_end_latency_ms": 10.007143020629883,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.712193+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 106.93046484910252,
+          "pitch_variance": 1.6659210539175568,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -24.631866455078125,
+          "energy_variance": 0.6647459298855553,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.714056+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.749277114868164,
+          "sts_latency_ms": 0.015020370483398438,
+          "signal_analysis_latency_ms": 1.7330646514892578,
+          "processing_latency_ms": 1.749277114868164,
+          "end_to_end_latency_ms": 11.912345886230469,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.714097+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 97.87231655026748,
+          "pitch_variance": 3.336389260798824,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -44.79427719116211,
+          "energy_variance": 0.006824664556713086,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.7
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.716003+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.7962455749511719,
+          "sts_latency_ms": 0.014781951904296875,
+          "signal_analysis_latency_ms": 1.7807483673095703,
+          "processing_latency_ms": 1.7962455749511719,
+          "end_to_end_latency_ms": 13.858556747436523,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.716043+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 99.67007391872524,
+          "pitch_variance": 4.335591869631355,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -23.954418182373047,
+          "energy_variance": 0.37945068542220467,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.718671+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 2.5212764739990234,
+          "sts_latency_ms": 0.026226043701171875,
+          "signal_analysis_latency_ms": 2.493619918823242,
+          "processing_latency_ms": 2.5212764739990234,
+          "end_to_end_latency_ms": 16.535520553588867,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.718743+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 105.24092877476336,
+          "pitch_variance": 3.1055182605170404,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -24.440895080566406,
+          "energy_variance": 0.5451178167009121,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.720881+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.9309520721435547,
+          "sts_latency_ms": 0.022649765014648438,
+          "signal_analysis_latency_ms": 1.9075870513916016,
+          "processing_latency_ms": 1.9309520721435547,
+          "end_to_end_latency_ms": 18.74256134033203,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.720937+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 93.9092164698562,
+          "pitch_variance": 1.087288970427196,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -44.2006721496582,
+          "energy_variance": 0.006855333902753624,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.7
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.722732+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.634836196899414,
+          "sts_latency_ms": 0.017404556274414062,
+          "signal_analysis_latency_ms": 1.6167163848876953,
+          "processing_latency_ms": 1.634836196899414,
+          "end_to_end_latency_ms": 20.589828491210938,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.722789+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 107.30963847894105,
+          "pitch_variance": 2.2424606533103866,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -23.64750099182129,
+          "energy_variance": 0.43578642565991393,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.725288+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 2.3643970489501953,
+          "sts_latency_ms": 0.018835067749023438,
+          "signal_analysis_latency_ms": 2.344369888305664,
+          "processing_latency_ms": 2.3643970489501953,
+          "end_to_end_latency_ms": 23.147106170654297,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.725347+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 98.39421845026546,
+          "pitch_variance": 3.620992301031359,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -28.15560531616211,
+          "energy_variance": 1.1344528673898364,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.727333+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.8429756164550781,
+          "sts_latency_ms": 0.016450881958007812,
+          "signal_analysis_latency_ms": 1.825571060180664,
+          "processing_latency_ms": 1.8429756164550781,
+          "end_to_end_latency_ms": 25.189876556396484,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.727388+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 99.8397602991485,
+          "pitch_variance": 3.8944787187647414,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -28.8265323638916,
+          "energy_variance": 0.9932365270418848,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.729302+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.7888545989990234,
+          "sts_latency_ms": 0.016450881958007812,
+          "signal_analysis_latency_ms": 1.7714500427246094,
+          "processing_latency_ms": 1.7888545989990234,
+          "end_to_end_latency_ms": 27.158737182617188,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.729355+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 105.44864163257269,
+          "pitch_variance": 2.699891050525741,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -24.348655700683594,
+          "energy_variance": 0.5919197585215765,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.732118+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 2.637147903442383,
+          "sts_latency_ms": 0.0171661376953125,
+          "signal_analysis_latency_ms": 2.618551254272461,
+          "processing_latency_ms": 2.637147903442383,
+          "end_to_end_latency_ms": 29.975414276123047,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.732173+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 94.03898216205202,
+          "pitch_variance": 1.1306296571339127,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -23.726028442382812,
+          "energy_variance": 0.35078681739538914,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.734064+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.7657279968261719,
+          "sts_latency_ms": 0.025272369384765625,
+          "signal_analysis_latency_ms": 1.7390251159667969,
+          "processing_latency_ms": 1.7657279968261719,
+          "end_to_end_latency_ms": 31.926870346069336,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.734218+00:00"
+      }
+    ],
+    "summary": {
+      "chunks_analyzed": 15,
+      "avg_pitch_hz": 100.79232806159709,
+      "avg_pace_wpm": 205.71428571428575,
+      "avg_energy_db": -27.93263079325358,
+      "total_pauses": 0,
+      "breathing_detected": false,
+      "avg_confidence": 0.8299999999999998,
+      "latency_stats": {
+        "mean_ms": 1.946719487508138,
+        "median_ms": 1.7888545989990234,
+        "min_ms": 1.634836196899414,
+        "max_ms": 2.637147903442383,
+        "within_target_pct": 100.0
+      }
+    }
+  },
+  {
+    "scenario": {
+      "language": "ro",
+      "type": "energetic",
+      "speaker": "Negociator (Tu)",
+      "text": "Aceasta este o oportunitate fantastic\u0103! Putem s\u0103 expand\u0103m \u00eempreun\u0103 \u0219i ambii vom beneficia semnificativ!"
+    },
+    "signals": [
+      {
+        "signals": {
+          "pitch_hz": 155.11471731637027,
+          "pitch_variance": 1.985913576373898,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -23.33766746520996,
+          "energy_variance": 0.2211646822252421,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.745717+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.979827880859375,
+          "sts_latency_ms": 0.023603439331054688,
+          "signal_analysis_latency_ms": 1.955270767211914,
+          "processing_latency_ms": 1.979827880859375,
+          "end_to_end_latency_ms": 2.0279884338378906,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.745774+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 147.5226032897258,
+          "pitch_variance": 2.897600343570082,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -24.134410858154297,
+          "energy_variance": 0.4558643709289415,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.747944+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 2.051830291748047,
+          "sts_latency_ms": 0.023603439331054688,
+          "signal_analysis_latency_ms": 2.027273178100586,
+          "processing_latency_ms": 2.051830291748047,
+          "end_to_end_latency_ms": 4.254817962646484,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.748010+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 150.30924761622265,
+          "pitch_variance": 3.358400727702488,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -23.65699577331543,
+          "energy_variance": 0.42703145237010853,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.750249+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 2.0821094512939453,
+          "sts_latency_ms": 0.02288818359375,
+          "signal_analysis_latency_ms": 2.058267593383789,
+          "processing_latency_ms": 2.0821094512939453,
+          "end_to_end_latency_ms": 6.559848785400391,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.750318+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 153.8979260623773,
+          "pitch_variance": 2.8120679465600595,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -24.4547119140625,
+          "energy_variance": 0.5301693697647591,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.754061+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 3.5843849182128906,
+          "sts_latency_ms": 0.025987625122070312,
+          "signal_analysis_latency_ms": 3.556966781616211,
+          "processing_latency_ms": 3.5843849182128906,
+          "end_to_end_latency_ms": 10.373830795288086,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.754132+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 145.470686143469,
+          "pitch_variance": 1.5376460131977971,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -23.281661987304688,
+          "energy_variance": 0.19848228925279437,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.756500+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 2.1216869354248047,
+          "sts_latency_ms": 0.022411346435546875,
+          "signal_analysis_latency_ms": 2.0978450775146484,
+          "processing_latency_ms": 2.1216869354248047,
+          "end_to_end_latency_ms": 12.810230255126953,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.756555+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 154.35352134381262,
+          "pitch_variance": 1.3948168899965752,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -23.55868148803711,
+          "energy_variance": 0.30274239674214415,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.758511+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.798391342163086,
+          "sts_latency_ms": 0.015497207641601562,
+          "signal_analysis_latency_ms": 1.7821788787841797,
+          "processing_latency_ms": 1.798391342163086,
+          "end_to_end_latency_ms": 14.815330505371094,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.758551+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 148.64826433227717,
+          "pitch_variance": 2.486512662676538,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -24.189067840576172,
+          "energy_variance": 0.5005648861752566,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.760478+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.819610595703125,
+          "sts_latency_ms": 0.015974044799804688,
+          "signal_analysis_latency_ms": 1.8024444580078125,
+          "processing_latency_ms": 1.819610595703125,
+          "end_to_end_latency_ms": 16.783952713012695,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.760530+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 149.82445816902145,
+          "pitch_variance": 2.9540096227133428,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -24.239730834960938,
+          "energy_variance": 0.531660154902904,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.762545+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.8966197967529297,
+          "sts_latency_ms": 0.015735626220703125,
+          "signal_analysis_latency_ms": 1.8799304962158203,
+          "processing_latency_ms": 1.8966197967529297,
+          "end_to_end_latency_ms": 18.849849700927734,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.762604+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 153.88369554266745,
+          "pitch_variance": 2.391163235232256,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -23.754222869873047,
+          "energy_variance": 0.4439754283005924,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.764511+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.7940998077392578,
+          "sts_latency_ms": 0.015497207641601562,
+          "signal_analysis_latency_ms": 1.7778873443603516,
+          "processing_latency_ms": 1.7940998077392578,
+          "end_to_end_latency_ms": 20.816802978515625,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.764562+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 145.68096035985945,
+          "pitch_variance": 0.9102250852892846,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -23.60043716430664,
+          "energy_variance": 0.3611755034407057,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.766439+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.7664432525634766,
+          "sts_latency_ms": 0.015735626220703125,
+          "signal_analysis_latency_ms": 1.7497539520263672,
+          "processing_latency_ms": 1.7664432525634766,
+          "end_to_end_latency_ms": 22.744417190551758,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.766490+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 155.3591912244111,
+          "pitch_variance": 1.729238139716317,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -24.169981002807617,
+          "energy_variance": 0.5920688308259328,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.769385+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 2.7909278869628906,
+          "sts_latency_ms": 0.026702880859375,
+          "signal_analysis_latency_ms": 2.7632713317871094,
+          "processing_latency_ms": 2.7909278869628906,
+          "end_to_end_latency_ms": 25.69866180419922,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.769447+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 148.16932318055314,
+          "pitch_variance": 1.7715594788794036,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -23.383338928222656,
+          "energy_variance": 0.2920896399447312,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.771748+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 2.0890235900878906,
+          "sts_latency_ms": 0.02193450927734375,
+          "signal_analysis_latency_ms": 2.065896987915039,
+          "processing_latency_ms": 2.0890235900878906,
+          "end_to_end_latency_ms": 28.058528900146484,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.771804+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 149.84602405986053,
+          "pitch_variance": 3.4516494144757974,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -23.979991912841797,
+          "energy_variance": 0.4832666623192904,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.773728+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.7671585083007812,
+          "sts_latency_ms": 0.016927719116210938,
+          "signal_analysis_latency_ms": 1.7497539520263672,
+          "processing_latency_ms": 1.7671585083007812,
+          "end_to_end_latency_ms": 30.032634735107422,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.773769+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 153.63475354615264,
+          "pitch_variance": 2.3027262546577765,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -25.196212768554688,
+          "energy_variance": 0.728230037435968,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.775583+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.703500747680664,
+          "sts_latency_ms": 0.015020370483398438,
+          "signal_analysis_latency_ms": 1.6872882843017578,
+          "processing_latency_ms": 1.703500747680664,
+          "end_to_end_latency_ms": 31.88800811767578,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.775624+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 145.68096035985945,
+          "pitch_variance": 0.9102250852892846,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -23.802473068237305,
+          "energy_variance": 0.3770830478770089,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.777420+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.6894340515136719,
+          "sts_latency_ms": 0.015974044799804688,
+          "signal_analysis_latency_ms": 1.6727447509765625,
+          "processing_latency_ms": 1.6894340515136719,
+          "end_to_end_latency_ms": 33.72526168823242,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.777468+00:00"
+      }
+    ],
+    "summary": {
+      "chunks_analyzed": 15,
+      "avg_pitch_hz": 150.4930888364427,
+      "avg_pace_wpm": 205.71428571428575,
+      "avg_energy_db": -23.915972391764324,
+      "total_pauses": 0,
+      "breathing_detected": false,
+      "avg_confidence": 0.8499999999999999,
+      "latency_stats": {
+        "mean_ms": 2.0623366038004556,
+        "median_ms": 1.8966197967529297,
+        "min_ms": 1.6894340515136719,
+        "max_ms": 3.5843849182128906,
+        "within_target_pct": 100.0
+      }
+    }
+  },
+  {
+    "scenario": {
+      "language": "ro",
+      "type": "calm_deliberate",
+      "speaker": "Contrapartid\u0103",
+      "text": "Permite\u021bi-mi s\u0103 m\u0103 g\u00e2ndesc atent la asta. Trebuie s\u0103 \u00een\u021beleg toate implica\u021biile \u00eenainte de a m\u0103 angaja."
+    },
+    "signals": [
+      {
+        "signals": {
+          "pitch_hz": 97.1703736215021,
+          "pitch_variance": 0.6526511269730338,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -23.935874938964844,
+          "energy_variance": 0.6006519757630252,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.791750+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.956939697265625,
+          "sts_latency_ms": 0.02193450927734375,
+          "signal_analysis_latency_ms": 1.9338130950927734,
+          "processing_latency_ms": 1.956939697265625,
+          "end_to_end_latency_ms": 2.003192901611328,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.791814+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 95.25047122079779,
+          "pitch_variance": 1.0858831852771216,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -23.71843147277832,
+          "energy_variance": 0.29922600027737256,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.793762+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.8339157104492188,
+          "sts_latency_ms": 0.0152587890625,
+          "signal_analysis_latency_ms": 1.817941665649414,
+          "processing_latency_ms": 1.8339157104492188,
+          "end_to_end_latency_ms": 4.010200500488281,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.793813+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 95.33766287913231,
+          "pitch_variance": 0.6904512608290642,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -23.867019653320312,
+          "energy_variance": 0.5636269496809281,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.795766+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.844167709350586,
+          "sts_latency_ms": 0.0152587890625,
+          "signal_analysis_latency_ms": 1.8277168273925781,
+          "processing_latency_ms": 1.844167709350586,
+          "end_to_end_latency_ms": 6.014823913574219,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.795817+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 97.07418046564514,
+          "pitch_variance": 0.7894364687765068,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -23.322166442871094,
+          "energy_variance": 0.20620875753981613,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.797687+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.7611980438232422,
+          "sts_latency_ms": 0.015735626220703125,
+          "signal_analysis_latency_ms": 1.7442703247070312,
+          "processing_latency_ms": 1.7611980438232422,
+          "end_to_end_latency_ms": 7.935047149658203,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.797738+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 93.84671633073744,
+          "pitch_variance": 0.6875567857955016,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -24.231651306152344,
+          "energy_variance": 0.5399071619117175,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.799587+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.7397403717041016,
+          "sts_latency_ms": 0.015735626220703125,
+          "signal_analysis_latency_ms": 1.7232894897460938,
+          "processing_latency_ms": 1.7397403717041016,
+          "end_to_end_latency_ms": 9.835004806518555,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.799637+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 0.0,
+          "pitch_variance": 0.0,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -49.93592071533203,
+          "energy_variance": 0.0010633873107139965,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.5
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.800060+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 0.308990478515625,
+          "sts_latency_ms": 0.014543533325195312,
+          "signal_analysis_latency_ms": 0.293731689453125,
+          "processing_latency_ms": 0.308990478515625,
+          "end_to_end_latency_ms": 10.30731201171875,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.800116+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 0.0,
+          "pitch_variance": 0.0,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -50.4571533203125,
+          "energy_variance": 0.0015577166012389972,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.5
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.800532+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 0.3082752227783203,
+          "sts_latency_ms": 0.01430511474609375,
+          "signal_analysis_latency_ms": 0.2932548522949219,
+          "processing_latency_ms": 0.3082752227783203,
+          "end_to_end_latency_ms": 10.779380798339844,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.800580+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 95.62055722006441,
+          "pitch_variance": 0.537313204532795,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -24.24481201171875,
+          "energy_variance": 0.5677246553108458,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.803596+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 2.793550491333008,
+          "sts_latency_ms": 0.02574920654296875,
+          "signal_analysis_latency_ms": 2.7666091918945312,
+          "processing_latency_ms": 2.793550491333008,
+          "end_to_end_latency_ms": 13.852357864379883,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.803658+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 96.68232613749164,
+          "pitch_variance": 0.7351037237843701,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -24.71502113342285,
+          "energy_variance": 0.6272707095225453,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.805510+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.6791820526123047,
+          "sts_latency_ms": 0.015735626220703125,
+          "signal_analysis_latency_ms": 1.6627311706542969,
+          "processing_latency_ms": 1.6791820526123047,
+          "end_to_end_latency_ms": 15.758514404296875,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.805552+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 93.84353485329909,
+          "pitch_variance": 0.4225052368083503,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -23.989593505859375,
+          "energy_variance": 0.34382953367575964,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.807395+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.7333030700683594,
+          "sts_latency_ms": 0.0152587890625,
+          "signal_analysis_latency_ms": 1.7173290252685547,
+          "processing_latency_ms": 1.7333030700683594,
+          "end_to_end_latency_ms": 17.642736434936523,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.807435+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 0.0,
+          "pitch_variance": 0.0,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -49.955711364746094,
+          "energy_variance": 0.0011365421141725316,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.5
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.807826+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 0.2837181091308594,
+          "sts_latency_ms": 0.014543533325195312,
+          "signal_analysis_latency_ms": 0.2682209014892578,
+          "processing_latency_ms": 0.2837181091308594,
+          "end_to_end_latency_ms": 18.073320388793945,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.807873+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 0.0,
+          "pitch_variance": 0.0,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -51.42121124267578,
+          "energy_variance": 0.001791751645039177,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.5
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.808258+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 0.278472900390625,
+          "sts_latency_ms": 0.014781951904296875,
+          "signal_analysis_latency_ms": 0.263214111328125,
+          "processing_latency_ms": 0.278472900390625,
+          "end_to_end_latency_ms": 18.50581169128418,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.808297+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 95.1542572439114,
+          "pitch_variance": 1.001496168332303,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -23.18378448486328,
+          "energy_variance": 0.14232014060971546,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.810697+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 2.3047924041748047,
+          "sts_latency_ms": 0.031948089599609375,
+          "signal_analysis_latency_ms": 2.2711753845214844,
+          "processing_latency_ms": 2.3047924041748047,
+          "end_to_end_latency_ms": 20.95961570739746,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.810791+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 97.07538962441826,
+          "pitch_variance": 0.8616038436374454,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -25.25507926940918,
+          "energy_variance": 0.7128197691984607,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.813179+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 2.1390914916992188,
+          "sts_latency_ms": 0.0247955322265625,
+          "signal_analysis_latency_ms": 2.1131038665771484,
+          "processing_latency_ms": 2.1390914916992188,
+          "end_to_end_latency_ms": 23.43440055847168,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.813238+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 0.0,
+          "pitch_variance": 0.0,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -49.91285705566406,
+          "energy_variance": 0.0012389456179227082,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.5
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.813706+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 0.2963542938232422,
+          "sts_latency_ms": 0.014066696166992188,
+          "signal_analysis_latency_ms": 0.2810955047607422,
+          "processing_latency_ms": 0.2963542938232422,
+          "end_to_end_latency_ms": 23.952722549438477,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.813744+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 0.0,
+          "pitch_variance": 0.0,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -50.16069412231445,
+          "energy_variance": 0.0015315579353173548,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.5
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.814125+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 0.2753734588623047,
+          "sts_latency_ms": 0.014066696166992188,
+          "signal_analysis_latency_ms": 0.2601146697998047,
+          "processing_latency_ms": 0.2753734588623047,
+          "end_to_end_latency_ms": 24.371623992919922,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.814163+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 95.15206667253771,
+          "pitch_variance": 0.8941472896220054,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -23.736614227294922,
+          "energy_variance": 0.31210883905750136,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.815998+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.7325878143310547,
+          "sts_latency_ms": 0.015020370483398438,
+          "signal_analysis_latency_ms": 1.71661376953125,
+          "processing_latency_ms": 1.7325878143310547,
+          "end_to_end_latency_ms": 26.245594024658203,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.816038+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 95.34103784262356,
+          "pitch_variance": 0.8930724890114099,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -23.576271057128906,
+          "energy_variance": 0.38113813196516416,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.818940+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 2.8116703033447266,
+          "sts_latency_ms": 0.03266334533691406,
+          "signal_analysis_latency_ms": 2.777576446533203,
+          "processing_latency_ms": 2.8116703033447266,
+          "end_to_end_latency_ms": 29.20246124267578,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.819058+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 96.58611216060525,
+          "pitch_variance": 0.7998491605028824,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -24.680395126342773,
+          "energy_variance": 0.604806059075086,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.821159+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.8985271453857422,
+          "sts_latency_ms": 0.020503997802734375,
+          "signal_analysis_latency_ms": 1.8770694732666016,
+          "processing_latency_ms": 1.8985271453857422,
+          "end_to_end_latency_ms": 31.410694122314453,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.821222+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 94.21263643697557,
+          "pitch_variance": 0.49702048119048226,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -23.465572357177734,
+          "energy_variance": 0.29857709536646293,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.823204+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.8315315246582031,
+          "sts_latency_ms": 0.018835067749023438,
+          "signal_analysis_latency_ms": 1.811981201171875,
+          "processing_latency_ms": 1.8315315246582031,
+          "end_to_end_latency_ms": 33.45513343811035,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.823264+00:00"
+      }
+    ],
+    "summary": {
+      "chunks_analyzed": 20,
+      "avg_pitch_hz": 95.59623733641013,
+      "avg_pace_wpm": 205.71428571428572,
+      "avg_energy_db": -31.88829174041748,
+      "total_pauses": 0,
+      "breathing_detected": false,
+      "avg_confidence": 0.7449999999999999,
+      "latency_stats": {
+        "mean_ms": 1.4905691146850586,
+        "median_ms": 1.7504692077636719,
+        "min_ms": 0.2753734588623047,
+        "max_ms": 2.8116703033447266,
+        "within_target_pct": 100.0
+      }
+    }
+  },
+  {
+    "scenario": {
+      "language": "ro",
+      "type": "stressed_rushed",
+      "speaker": "Negociator (Tu)",
+      "text": "Ascult\u0103, trebuie s\u0103 decidem ACUM! Fereastra de pia\u021b\u0103 se \u00eenchide \u0219i ne scap\u0103 timpul!"
+    },
+    "signals": [
+      {
+        "signals": {
+          "pitch_hz": 166.16447400162005,
+          "pitch_variance": 3.4935911220185147,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -24.30027198791504,
+          "energy_variance": 0.6151712325770831,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.833130+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.8885135650634766,
+          "sts_latency_ms": 0.022649765014648438,
+          "signal_analysis_latency_ms": 1.865386962890625,
+          "processing_latency_ms": 1.8885135650634766,
+          "end_to_end_latency_ms": 1.9369125366210938,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.833189+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 150.44782378115713,
+          "pitch_variance": 5.691652912878842,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -24.873445510864258,
+          "energy_variance": 0.6425614020430096,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.836256+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 2.8879642486572266,
+          "sts_latency_ms": 0.026941299438476562,
+          "signal_analysis_latency_ms": 2.8600692749023438,
+          "processing_latency_ms": 2.8879642486572266,
+          "end_to_end_latency_ms": 5.065441131591797,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.836318+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 153.4717242097658,
+          "pitch_variance": 7.477686572580968,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -21.963031768798828,
+          "energy_variance": 1.247805676334527,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.838324+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.7991065979003906,
+          "sts_latency_ms": 0.01621246337890625,
+          "signal_analysis_latency_ms": 1.7819404602050781,
+          "processing_latency_ms": 1.7991065979003906,
+          "end_to_end_latency_ms": 7.124900817871094,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.838367+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 163.68564731291937,
+          "pitch_variance": 4.781010291079627,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -22.560575485229492,
+          "energy_variance": 0.5621863283003231,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.840220+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.7404556274414062,
+          "sts_latency_ms": 0.015735626220703125,
+          "signal_analysis_latency_ms": 1.7240047454833984,
+          "processing_latency_ms": 1.7404556274414062,
+          "end_to_end_latency_ms": 9.021282196044922,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.840262+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 143.94524774487428,
+          "pitch_variance": 1.5770737904554748,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -24.599502563476562,
+          "energy_variance": 0.6103027798546482,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.842092+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.7216205596923828,
+          "sts_latency_ms": 0.014781951904296875,
+          "signal_analysis_latency_ms": 1.7058849334716797,
+          "processing_latency_ms": 1.7216205596923828,
+          "end_to_end_latency_ms": 10.892152786254883,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.842137+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 166.16447400162005,
+          "pitch_variance": 3.4935911220185147,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -21.904611587524414,
+          "energy_variance": 1.1816845093414579,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.843958+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.7058849334716797,
+          "sts_latency_ms": 0.014781951904296875,
+          "signal_analysis_latency_ms": 1.6901493072509766,
+          "processing_latency_ms": 1.7058849334716797,
+          "end_to_end_latency_ms": 12.758255004882812,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.843998+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 150.01224664643883,
+          "pitch_variance": 6.124059910094475,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -23.82363510131836,
+          "energy_variance": 0.46489721682526614,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.845934+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.8305778503417969,
+          "sts_latency_ms": 0.0152587890625,
+          "signal_analysis_latency_ms": 1.8146038055419922,
+          "processing_latency_ms": 1.8305778503417969,
+          "end_to_end_latency_ms": 14.734506607055664,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.845975+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 153.9297171205889,
+          "pitch_variance": 7.144986353288501,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -21.57375144958496,
+          "energy_variance": 1.3663849829756647,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.847827+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.7464160919189453,
+          "sts_latency_ms": 0.015735626220703125,
+          "signal_analysis_latency_ms": 1.7299652099609375,
+          "processing_latency_ms": 1.7464160919189453,
+          "end_to_end_latency_ms": 16.628026962280273,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.847868+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 163.984266200564,
+          "pitch_variance": 5.1119554518118795,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -23.1490421295166,
+          "energy_variance": 0.2604157401419819,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.849820+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.8467903137207031,
+          "sts_latency_ms": 0.0171661376953125,
+          "signal_analysis_latency_ms": 1.8286705017089844,
+          "processing_latency_ms": 1.8467903137207031,
+          "end_to_end_latency_ms": 18.622398376464844,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.849874+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 143.53956280675735,
+          "pitch_variance": 2.4628210723337793,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -24.287227630615234,
+          "energy_variance": 0.6449383799727373,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.852730+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 2.7399063110351562,
+          "sts_latency_ms": 0.025510787963867188,
+          "signal_analysis_latency_ms": 2.713441848754883,
+          "processing_latency_ms": 2.7399063110351562,
+          "end_to_end_latency_ms": 21.538734436035156,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.852790+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 166.44499858258646,
+          "pitch_variance": 3.312412024728656,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -21.153568267822266,
+          "energy_variance": 1.2461109481346906,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.854812+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.8177032470703125,
+          "sts_latency_ms": 0.019550323486328125,
+          "signal_analysis_latency_ms": 1.7974376678466797,
+          "processing_latency_ms": 1.8177032470703125,
+          "end_to_end_latency_ms": 23.61583709716797,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.854862+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 149.80154289591206,
+          "pitch_variance": 6.382891550267979,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -24.538246154785156,
+          "energy_variance": 0.5971881892271477,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 200,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.856732+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 1.7361640930175781,
+          "sts_latency_ms": 0.015974044799804688,
+          "signal_analysis_latency_ms": 1.7197132110595703,
+          "processing_latency_ms": 1.7361640930175781,
+          "end_to_end_latency_ms": 25.533437728881836,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.856773+00:00"
+      },
+      {
+        "signals": {
+          "pitch_hz": 146.14614614614615,
+          "pitch_variance": 2.0020020020020013,
+          "pace_wpm": 205.71428571428572,
+          "pace_variance": 0.0,
+          "energy_db": -23.985794067382812,
+          "energy_variance": 0.3743469916041994,
+          "breathing_detected": false,
+          "pause_count": 0,
+          "pause_duration_ms": 0,
+          "confidence": 0.85
+        },
+        "transcription": {
+          "text": "[Mock transcription]",
+          "language": "en",
+          "confidence": 0.95,
+          "duration_ms": 100,
+          "provider": "mock",
+          "timestamp": "2026-08-30T15:28:43.857625+00:00"
+        },
+        "latency": {
+          "total_latency_ms": 0.7460117340087891,
+          "sts_latency_ms": 0.015020370483398438,
+          "signal_analysis_latency_ms": 0.7305145263671875,
+          "processing_latency_ms": 0.7460117340087891,
+          "end_to_end_latency_ms": 26.425600051879883,
+          "within_target": true
+        },
+        "timestamp": "2026-08-30T15:28:43.857670+00:00"
+      }
+    ],
+    "summary": {
+      "chunks_analyzed": 13,
+      "avg_pitch_hz": 155.21060549622695,
+      "avg_pace_wpm": 205.71428571428575,
+      "avg_energy_db": -23.28559259267954,
+      "total_pauses": 0,
+      "breathing_detected": false,
+      "avg_confidence": 0.8499999999999999,
+      "latency_stats": {
+        "mean_ms": 1.8620857825646033,
+        "median_ms": 1.7991065979003906,
+        "min_ms": 0.7460117340087891,
+        "max_ms": 2.8879642486572266,
+        "within_target_pct": 100.0
+      }
+    }
+  }
+]

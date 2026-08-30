@@ -1,0 +1,69 @@
+{
+  "timestamp": "2026-08-30T19:40:16.841357+00:00",
+  "language": "en",
+  "results": [
+    {
+      "component": "Docker Containers",
+      "status": "critical",
+      "latency_ms": 0.0,
+      "details": "Docker CLI not installed",
+      "timestamp": "2026-08-30T19:40:00.306028+00:00"
+    },
+    {
+      "component": "Database Connection",
+      "status": "warning",
+      "latency_ms": 19.625425338745117,
+      "details": "[WinError 2] The system cannot find the file specified",
+      "timestamp": "2026-08-30T19:40:00.325981+00:00"
+    },
+    {
+      "component": "Redis Cache",
+      "status": "warning",
+      "latency_ms": 0.0,
+      "details": "redis-cli not installed",
+      "timestamp": "2026-08-30T19:40:00.348428+00:00"
+    },
+    {
+      "component": "FastAPI Backend",
+      "status": "warning",
+      "latency_ms": 6679.267644882202,
+      "details": "Cannot connect to API",
+      "timestamp": "2026-08-30T19:40:07.027944+00:00"
+    },
+    {
+      "component": "Voice Processor Service",
+      "status": "healthy",
+      "latency_ms": 1600.4970073699951,
+      "details": "Voice module is available",
+      "timestamp": "2026-08-30T19:40:08.628959+00:00"
+    },
+    {
+      "component": "Kubernetes Cluster",
+      "status": "warning",
+      "latency_ms": 0.0,
+      "details": "kubectl not installed",
+      "timestamp": "2026-08-30T19:40:08.649426+00:00"
+    },
+    {
+      "component": "Monitoring Stack (Prometheus/Grafana)",
+      "status": "warning",
+      "latency_ms": 4096.529245376587,
+      "details": "Cannot connect to monitoring services",
+      "timestamp": "2026-08-30T19:40:12.746430+00:00"
+    },
+    {
+      "component": "logging_check",
+      "status": "warning",
+      "latency_ms": 4094.1126346588135,
+      "details": "Cannot connect to ELK services",
+      "timestamp": "2026-08-30T19:40:16.841021+00:00"
+    }
+  ],
+  "summary": {
+    "total": 8,
+    "healthy": 1,
+    "warning": 6,
+    "critical": 1,
+    "duration_seconds": 16.580744743347168
+  }
+}

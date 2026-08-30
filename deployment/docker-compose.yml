@@ -1,0 +1,339 @@
+version: '3.9'
+
+services:
+  # ============================================================
+  # PostgreSQL Database - Primary data store
+  # ============================================================
+  postgres:
+    image: postgres:16-alpine
+    container_name: santinel-postgres
+    environment:
+      POSTGRES_USER: ${DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres123}
+      POSTGRES_DB: ${DB_NAME:-santinel_prod}
+      POSTGRES_INITDB_ARGS: "--encoding=UTF8 --locale=en_US.UTF-8"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init_db.sql:/docker-entrypoint-initdb.d/01-schema.sql
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-postgres}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - santinel-net
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # ============================================================
+  # Redis Cache - Session and real-time data
+  # ============================================================
+  redis:
+    image: redis:7-alpine
+    container_name: santinel-redis
+    command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD:-redis123}
+    volumes:
+      - redis_data:/data
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - santinel-net
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # ============================================================
+  # FastAPI Backend - Core API
+  # ============================================================
+  api:
+    build:
+      context: ..
+      dockerfile: deployment/Dockerfile
+    container_name: santinel-api
+    environment:
+      # Database
+      DATABASE_URL: "postgresql://${DB_USER:-postgres}:${DB_PASSWORD:-postgres123}@postgres:5432/${DB_NAME:-santinel_prod}"
+
+      # Redis
+      REDIS_URL: "redis://:${REDIS_PASSWORD:-redis123}@redis:6379/0"
+
+      # LLM Providers
+      GROQ_API_KEY: ${GROQ_API_KEY}
+      MISTRAL_API_KEY: ${MISTRAL_API_KEY}
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+
+      # Voice/Audio
+      DEEPGRAM_API_KEY: ${DEEPGRAM_API_KEY}
+      GOOGLE_APPLICATION_CREDENTIALS: ${GOOGLE_APPLICATION_CREDENTIALS}
+
+      # Security
+      JWT_SECRET: ${JWT_SECRET:-your-secret-key-change-in-production}
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:5173,http://localhost:3000}
+
+      # Monitoring
+      SENTRY_DSN: ${SENTRY_DSN}
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
+
+      # App Config
+      DEBUG: ${DEBUG:-False}
+      APP_ENV: production
+    ports:
+      - "8002:8002"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - santinel-net
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8002/api/v1/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
+
+  # ============================================================
+  # Voice Processor - Async voice analysis
+  # ============================================================
+  voice-processor:
+    build:
+      context: ..
+      dockerfile: deployment/Dockerfile
+    container_name: santinel-voice
+    environment:
+      DATABASE_URL: "postgresql://${DB_USER:-postgres}:${DB_PASSWORD:-postgres123}@postgres:5432/${DB_NAME:-santinel_prod}"
+      REDIS_URL: "redis://:${REDIS_PASSWORD:-redis123}@redis:6379/1"
+      DEEPGRAM_API_KEY: ${DEEPGRAM_API_KEY}
+      GOOGLE_APPLICATION_CREDENTIALS: ${GOOGLE_APPLICATION_CREDENTIALS}
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
+      DEBUG: ${DEBUG:-False}
+      WORKER_TYPE: voice_processor
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - santinel-net
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
+    command: python -u core/voice_module.py
+
+  # ============================================================
+  # Analytics Database - Time-series data
+  # ============================================================
+  analytics-db:
+    image: timescaledb/timescaledb:latest-pg16
+    container_name: santinel-analytics
+    environment:
+      POSTGRES_USER: ${ANALYTICS_USER:-analytics}
+      POSTGRES_PASSWORD: ${ANALYTICS_PASSWORD:-analytics123}
+      POSTGRES_DB: ${ANALYTICS_DB:-santinel_analytics}
+    volumes:
+      - analytics_data:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${ANALYTICS_USER:-analytics}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - santinel-net
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # ============================================================
+  # Prometheus - Metrics collection
+  # ============================================================
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: santinel-prometheus
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
+    ports:
+      - "9090:9090"
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--storage.tsdb.retention.time=30d'
+    networks:
+      - santinel-net
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # ============================================================
+  # Grafana - Metrics visualization
+  # ============================================================
+  grafana:
+    image: grafana/grafana:latest
+    container_name: santinel-grafana
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_PASSWORD:-admin123}
+      GF_INSTALL_PLUGINS: grafana-piechart-panel
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./monitoring/grafana/provisioning:/etc/grafana/provisioning:ro
+    ports:
+      - "3000:3000"
+    depends_on:
+      - prometheus
+    networks:
+      - santinel-net
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # ============================================================
+  # Elasticsearch - Log storage
+  # ============================================================
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.11.0
+    container_name: santinel-elasticsearch
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=true
+      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD:-elastic123}
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
+    ports:
+      - "9200:9200"
+    healthcheck:
+      test: curl -s http://localhost:9200 >/dev/null || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    networks:
+      - santinel-net
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # ============================================================
+  # Logstash - Log processing
+  # ============================================================
+  logstash:
+    image: docker.elastic.co/logstash/logstash:8.11.0
+    container_name: santinel-logstash
+    volumes:
+      - ./monitoring/logstash.conf:/usr/share/logstash/pipeline/logstash.conf:ro
+    environment:
+      - elasticsearch.hosts=elasticsearch:9200
+      - elasticsearch.username=elastic
+      - elasticsearch.password=${ELASTIC_PASSWORD:-elastic123}
+    ports:
+      - "5000:5000"
+      - "9600:9600"
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+    networks:
+      - santinel-net
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # ============================================================
+  # Kibana - Log visualization
+  # ============================================================
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.11.0
+    container_name: santinel-kibana
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+      - ELASTICSEARCH_USERNAME=elastic
+      - ELASTICSEARCH_PASSWORD=${ELASTIC_PASSWORD:-elastic123}
+      - xpack.security.enabled=true
+    ports:
+      - "5601:5601"
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+    networks:
+      - santinel-net
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # ============================================================
+  # Frontend - React application (optional, for development)
+  # ============================================================
+  frontend:
+    build:
+      context: ../web
+      dockerfile: Dockerfile
+    container_name: santinel-frontend
+    environment:
+      VITE_API_BASE: http://api:8002/api/v1
+    ports:
+      - "5173:5173"
+    depends_on:
+      - api
+    networks:
+      - santinel-net
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+  analytics_data:
+    driver: local
+  prometheus_data:
+    driver: local
+  grafana_data:
+    driver: local
+  elasticsearch_data:
+    driver: local
+
+networks:
+  santinel-net:
+    driver: bridge

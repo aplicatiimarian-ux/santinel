@@ -1,0 +1,72 @@
+{
+  "status": "success",
+  "samples": 3,
+  "personality_model": {
+    "status": "success",
+    "samples_trained": 3,
+    "personalities": [
+      "expressive",
+      "analytical",
+      "driver"
+    ],
+    "feature_statistics": {
+      "driver": {
+        "pace": [
+          160
+        ],
+        "pitch": [
+          0
+        ],
+        "energy": [
+          -18
+        ]
+      },
+      "expressive": {
+        "pace": [
+          150
+        ],
+        "pitch": [
+          0
+        ],
+        "energy": [
+          -16
+        ]
+      },
+      "analytical": {
+        "pace": [
+          110
+        ],
+        "pitch": [
+          0
+        ],
+        "energy": [
+          -25
+        ]
+      }
+    },
+    "timestamp": "2026-08-30T22:33:58.024794"
+  },
+  "effectiveness_model": {
+    "status": "success",
+    "samples_trained": 3,
+    "unique_scripts": 3,
+    "personalities": [
+      "expressive",
+      "analytical",
+      "driver"
+    ],
+    "effectiveness_samples": 3,
+    "timestamp": "2026-08-30T22:33:58.024833"
+  },
+  "response_ranker_model": {
+    "status": "success",
+    "responses_trained": 1,
+    "personalities": [
+      "expressive",
+      "analytical",
+      "driver"
+    ],
+    "timestamp": "2026-08-30T22:33:58.024862"
+  },
+  "timestamp": "2026-08-30T22:33:58.024869"
+}
