@@ -1,1 +1,1 @@
-web: cd web && npm install && npm run preview
+web: cd web && npm install && npm run build && npx vite preview --host 0.0.0.0 --port 3000
