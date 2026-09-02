@@ -1,0 +1,41 @@
+import sys
+sys.path.insert(0, '.')
+
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+
+app = FastAPI(
+    title="SANTINEL API Gateway",
+    description="Real-time AI coaching for negotiations",
+    version="1.0.0"
+)
+
+# Enable CORS for all origins
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+@app.get("/health")
+def health():
+    return {"status": "healthy", "service": "SANTINEL API"}
+
+@app.post("/analyze")
+def analyze(text: str):
+    return {
+        "input": text,
+        "frameworks": ["CBT", "NLP", "TA", "EI", "Attachment"],
+        "close_probability": 7,
+        "coaching": "Stay calm and match his pace"
+    }
+
+@app.get("/docs")
+def docs():
+    return {"docs": "Visit /docs for Swagger UI"}
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8000, reload=True)

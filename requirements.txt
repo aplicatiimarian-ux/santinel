@@ -9,3 +9,10 @@ pydantic==2.13.4
 snowballstemmer==3.1.1
 pytest==7.4.0
 pytest-cov==4.1.0
+
+# --- live API (start_api.py) + JWT auth ---
+fastapi==0.139.0
+uvicorn==0.51.0
+psycopg2-binary==2.9.12
+PyJWT==2.13.0
+bcrypt==5.0.0

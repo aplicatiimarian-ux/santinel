@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--
+      Base theme used before Compose takes over. Uses a Material3 DayNight
+      parent so the splash/window background matches light/dark automatically.
+    -->
+    <style name="Theme.SANTINEL" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:windowBackground">?android:colorBackground</item>
+        <item name="android:statusBarColor">#4F46E5</item>
+    </style>
+</resources>
