@@ -1,1 +1,1 @@
-web: cd web && npm install && npm run build && npm run preview
+web: cd web && npm install && npm run preview
