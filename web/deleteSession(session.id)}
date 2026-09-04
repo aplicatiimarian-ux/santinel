@@ -1,0 +1,1 @@
+                <button type="button" className="si-btn si-btn-mini si-btn-danger" onClick={() = disabled={deleting === session.id}>{deleting === session.id ? '.' : T.delete}</button>

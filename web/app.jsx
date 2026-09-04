@@ -4319,6 +4319,14 @@ export default function App() {
   const [token, setTokenState] = useState(getToken);
   const [authReady, setAuthReady] = useState(false);
 
+  useEffect(() => {
+    setAuthReady(true);
+  }, []);
+
+  useEffect(() => {
+    setAuthReady(true);
+  }, []);
+
   const L = t[language];
 
   const handleLogout = useCallback(async () => {
@@ -4440,3 +4448,4 @@ export default function App() {
     </div>
   );
 }
+
