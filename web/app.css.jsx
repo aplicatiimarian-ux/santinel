@@ -1378,9 +1378,9 @@ const WHISPER_HALLUCINATION_BLACKLIST = new Set([
 const isMobileDevice = () => /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(navigator.userAgent.toLowerCase());
 const MOBILE = isMobileDevice();
 
-const VAD_ENERGY_THRESHOLD = MOBILE ? 0.001 : 0.001;  // RMS energy threshold — 5x more sensitive for whispered speech
-const VAD_MIN_PEAK_RATIO = MOBILE ? 1.0 : 1.0;        // Peak/RMS ratio — lowered to allow flat whispered voice
-const VAD_SILENCE_RATIO = MOBILE ? 0.65 : 0.65;       // Silence tolerance — allow 65% for gaps in whispered speech
+const VAD_ENERGY_THRESHOLD = MOBILE ? 0.002 : 0.005;  // RMS energy threshold — mobile: 40% of desktop
+const VAD_MIN_PEAK_RATIO = MOBILE ? 1.0 : 1.2;        // Peak/RMS ratio — mobile: more lenient
+const VAD_SILENCE_RATIO = MOBILE ? 0.60 : 0.50;       // Silence tolerance — mobile: allow 60%
 
 if (MOBILE) console.log('[SANTINEL VAD] Mobile detected — using relaxed thresholds');
 

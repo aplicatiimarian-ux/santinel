@@ -57,7 +57,7 @@ import java.net.URLEncoder
  * 10-framework coaching read-out: close probability, top frameworks, and a
  * finding + confidence + suggestion per framework. Bilingual EN / RO.
  *
- * The API base defaults to 10.0.2.2:8000 — the host loopback as seen from the
+ * The API base defaults to 192.168.1.50:8000 — the host loopback as seen from the
  * Android emulator. Change [API_BASE] for a device / real deployment.
  */
 class MainActivity : ComponentActivity() {
@@ -77,7 +77,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-private const val API_BASE = "http://10.0.2.2:8000"
+private const val API_BASE = "http://192.168.1.50:8000"
 
 private val FRAMEWORK_LABELS = mapOf(
     "cbt" to ("CBT" to "TCC"),
