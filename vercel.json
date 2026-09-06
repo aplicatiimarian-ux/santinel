@@ -1,5 +1,25 @@
 {
+  "name": "santinel-app",
+  "version": 2,
+  "framework": "vite",
+  "buildCommand": "cd web && npm run build",
+  "outputDirectory": "web/dist",
+  "public": true,
+  "git": {
+    "deploymentEnabled": {
+      "main": true
+    }
+  },
+  "env": {
+    "VITE_API_URL": {
+      "description": "API backend URL (set in Vercel dashboard)",
+      "required": true
+    }
+  },
   "rewrites": [
-    { "source": "/(.*)", "destination": "/index.html" }
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
   ]
 }
