@@ -4,8 +4,7 @@
   "framework": "vite",
   "buildCommand": "cd web && npm run build",
   "outputDirectory": "web/dist",
-  "public": true,
-  "git": {
+    "git": {
     "deploymentEnabled": {
       "main": true
     }
