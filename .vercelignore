@@ -1,0 +1,6 @@
+requirements.txt
+.cache/
+Claude outputs/
+*.env
+.git
+node_modules/
