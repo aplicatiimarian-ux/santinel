@@ -4,16 +4,9 @@
   "framework": "vite",
   "buildCommand": "cd web && npm run build",
   "outputDirectory": "web/dist",
-  "public": true,
-  "git": {
+    "git": {
     "deploymentEnabled": {
       "main": true
-    }
-  },
-  "env": {
-    "VITE_API_URL": {
-      "description": "API backend URL (set in Vercel dashboard)",
-      "required": true
     }
   },
   "rewrites": [
