@@ -124,7 +124,7 @@ def run_all_frameworks(text: str, lang: str = "both") -> dict:
         module = _INSTANCES.get(slug)
         if module and hasattr(module, "analyze"):
             try:
-                finding = module.analyze(text, lang=lang)
+                finding = module.analyze(text)
                 results[slug] = finding
             except Exception as e:
                 print(f"[santinel] {slug} analysis failed: {e}")

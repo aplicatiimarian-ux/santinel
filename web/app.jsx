@@ -177,8 +177,8 @@ const SIGNAL_STATE = [
 // Shared API call — used by both the text and voice analysis pages.
 // Carries the JWT access token and transparently refreshes it once on a 401.
 function analyzeRequest(text) {
-  return fetch(`${API_BASE}/analyze?text=${encodeURIComponent(text.trim())}`, {
-    method: 'GET',
+  return fetch(`${API_BASE}/api/analyze?text=${encodeURIComponent(text.trim())}`, {
+    method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${getToken() || ''}`,
