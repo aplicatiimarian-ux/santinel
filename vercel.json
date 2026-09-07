@@ -2,7 +2,7 @@
   "name": "santinel-app",
   "version": 2,
   "framework": "vite",
-  "buildCommand": "cd web && npm run build",
+  "buildCommand": "cd web && npm install && npm run build",
   "outputDirectory": "web/dist",
   "git": {
     "deploymentEnabled": {
