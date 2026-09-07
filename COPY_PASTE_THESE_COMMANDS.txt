@@ -1,0 +1,16 @@
+COPY AND PASTE THESE COMMANDS INTO COMMAND PROMPT ONE BY ONE:
+
+cd "F:\Proiecte AI\santinel"
+
+git rm --cached -r .cache
+
+git add .gitignore
+
+git commit -m "Remove large cache files from git, add .cache to .gitignore"
+
+git push origin main
+
+===
+
+After the last command completes with "To https://github.com/...", your git push is DONE.
+Vercel will automatically deploy your app within 2-3 minutes.
