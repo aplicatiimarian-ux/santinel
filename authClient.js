@@ -20,7 +20,7 @@ const REFRESH_SKEW_SEC = 300;
 /** Fired on `window` when the session can no longer be recovered. */
 export const AUTH_LOST_EVENT = 'si-auth-lost';
 
-export const api = axios.create({ baseURL: '/api', withCredentials: true });
+export const api = axios.create({ baseURL: 'http://192.168.1.50:8000/api', withCredentials: true });
 
 /* ---- token storage ------------------------------------------------------- */
 
