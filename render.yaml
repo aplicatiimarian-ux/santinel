@@ -1,0 +1,28 @@
+services:
+  - type: web
+    name: santinel-backend
+    runtime: python
+    pythonVersion: 3.11
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn start_api:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
+      - key: JWT_SECRET
+        sync: false
+      - key: JWT_ACCESS_TTL_MIN
+        value: 15
+      - key: JWT_REFRESH_TTL_DAYS
+        value: 7
+      - key: AUTH_DATABASE_URL
+        sync: false
+      - key: CORS_ORIGINS
+        sync: false
+      - key: AUTH_COOKIE_SECURE
+        value: true
+      - key: DEEPGRAM_API_KEY
+        sync: false
+      - key: DEEPGRAM_STT_MODEL
+        value: nova-2
+      - key: DEEPGRAM_MIN_CONFIDENCE
+        value: '0.55'
