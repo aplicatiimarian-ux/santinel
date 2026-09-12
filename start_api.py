@@ -27,6 +27,9 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from auth import router as auth_router
 from auth_guard import get_current_user
+from backend.services.stt_cascade_service import setup_stt_routes
+from backend.services.coach_output_service import setup_coach_routes
+from backend.services.evaluation_service import setup_evaluation_routes
 
 # --------------------------------------------------------------------------- #
 #  STT: Whisper.cpp (faster-whisper) + Google fallback                       #
@@ -212,6 +215,18 @@ if CORS_ORIGINS and CORS_ORIGINS[0]:
         allow_methods=["*"],
         allow_headers=["*"],
     )
+
+
+
+# ============================================================================
+# Startup event: Initialize STT/Coach/Eval routes
+# ============================================================================
+@app.on_event("startup")
+async def startup_event():
+    """Initialize all service routes on app startup"""
+    await setup_stt_routes(app)
+    await setup_coach_routes(app, None, None)  # framework_service & tts_service injected from context
+    await setup_evaluation_routes(app)
 
 app.include_router(auth_router)
 
