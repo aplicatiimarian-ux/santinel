@@ -32,4 +32,4 @@ alembic==1.12.1
 
 # ML/Analytics frameworks (your psychology modules)
 scikit-learn==1.3.2
-pandas==2.1.3
+pandas>=2.2.0
