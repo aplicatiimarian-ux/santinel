@@ -5,10 +5,13 @@ FROM python:3.11-slim
 
 WORKDIR /app
 
+RUN echo "Cache buster: $(date)" || true
+
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
     libavcodec-extra \
     ffmpeg \
+    libpq-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy requirements
