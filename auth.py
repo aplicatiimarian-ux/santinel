@@ -31,10 +31,9 @@ from typing import Optional, Tuple
 
 import bcrypt
 import jwt
-import psycopg2
-import psycopg2.errors
-import psycopg2.pool
-from psycopg2.extras import RealDictCursor
+import psycopg
+import psycopg.errors
+from psycopg.extras import RealDictCursor
 
 from dotenv import load_dotenv
 from fastapi import APIRouter, Depends, HTTPException, Request, Response, status
@@ -76,27 +75,17 @@ _EMAIL_RE = re.compile(r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
 
 
 # --------------------------------------------------------------------------- #
-#  Database (lazy pool — importing this module must not require a live DB)     #
+#  Database (direct connections — no pool dependency)                          #
 # --------------------------------------------------------------------------- #
-
-_pool: Optional[psycopg2.pool.ThreadedConnectionPool] = None
-
-
-def _get_pool() -> psycopg2.pool.ThreadedConnectionPool:
-    global _pool
-    if _pool is None:
-        _pool = psycopg2.pool.ThreadedConnectionPool(1, 10, dsn=AUTH_DATABASE_URL)
-    return _pool
-
 
 @contextmanager
 def db_cursor(commit: bool = False):
-    """Borrow a pooled connection, yield a RealDictCursor, always return it."""
+    """Create a direct connection, yield a RealDictCursor, always close it."""
+    conn = None
     try:
-        pool = _get_pool()
-    except psycopg2.Error as exc:  # pragma: no cover - infra
+        conn = psycopg.connect(dsn=AUTH_DATABASE_URL)
+    except psycopg.Error as exc:  # pragma: no cover - infra
         raise HTTPException(status_code=503, detail="auth database unavailable") from exc
-    conn = pool.getconn()
     try:
         with conn.cursor(cursor_factory=RealDictCursor) as cur:
             yield cur
@@ -105,7 +94,7 @@ def db_cursor(commit: bool = False):
         conn.rollback()
         raise
     finally:
-        pool.putconn(conn)
+        conn.close()
 
 
 # --------------------------------------------------------------------------- #
@@ -312,7 +301,7 @@ def register(body: Credentials, request: Request, response: Response):
             access = make_access(user_id)
             refresh, jti, exp = make_refresh(user_id)
             _record_refresh(cur, user_id, jti, exp, request)
-    except psycopg2.errors.UniqueViolation:
+    except psycopg.errors.UniqueViolation:
         raise HTTPException(status_code=409, detail="email already registered")
     _set_refresh_cookie(response, refresh)
     return _token_payload(access, {"user_id": user_id, "email": email})
